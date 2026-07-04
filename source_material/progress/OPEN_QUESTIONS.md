@@ -274,8 +274,9 @@ PHASE: post-hardening, pre-publication
 STATUS: mostly RESOLVED 2026-07-04 (DEC-0015, FL-0067/0068) — (a) git + public GitHub repo
 `ebuart/AICHITECT` ✅ · (b) README ✅ (screenshots/GIF still missing) · (d) CI ✅ · (e) ESLint ✅ (0 errors)
 · (f) language: chrome DE/EN toggle shipped, content translation staged per arc · (h) LICENSE+metadata ✅.
-REMAINING: (c) deploy to Vercel (live URL), (g) split BuildGamePage/gameModel + fix the warn-scoped
-react-hooks compiler findings in buildgame, (i) documented save-wipe trade-off, README screenshots.
+(c) DEPLOYED same day: https://aichitect-theta.vercel.app (GitHub-connected auto-deploy).
+REMAINING: (g) split BuildGamePage/gameModel + fix the warn-scoped react-hooks compiler findings in
+buildgame, (i) documented save-wipe trade-off, README screenshots.
 CONTEXT (audit result):
 - CODE HEALTH GOOD: build green (tsc -b strict + vite, 3.1s), 216/216 tests, tsconfig max-strict,
   0 `any` / 0 `@ts-ignore` / 0 console.log, pure-logic-vs-render separation, adapter boundary,

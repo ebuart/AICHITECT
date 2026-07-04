@@ -27,3 +27,4 @@ PROJECT_PACK_FILE_LIST.txt
 
 # Stray tool artifacts
 .Rhistory
+.vercel

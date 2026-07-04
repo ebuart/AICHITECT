@@ -2,6 +2,8 @@
 
 [![CI](https://github.com/ebuart/AICHITECT/actions/workflows/ci.yml/badge.svg)](https://github.com/ebuart/AICHITECT/actions/workflows/ci.yml)
 
+**Live: [aichitect-theta.vercel.app](https://aichitect-theta.vercel.app)**
+
 A gamified PWA that teaches **AI-native system architecture** — the durable senior skills of *decomposing, directing, judging, and curating* AI systems, not prompt tricks that the next model generation erases.
 
 Think roadmap.sh × TryHackMe × Plague Inc., for AI engineering.
@@ -49,7 +51,7 @@ npm run lint
 ## Status
 
 - Curriculum, labs, review loop, and the Werft are feature-complete and green; balance numbers in the game are first-pass pending device playtests.
-- Deployment: Vercel-ready, not yet live.
+- Live on Vercel (auto-deploys from `main`).
 - English content translation: mechanism shipped (chrome toggle), lesson translation rolling out arc by arc.
 
 ## License
