@@ -1,0 +1,127 @@
+import type { LabScenario } from '@/features/labs/interactionModel'
+import type { PipelineScenarioData } from '@/features/labs/pipelineBuilder/types'
+
+// Pipeline Builder scenarios (MECH-CONNECT, NODE-05-01 — build a retrieval pipeline).
+// Base: a basic RAG pipeline; transfer: a fuller pipeline for a code/table corpus
+// (contextual chunking + hybrid + reranking). Fine-tuning is a forbidden distractor.
+export const pipelineScenarios: LabScenario<PipelineScenarioData>[] = [
+  {
+    id: 'PIPE-BASE',
+    interactionType: 'pipeline-builder',
+    labId: 'LAB-PIPELINE-BUILDER',
+    roadmapNodeId: 'NODE-05-01',
+    title: 'Pipeline Builder — RAG',
+    prompt:
+      'Baue eine Basis-Retrieval-Pipeline, die Antworten auf aktuelle interne Docs gründet. Wähle die Stufen und bring sie in die richtige Reihenfolge.',
+    concepts: ['CONCEPT-RET-001', 'CONCEPT-RET-002', 'CONCEPT-RET-003'],
+    prerequisites: ['NODE-04-05'],
+    difficulty: 'core',
+    estimatedMinutes: 6,
+    isTransfer: false,
+    scoringProfileId: 'pipe-default',
+    feedbackProfileId: 'pipe-default',
+    reviewHooks: ['pipeline_transfer', 'retrieval_method_transfer'],
+    scenarioData: {
+      goal: 'Ziel: aktuelle interne Dokumente abrufbar machen und Antworten darauf gründen.',
+      available: [
+        { id: 'ingest', label: 'Ingest', note: 'Dokumente einlesen.' },
+        { id: 'chunk', label: 'Chunking', note: 'In abrufbare Chunks teilen.' },
+        { id: 'embed', label: 'Embedding', note: 'Chunks als Vektoren einbetten.' },
+        { id: 'retrieve', label: 'Retrieve', note: 'Relevante Chunks zur Query abrufen.' },
+        { id: 'generate', label: 'Generate', note: 'Antwort mit der Evidenz erzeugen.' },
+        { id: 'finetune', label: 'Fine-Tuning', note: 'Modell auf die Docs fine-tunen.' },
+      ],
+      requiredOrder: ['ingest', 'chunk', 'embed', 'retrieve', 'generate'],
+      forbidden: ['finetune'],
+    },
+  },
+  {
+    id: 'PIPE-TRANSFER',
+    interactionType: 'pipeline-builder',
+    labId: 'LAB-PIPELINE-BUILDER',
+    roadmapNodeId: 'NODE-05-01',
+    title: 'Pipeline Builder — Transfer: Code & Tabellen',
+    prompt:
+      'Anspruchsvollerer Korpus: große Codebasis mit Tabellen, exakte Symbole UND Konzepte. Baue die Pipeline, die das verlangt.',
+    concepts: ['CONCEPT-RET-004', 'CONCEPT-RET-005', 'CONCEPT-RET-006', 'CONCEPT-RET-007'],
+    prerequisites: ['NODE-04-05'],
+    difficulty: 'advanced',
+    estimatedMinutes: 6,
+    isTransfer: true,
+    scoringProfileId: 'pipe-default',
+    feedbackProfileId: 'pipe-default',
+    reviewHooks: ['pipeline_transfer', 'retrieval_method_transfer'],
+    scenarioData: {
+      goal: 'Ziel: exakte Symbole und Konzepte über eine große Codebasis finden, mit präzisen Top-k.',
+      available: [
+        { id: 'ingest', label: 'Ingest', note: 'Code/Docs einlesen.' },
+        { id: 'ctxchunk', label: 'Contextual Chunking', note: 'Chunks mit Datei-/Modul-Context anreichern.' },
+        { id: 'embed', label: 'Embedding', note: 'Chunks einbetten.' },
+        { id: 'hybrid', label: 'Hybrid Retrieve', note: 'Lexical + semantic kombinieren.' },
+        { id: 'rerank', label: 'Reranking', note: 'Kandidaten neu ranken, Top-k schärfen.' },
+        { id: 'generate', label: 'Generate', note: 'Antwort mit der besten Evidenz erzeugen.' },
+        { id: 'finetune', label: 'Fine-Tuning', note: 'Modell fine-tunen.' },
+      ],
+      requiredOrder: ['ingest', 'ctxchunk', 'embed', 'hybrid', 'rerank', 'generate'],
+      forbidden: ['finetune'],
+    },
+  },
+  {
+    id: 'DIR-DEPS-BASE',
+    interactionType: 'pipeline-builder',
+    labId: 'LAB-PIPELINE-BUILDER',
+    roadmapNodeId: 'NODE-12-02',
+    title: 'Reihenfolge der Abhängigkeiten',
+    prompt:
+      'Zerlege das Feature in einen Plan für deine Bienen. Bring die Schritte in eine Reihenfolge, die Abhängigkeiten respektiert — und lass raus, was nicht zum Auftrag gehört.',
+    concepts: ['CONCEPT-DIR-006'],
+    prerequisites: ['NODE-12-01'],
+    difficulty: 'advanced',
+    estimatedMinutes: 6,
+    isTransfer: false,
+    scoringProfileId: 'pipe-default',
+    feedbackProfileId: 'pipe-default',
+    reviewHooks: ['direction_transfer', 'pipeline_transfer'],
+    scenarioData: {
+      goal: 'Ein Feature „Nutzer können Bestellungen exportieren“. Plane die Teilaufgaben so, dass jede erst läuft, wenn ihre Voraussetzung steht. Nicht alles kann parallel — Kopplung hat Schwerkraft.',
+      available: [
+        { id: 'schema', label: 'Datenmodell / Schema festlegen', note: 'Voraussetzung für API und UI.' },
+        { id: 'api', label: 'Export-API bauen', note: 'Braucht das Schema.' },
+        { id: 'ui', label: 'Export-Button im UI', note: 'Braucht die API.' },
+        { id: 'tests', label: 'Integrationstests', note: 'Prüfen das fertige Zusammenspiel.' },
+        { id: 'refactor', label: 'Unrelated Auth-Modul refactoren', note: 'Gehört nicht zu diesem Feature.' },
+      ],
+      requiredOrder: ['schema', 'api', 'ui', 'tests'],
+      forbidden: ['refactor'],
+    },
+  },
+  {
+    id: 'RT-DECOMPOSE',
+    interactionType: 'pipeline-builder',
+    labId: 'LAB-PIPELINE-BUILDER',
+    roadmapNodeId: 'NODE-13-03',
+    title: 'Round-Trip — Phase 2: zerlegen',
+    prompt:
+      'Dein 2FA-Brief steht. Zerlege ihn in einen Build-Plan, der Abhängigkeiten respektiert — und lass weg, was nicht zum Auftrag gehört.',
+    concepts: ['CONCEPT-DIR-006', 'all_core'],
+    prerequisites: ['NODE-13-02'],
+    difficulty: 'capstone',
+    estimatedMinutes: 5,
+    isTransfer: false,
+    scoringProfileId: 'pipe-default',
+    feedbackProfileId: 'pipe-default',
+    reviewHooks: ['direction_transfer', 'capstone_transfer'],
+    scenarioData: {
+      goal: '2FA zum Login hinzufügen. Plane die Teilaufgaben so, dass jede erst läuft, wenn ihre Voraussetzung steht. Kopplung hat Schwerkraft.',
+      available: [
+        { id: 'secret', label: 'TOTP-Secret speichern (Schema)', note: 'Voraussetzung für Enrollment und Verify.' },
+        { id: 'enroll', label: 'Enrollment-Flow (QR-Setup)', note: 'Braucht das Secret-Schema.' },
+        { id: 'verify', label: 'Verifikation beim Login', note: 'Braucht ein enrolltes Secret.' },
+        { id: 'recovery', label: 'Recovery-Codes', note: 'Braucht Enrollment; rettet verlorene Geräte.' },
+        { id: 'rewrite', label: 'Das gesamte Auth-System neu schreiben', note: 'Gehört nicht zu diesem Auftrag.' },
+      ],
+      requiredOrder: ['secret', 'enroll', 'verify', 'recovery'],
+      forbidden: ['rewrite'],
+    },
+  },
+]

@@ -1,0 +1,29 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Vite / PWA build output
+dev-dist
+*.tsbuildinfo
+
+# AI tooling (local workspace config/caches — the real project docs live in /source_material)
+.claude/
+.claude-flow/
+.mcp.json
+CLAUDE.md
+
+# Project-inception scratch files (kept local, superseded by /source_material)
+prompt.md
+README_NEXT_STEPS.md
+PROJECT_PACK_FILE_LIST.txt
+/source_material_manifest.md
+
+# Stray tool artifacts
+.Rhistory

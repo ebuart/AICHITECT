@@ -1,0 +1,139 @@
+@import 'tailwindcss';
+
+/* ── Design system: BRUTALIST B/W (user direction 2026-06-21) ───────────────────
+   Pure black + pure white, almost no mid-greys (one working grey only). Borders and
+   geometry ARE the design language. Sharp corners everywhere (zero radius). TWO
+   typefaces: a blocky grotesque for reading, a monospace ("typer") reserved for
+   CLICKABLE things + code. Flat & strictly 2D — no blur, no shadow, no gradient
+   (this also removes the mobile lag that came from backdrop-blur). */
+@theme {
+  /* palette — black, white, exactly ONE working grey */
+  --color-deck-bg: #000000;
+  --color-deck-surface: #000000; /* flat: a card is black + a white hairline */
+  --color-deck-surface-2: #0b0b0b; /* nested panels only, barely separated */
+  --color-deck-border: #ffffff; /* stark white hairline = primary structure */
+  --color-deck-border-dim: #333333; /* the one grey — secondary divisions */
+  --color-deck-accent: #ffffff; /* active = inversion (white block / black text) */
+  --color-deck-muted: #8a8a8a; /* secondary text */
+
+  /* state — rare, thin, BORDER + TEXT only, shown on reveal (VSS-101) */
+  --color-deck-success: #58e08a;
+  --color-deck-current: #ffffff;
+  --color-deck-warning: #e8c24a;
+  --color-deck-danger: #f25a5a;
+  --color-deck-locked: #444444;
+
+  /* zero radius — blocky everywhere. (rounded-full circles are unaffected.) */
+  --radius-deck: 0px;
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+
+  /* type — blocky grotesque to READ, monospace to CLICK / for code */
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-typer:
+    ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Mono', Menlo, Consolas,
+    monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+/* ── Light mode (user direction 2026-06-24): brutalist INVERSE — white paper, black ink. ────────
+   The whole design is black/white TOKENS, and Tailwind v4 compiles bg-white/text-white/etc. to
+   var(--color-white)/var(--color-black). So flipping those two vars + the deck-* tokens inverts the
+   entire app in one place; no per-component changes. State hues are darkened for contrast on white. */
+html.theme-light {
+  color-scheme: light;
+  --color-white: #000000; /* "ink" — text-white/border-white/bg-white now resolve to black */
+  --color-black: #ffffff; /* "paper" — text-black/bg-black now resolve to white */
+  --color-deck-bg: #ffffff;
+  --color-deck-surface: #ffffff;
+  --color-deck-surface-2: #f1f1f1;
+  --color-deck-border: #000000;
+  --color-deck-border-dim: #c9c9c9;
+  --color-deck-accent: #000000;
+  --color-deck-muted: #5f5f5f;
+  --color-deck-success: #1f9d57;
+  --color-deck-warning: #8a6d0a;
+  --color-deck-danger: #cc2f2f;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* Werft "notebook paper": a faint dot grid that slowly breathes while the in-game clock runs —
+   a calm, non-distracting signal that time is moving forward. */
+.deck-dots {
+  background-image: radial-gradient(currentColor 1.4px, transparent 1.9px);
+  background-size: 28px 28px;
+  color: var(--color-deck-border-dim);
+  opacity: 0.16;
+}
+/* Centered breathing: the dot field swells out from the middle and back (scale from centre),
+   no directional drift. */
+@keyframes deck-breathe {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.46;
+    transform: scale(1.06);
+  }
+}
+.deck-dots-anim {
+  transform-origin: center;
+  animation: deck-breathe 5s ease-in-out infinite;
+}
+/* Pumping pipeline lanes on the System-Karte — VERY subtle (≈1/6 distraction): slow + faint. */
+@keyframes deck-lane-pulse {
+  0%,
+  100% {
+    opacity: 0.02;
+  }
+  50% {
+    opacity: 0.07;
+  }
+}
+.deck-lane-pulse {
+  animation: deck-lane-pulse 6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-dots-anim,
+  .deck-lane-pulse {
+    animation: none;
+  }
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-deck-bg);
+  color: var(--color-white); /* flips to black ink under .theme-light */
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The typer face is the voice of anything you click, and of code. */
+button,
+a,
+[role='button'],
+select,
+input,
+textarea,
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-typer);
+}

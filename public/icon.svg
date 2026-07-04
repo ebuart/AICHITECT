@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="AI Engineering Flight Deck">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b2942" />
+      <stop offset="1" stop-color="#0a0f1c" />
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#22d3ee" stop-opacity="0.16" />
+      <stop offset="1" stop-color="#22d3ee" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <!-- App tile -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)" />
+  <rect width="512" height="512" rx="112" fill="url(#glow)" />
+
+  <!-- Low-poly faceted crystal: a 4-point diamond (T/L/B/R) split by internal
+       vertices ML/MR/C. Cyan facets shade light→dark top→bottom for 3D depth. -->
+  <g>
+    <polygon points="256,104 196,196 316,196" fill="#a5f3fc" />
+    <polygon points="256,104 132,256 196,196" fill="#4dd9f0" />
+    <polygon points="256,104 316,196 380,256" fill="#38cdee" />
+    <polygon points="196,196 132,256 256,300" fill="#1ab2d6" />
+    <polygon points="196,196 256,300 316,196" fill="#2bc6e6" />
+    <polygon points="316,196 256,300 380,256" fill="#0f9cc1" />
+    <polygon points="132,256 256,432 256,300" fill="#0d7ea1" />
+    <polygon points="380,256 256,300 256,432" fill="#0a6486" />
+  </g>
+
+  <!-- Spark highlight on the top table facet -->
+  <polygon points="256,128 226,184 286,184" fill="#e0fbff" opacity="0.55" />
+</svg>
