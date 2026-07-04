@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.9.0",
   "type": "module",
-  "description": "AICHITECT (AI Engineering Flight Deck) — gamified mobile-first PWA for learning AI-native system architecture: 54-node curriculum, 19 interactive lab engines, and a real-time strategy build-game.",
+  "description": "AICHITECT (AI Engineering Flight Deck) — gamified PWA for learning AI-native system architecture: 54-node curriculum, 19 interactive lab engines, and a real-time strategy build-game.",
   "author": "Maximilian Voigt <maximilian.voigt05@gmail.com>",
   "license": "MIT",
   "repository": {

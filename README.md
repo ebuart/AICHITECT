@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/ebuart/AICHITECT/actions/workflows/ci.yml/badge.svg)](https://github.com/ebuart/AICHITECT/actions/workflows/ci.yml)
 
-A gamified, mobile-first PWA that teaches **AI-native system architecture** — the durable senior skills of *decomposing, directing, judging, and curating* AI systems, not prompt tricks that the next model generation erases.
+A gamified PWA that teaches **AI-native system architecture** — the durable senior skills of *decomposing, directing, judging, and curating* AI systems, not prompt tricks that the next model generation erases.
 
 Think roadmap.sh × TryHackMe × Plague Inc., for AI engineering.
 
