@@ -271,7 +271,11 @@ OPEN:
 
 PRIORITY: HIGH (user wants this project on CS-job resume)
 PHASE: post-hardening, pre-publication
-STATUS: open — audited, fixes not yet applied
+STATUS: mostly RESOLVED 2026-07-04 (DEC-0015, FL-0067/0068) — (a) git + public GitHub repo
+`ebuart/AICHITECT` ✅ · (b) README ✅ (screenshots/GIF still missing) · (d) CI ✅ · (e) ESLint ✅ (0 errors)
+· (f) language: chrome DE/EN toggle shipped, content translation staged per arc · (h) LICENSE+metadata ✅.
+REMAINING: (c) deploy to Vercel (live URL), (g) split BuildGamePage/gameModel + fix the warn-scoped
+react-hooks compiler findings in buildgame, (i) documented save-wipe trade-off, README screenshots.
 CONTEXT (audit result):
 - CODE HEALTH GOOD: build green (tsc -b strict + vite, 3.1s), 216/216 tests, tsconfig max-strict,
   0 `any` / 0 `@ts-ignore` / 0 console.log, pure-logic-vs-render separation, adapter boundary,
@@ -291,3 +295,34 @@ OPEN (ordered):
 - (h) package.json metadata: version 0.0.0, no author/license/repository; no LICENSE file.
 - (i) Save-wipe on version bump (adapter + gameModel reset instead of migrating) — fine local-first,
   document as known trade-off.
+
+### OQ-0015 — Content audit findings (deep read 2026-07-04): fix redundancy, then translate
+
+PRIORITY: MEDIUM-HIGH (drives the per-node re-authoring order + blocks EN content translation)
+PHASE: content polish, pre-translation
+STATUS: open — audited, fixes await user direction
+CONTEXT (audit method: full read of ~30 lessons across all arcs + stem/takeaway sweep of the rest +
+scenario samples + nodeInfo; judged against SPINE durability, LR-011a/b/c, and technical correctness):
+- VERDICT: content is genuinely strong. No factual errors found (BM25/vector blind spots, RRF, contextual
+  retrieval, constrained-decoding masking, ReAct tool economy, grounding-as-entailment, delimiter-forgery,
+  trust-laundering, least-privilege scoping, eval-case pathologies — all accurate and current). Exercises
+  operate on concrete material with tempting-real-mistake distractors; ARC-08/13 clearly meet the
+  "skeptical senior could get it wrong" bar. Direction track + doc-control-plane cluster are genuinely
+  differentiated content. nodeInfo/Werft prose is real teaching text.
+OPEN (ordered):
+- (a) CROSS-ARC DUPLICATE: LESSON-01-01 `augment-which` and LESSON-05-01 `why-rag` are near-identical
+  (support bot needs CURRENT monthly-changing tariffs → retrieval; same distractor trio fine-tune /
+  bigger-model / prompt-plea). Second encounter is a free win. Re-skin one (different domain + subtler
+  distractors, e.g. compliance rules where fine-tuning is genuinely tempting).
+- (b) SOFT ECHOES (same principle re-asked with same answer shape, weaker offense): 02-04 `isolate-why`
+  ↔ 04-03 worker-isolation rationale; 01-02 `climb-when` ↔ 04-01 `default-bias`. Consider varying the
+  angle (cost/failure-mode/ops) instead of the same "why is X the point" pick.
+- (c) CLOSING-PICK REDUNDANCY inside easier lessons: the final `pick` is often answerable verbatim from
+  the intro note (e.g. 00-02 `iceberg-why`, 02-01 `budget-principle`, 02-02 `noise-principle`). The HARD-
+  pass lessons (05-03, 07-03, 08-03, 13-03) don't have this. Matches the existing per-node ground-up
+  re-authoring directive (PROJECT_MEMORY REDESIGN_PIVOT) — these picks should move from "restate the note"
+  to "apply it somewhere the note didn't cover".
+- (d) SOURCES SURFACE (optional, product): research notes exist in /source_material/research but lessons
+  cite nothing in-app. A per-lesson "sources" line would raise credibility (roadmap.sh style). User call.
+- (e) TRANSLATION SEQUENCING: translate only after (a)-(c) fixes per arc; needs a LocalizedText decision
+  in lessonModel (per-field `{de,en}` vs parallel lesson files) — spec before the pilot arc.

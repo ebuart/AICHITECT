@@ -2403,3 +2403,28 @@ lesson first. Tapping it still opens the SelectedPanel quest-lock + "Zur Lektion
 threaded through `graphs` via `questLocked(cs,id)`.
 - QA: build green; `npm test` **216/216** (+ graphs test: `rag` is `locked` + `quest:true` until NODE-05-01 done,
   then the flag clears; starter `scratchNotes` is never quest-flagged).
+
+### FL-0067 — Publication layer: git/GitHub (AICHITECT), README, MIT, ESLint, CI (DEC-0015)
+
+Repo initialized on `main` (360-file honest snapshot, then per-change commits) and published public:
+**github.com/ebuart/AICHITECT** (description + topics set). Added: `README.md` (English; pedagogy-as-CI +
+control-plane story, engineering table, honest status incl. German-first content), `LICENSE` (MIT),
+package metadata (`aichitect` 0.9.0), `eslint.config.js` (flat; typescript-eslint + react-hooks v7 +
+react-refresh) with all 19 pre-existing errors fixed (ternary side-effect expressions → if/else in
+ExerciseView/Annotate/MultiSpot; `useState({v})` as ref → real `useRef` in BuildCampaign; uninitialized-let
++ prefer-const + unused import), compiler-lints warn-scoped to `buildgame/**` (OQ-0014g), and
+`.github/workflows/ci.yml` (lint + strict build + tests). Local-only files gitignored (.claude*, CLAUDE.md,
+.mcp.json, inception scratch docs, tsbuildinfo).
+- QA: build green; `npx eslint .` 0 errors; `npm test` 216/216 pre-locale.
+
+### FL-0068 — DE/EN app-chrome locale with persisted toggle (DEC-0015)
+
+`lib/i18n.ts`: `Locale = 'de'|'en'` external store (useSyncExternalStore — no provider), persisted under
+`flightdeck.locale`, `initLocale()` sets `<html lang>` before first paint (wired in main.tsx next to
+initTheme). Typed chrome dictionary (`en: typeof de` → missing translation = compile error) incl.
+parameterized strings (homeProgress/homeNext as functions). Header gets a DE/EN LanguageToggle next to the
+ThemeToggle; navItems switched from hardcoded labels to dictionary keys (Werft → "Shipyard" in EN);
+BottomNav + ThemeToggle + HomePage localized; EN shows a German-first content notice on Home. Content
+translation NOT included (deliberate — rolls out per arc after OQ-0015 content fixes).
+- QA: build green; `npx eslint .` 0 errors; `npm test` **221/221** (new `tests/locale.test.ts`: default de,
+  stored en, html-lang application, persist+apply, DE/EN dictionaries genuinely differ + EN notice exists).

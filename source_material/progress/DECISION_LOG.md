@@ -449,3 +449,33 @@ CONSEQUENCES:
   threat/event cadence are first-pass numbers); the game is not yet wired to lesson progress.
 - follow_up: device playtest for balance + HUD/keyboard feel; consider tying lesson completion → starting budget;
   richer events; possibly a win/end condition. (Open idea, not built: per-node art.)
+
+### DEC-0015 — Publication layer + DE/EN chrome locale (repo goes public for the resume)
+
+DATE: 2026-07-04
+STATUS: accepted
+CONTEXT:
+- The user wants the project on their CS resume; the deep audit (OQ-0014) found the code strong but the
+  publication layer missing entirely (no git, README, deploy, CI, lint, license), and the user asked to
+  keep German content while adding a translation option.
+DECISION:
+- Git repo initialized (honest initial snapshot + per-change commits) and published PUBLIC as
+  github.com/ebuart/AICHITECT. `.claude*`/`.mcp.json`/CLAUDE.md and inception scratch files stay local
+  (gitignored); `/source_material` IS committed — the control plane is the differentiator story.
+- MIT LICENSE; package metadata (aichitect 0.9.0, author, repository).
+- ESLint flat config (typescript-eslint + react-hooks v7 + react-refresh) — 0 errors; the compiler-powered
+  react-hooks lints are WARN-scoped to `features/buildgame/**` only (real findings, need careful game-loop
+  refactor, tracked in OQ-0014g). CI = GitHub Actions: lint + strict build + tests on push/PR.
+- i18n SCOPE: app CHROME is bilingual now (lib/i18n: persisted DE↔EN store via useSyncExternalStore, html
+  lang before first paint, typed dictionary where a missing EN key is a compile error, header toggle).
+  CONTENT stays German-first; EN shows a German-first notice; content translation rolls out arc by arc on
+  top of this mechanism. NOT chosen: full content i18n now (translating 53 lessons before the OQ-0015
+  content polish would translate text that's about to change).
+CONSEQUENCES:
+- positive: repo is presentable (README with the pedagogy-as-CI + AI-direction story), CI badge, honest
+  commit history from here on; locale infra ready for content translation.
+- negative: "mobile-first" claim dropped (Werft is desktop-first); lesson content model has no per-locale
+  fields yet — the content translation pass will need a `LocalizedText` decision; two >500-line game files
+  still pending split (OQ-0014g).
+- follow_up: deploy to Vercel (live demo URL in README), screenshots/GIF for the README, content
+  translation pilot arc, OQ-0015 content fixes.
