@@ -129,6 +129,22 @@ export const lessonById: Record<LessonId, Lesson> = Object.fromEntries(
   lessons.map((l) => [l.id, l]),
 )
 
+// English lesson variants (DEC-0015/0016): full parallel Lesson objects, rolled out arc by
+// arc AFTER a lesson passes the content-polish bar. Untranslated lessons fall back to German.
+import { whatAiEngineeringBuildsEn } from './en/whatAiEngineeringBuilds.en'
+import { icebergModelEn } from './en/icebergModel.en'
+
+const lessonsEn: Lesson[] = [whatAiEngineeringBuildsEn, icebergModelEn]
+export const lessonEnById: Partial<Record<LessonId, Lesson>> = Object.fromEntries(
+  lessonsEn.map((l) => [l.id, l]),
+)
+
+/** Locale-aware lesson lookup: EN where a translation exists, German otherwise. */
+export function getLesson(id: LessonId, locale: 'de' | 'en'): Lesson | undefined {
+  if (locale === 'en') return lessonEnById[id] ?? lessonById[id]
+  return lessonById[id]
+}
+
 const byNode: Record<RoadmapNodeId, Lesson[]> = {}
 for (const lesson of lessons) {
   ;(byNode[lesson.roadmapNodeId] ??= []).push(lesson)

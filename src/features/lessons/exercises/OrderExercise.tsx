@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils/cn'
+import { useStrings } from '@/lib/i18n'
 import { shuffle } from '@/lib/utils/shuffle'
 import type { Exercise } from '../lessonModel'
 import { ExerciseBody, Intro, Stem, Takeaway } from './shared'
@@ -15,6 +16,7 @@ export function OrderExercise({
   exercise: Extract<Exercise, { format: 'order' }>
   onAnswered: (id: string) => void
 }) {
+  const t = useStrings()
   const correctIds = exercise.items.map((i) => i.id)
   const [order, setOrder] = useState<string[]>(() => {
     let s = shuffle(correctIds)
@@ -94,7 +96,7 @@ export function OrderExercise({
         })}
       </ol>
       {!checked ? (
-        <Button onClick={submit}>Prüfen</Button>
+        <Button onClick={submit}>{t.exCheck}</Button>
       ) : (
         exercise.takeaway && <Takeaway text={exercise.takeaway} />
       )}

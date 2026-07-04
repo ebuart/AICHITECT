@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils/cn'
+import { useStrings } from '@/lib/i18n'
 import { shuffle } from '@/lib/utils/shuffle'
 import type { Exercise } from './lessonModel'
 import { CodeBlock, Stem, Takeaway } from './exercises/shared'
@@ -56,6 +57,7 @@ function PickExercise({
   exercise: Extract<Exercise, { format: 'pick' }>
   onAnswered: (id: string) => void
 }) {
+  const t = useStrings()
   const [options] = useState(() => shuffle(exercise.options))
   const [picked, setPicked] = useState<string | null>(null)
   const revealed = picked != null
@@ -124,7 +126,7 @@ function PickExercise({
       {revealed && chosen && (
         <p className="text-[12px] text-deck-muted">
           <span className={chosen.correct ? 'text-deck-success' : 'text-deck-danger'}>
-            {chosen.correct ? 'Richtig. ' : 'Daneben. '}
+            {chosen.correct ? t.exCorrect : t.exWrong}
           </span>
           {chosen.why}
         </p>
@@ -141,6 +143,7 @@ function MultiExercise({
   exercise: Extract<Exercise, { format: 'multi' }>
   onAnswered: (id: string) => void
 }) {
+  const t = useStrings()
   const [options] = useState(() => shuffle(exercise.options))
   const [sel, setSel] = useState<Set<string>>(new Set())
   const [checked, setChecked] = useState(false)
@@ -198,8 +201,8 @@ function MultiExercise({
                 {o.text}
                 {checked && (
                   <span className="mt-0.5 block text-[11px] text-deck-muted">
-                    {missed && <span className="text-deck-warning">Verpasst. </span>}
-                    {wrongPick && <span className="text-deck-danger">Falsch gewählt. </span>}
+                    {missed && <span className="text-deck-warning">{t.exMissed}</span>}
+                    {wrongPick && <span className="text-deck-danger">{t.exWrongPick}</span>}
                     {o.why}
                   </span>
                 )}

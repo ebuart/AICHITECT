@@ -1,6 +1,7 @@
 import { useMemo, useState, type ReactElement } from 'react'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils/cn'
+import { useStrings } from '@/lib/i18n'
 import type { Exercise } from '../lessonModel'
 import { ExerciseBody, Intro, Stem, Takeaway } from './shared'
 
@@ -14,6 +15,7 @@ export function ThresholdExercise({
   exercise: Extract<Exercise, { format: 'threshold' }>
   onAnswered: (id: string) => void
 }) {
+  const str = useStrings()
   const step = exercise.step ?? 1
   const [t, setT] = useState(exercise.min)
   const [checked, setChecked] = useState(false)
@@ -97,7 +99,7 @@ export function ThresholdExercise({
       <div className="flex flex-col">{rows}</div>
 
       {!checked ? (
-        <Button onClick={submit}>Prüfen</Button>
+        <Button onClick={submit}>{str.exCheck}</Button>
       ) : (
         exercise.takeaway && <Takeaway text={exercise.takeaway} />
       )}

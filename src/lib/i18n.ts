@@ -84,6 +84,14 @@ const de = {
   homeContinue: 'Weiterlernen',
   homeStart: 'Roadmap starten',
   contentNotice: '',
+  exCheck: 'Prüfen',
+  exCorrect: 'Richtig. ',
+  exWrong: 'Daneben. ',
+  exWrongPick: 'Falsch gewählt. ',
+  exMissed: 'Verpasst. ',
+  lessonComplete: 'Lektion abschließen',
+  lessonAnswerAll: 'Beantworte alle Übungen, um abzuschließen',
+  lessonDecideAll: 'Triff jede Entscheidung, um abzuschließen',
 }
 
 const en: typeof de = {
@@ -107,6 +115,14 @@ const en: typeof de = {
   homeStart: 'Start the roadmap',
   contentNotice:
     'Lessons and labs are currently German-first — an English translation is rolling out arc by arc.',
+  exCheck: 'Check',
+  exCorrect: 'Correct. ',
+  exWrong: 'Not quite. ',
+  exWrongPick: 'Wrong pick. ',
+  exMissed: 'Missed. ',
+  lessonComplete: 'Complete lesson',
+  lessonAnswerAll: 'Answer every exercise to complete',
+  lessonDecideAll: 'Make every decision to complete',
 }
 
 const STRINGS: Record<Locale, typeof de> = { de, en }

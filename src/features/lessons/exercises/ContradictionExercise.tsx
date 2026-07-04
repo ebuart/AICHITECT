@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils/cn'
+import { useStrings } from '@/lib/i18n'
 import type { Exercise, SourceLine } from '../lessonModel'
 import { ExerciseBody, Intro, Stem, Takeaway } from './shared'
 
@@ -13,6 +14,7 @@ export function ContradictionExercise({
   exercise: Extract<Exercise, { format: 'contradiction' }>
   onAnswered: (id: string) => void
 }) {
+  const t = useStrings()
   const [selA, setSelA] = useState<string | null>(null)
   const [selB, setSelB] = useState<string | null>(null)
   const [checked, setChecked] = useState(false)
@@ -72,7 +74,7 @@ export function ContradictionExercise({
 
       {!checked ? (
         <Button onClick={submit} disabled={!ready}>
-          {ready ? 'Prüfen' : 'Je eine Zeile aus A und B wählen'}
+          {ready ? t.exCheck : 'Je eine Zeile aus A und B wählen'}
         </Button>
       ) : (
         exercise.takeaway && <Takeaway text={exercise.takeaway} />

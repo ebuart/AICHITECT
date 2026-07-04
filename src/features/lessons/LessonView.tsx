@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils/cn'
+import { useStrings } from '@/lib/i18n'
 import type { Lesson, LessonBlock } from './lessonModel'
 import { lessonDecisions, lessonExercises } from './lessonModel'
 import { lessonModeInfo } from './lessonModes'
@@ -34,6 +35,7 @@ function blockColSpan(block: LessonBlock): string {
 // after the current challenge is finished — and the lesson completes once ALL of
 // them are done (not the first).
 export function LessonView({ lesson, onComplete }: LessonViewProps) {
+  const t = useStrings()
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [doneChallenges, setDoneChallenges] = useState<Set<number>>(new Set())
   const [doneExercises, setDoneExercises] = useState<Set<string>>(new Set())
@@ -123,10 +125,10 @@ export function LessonView({ lesson, onComplete }: LessonViewProps) {
       {!hasChallenge && (
         <Button onClick={onComplete} disabled={!allAnswered}>
           {allAnswered
-            ? 'Lektion abschließen'
+            ? t.lessonComplete
             : exercises.length > 0
-              ? 'Beantworte alle Übungen, um abzuschließen'
-              : 'Triff jede Entscheidung, um abzuschließen'}
+              ? t.lessonAnswerAll
+              : t.lessonDecideAll}
         </Button>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { lessonById } from '@/content/lessons'
+import { getLesson } from '@/content/lessons'
+import { useLocale } from '@/lib/i18n'
 import { roadmapGraph } from '@/content/roadmap'
 import { useProgress } from '@/features/progress/useProgress'
 import { isNodeCompleted } from '@/features/roadmap/roadmapStatus'
@@ -17,7 +18,8 @@ export function LessonPage() {
   const navigate = useNavigate()
   const [params] = useSearchParams()
   const { state, ready, completeLesson } = useProgress()
-  const lesson = id ? lessonById[id] : undefined
+  const { locale } = useLocale()
+  const lesson = id ? getLesson(id, locale) : undefined
 
   const fromWerft = params.get('return') === 'werft'
   const returnTo = fromWerft ? paths.build : paths.roadmap

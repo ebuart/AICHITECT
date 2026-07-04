@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils/cn'
+import { useStrings } from '@/lib/i18n'
 import type { Exercise } from '../lessonModel'
 import { ExerciseBody, Intro, Stem, Takeaway } from './shared'
 
@@ -14,6 +15,7 @@ export function BudgetExercise({
   exercise: Extract<Exercise, { format: 'budget' }>
   onAnswered: (id: string) => void
 }) {
+  const t = useStrings()
   const step = exercise.step ?? 1
   const [vals, setVals] = useState<Record<string, number>>(() =>
     Object.fromEntries(exercise.items.map((it) => [it.id, it.min])),
@@ -102,7 +104,7 @@ export function BudgetExercise({
 
       {!checked ? (
         <Button onClick={submit} disabled={over}>
-          {over ? `${used - exercise.total} ${unit} über dem Limit` : 'Prüfen'}
+          {over ? `${used - exercise.total} ${unit} über dem Limit` : t.exCheck}
         </Button>
       ) : (
         exercise.takeaway && <Takeaway text={exercise.takeaway} />
