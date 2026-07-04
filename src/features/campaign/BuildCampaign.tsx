@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Button } from '@/components/ui/Button'
 import { cn } from '@/lib/utils/cn'
 import {
@@ -26,7 +26,7 @@ export function BuildCampaign({
   const [idx, setIdx] = useState(() => nextStageIndex(def, 0, def.initial.flags))
   const [picked, setPicked] = useState<StageOption | null>(null)
   const [done, setDone] = useState(false)
-  const firedRef = useState({ v: false })[0]
+  const firedRef = useRef(false)
 
   const stage = idx >= 0 ? def.stages[idx] : null
 
@@ -70,8 +70,8 @@ export function BuildCampaign({
         </div>
         <Button
           onClick={() => {
-            if (firedRef.v) return
-            firedRef.v = true
+            if (firedRef.current) return
+            firedRef.current = true
             onComplete()
           }}
         >

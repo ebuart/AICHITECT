@@ -455,7 +455,7 @@ export function shipRelease(s: GameState): { state: GameState; outcome: ReleaseO
   // The world only HARDENS when you actually ship (clean/hotfix): scale grows, drift/debt rise
   // unless your skills hold them down. A failed release is a setback, NOT a spiral — nothing grows,
   // so you can regroup (sprint, build, tier up) and try again.
-  let state: GameState = {
+  const state: GameState = {
     ...s,
     budget: Math.max(0, s.budget + outcome.reward),
     xp: s.xp + (clean ? 3 : outcome.result === 'hotfix' ? 1 : 0),

@@ -210,9 +210,9 @@ export function BuildGamePage() {
         if (!p) continue
         const dx = p.x - cp.x
         const dy = p.y - cp.y
-        let along = 0
-        let across = 0
-        let ok = false
+        let along: number
+        let across: number
+        let ok: boolean
         if (d === 'right') { ok = dx > 6; along = dx; across = Math.abs(dy) }
         else if (d === 'left') { ok = dx < -6; along = -dx; across = Math.abs(dy) }
         else if (d === 'down') { ok = dy > 6; along = dy; across = Math.abs(dx) }

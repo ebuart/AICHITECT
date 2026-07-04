@@ -1,14 +1,21 @@
 {
-  "name": "ai-engineering-flight-deck",
+  "name": "aichitect",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.9.0",
   "type": "module",
-  "description": "Guided mobile-first PWA for learning AI Engineering, Agent-driven Development, and AI-native System Architecture.",
+  "description": "AICHITECT (AI Engineering Flight Deck) — gamified mobile-first PWA for learning AI-native system architecture: 54-node curriculum, 19 interactive lab engines, and a real-time strategy build-game.",
+  "author": "Maximilian Voigt <maximilian.voigt05@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ebuart/AICHITECT.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",
+    "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest"
   },
@@ -18,6 +25,7 @@
     "react-router-dom": "^7.6.0"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@tailwindcss/vite": "^4.1.0",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/react": "^16.3.2",
@@ -25,9 +33,14 @@
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "eslint": "^10.6.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
     "jsdom": "^25.0.1",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.7.0",
+    "typescript-eslint": "^8.62.1",
     "vite": "^7.0.0",
     "vite-plugin-pwa": "^1.0.0",
     "vitest": "^3.2.6"

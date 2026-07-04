@@ -66,7 +66,7 @@ describe('build-sim engine (pure logic)', () => {
   })
 
   it('the clock advances time and accrues income passively (no manual sprint to spam)', () => {
-    let s = initialGame()
+    const s = initialGame()
     const start = s.budget
     const r = tick(s)
     expect(r.state.day).toBe(1)

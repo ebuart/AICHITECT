@@ -1,5 +1,4 @@
 import { describe, it, expect, vi } from 'vitest'
-import type { ReactNode } from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { ProgressProvider } from '@/features/progress/ProgressContext'
