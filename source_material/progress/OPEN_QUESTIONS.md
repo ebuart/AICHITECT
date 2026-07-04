@@ -301,7 +301,7 @@ OPEN (ordered):
 
 PRIORITY: MEDIUM-HIGH (drives the per-node re-authoring order + blocks EN content translation)
 PHASE: content polish, pre-translation
-STATUS: open — audited, fixes await user direction
+STATUS: (a)–(c) RESOLVED 2026-07-05 (FL-0069: six exercises rewritten as apply-not-restate; lesson-level LR-011 guards added). REMAINING: (d) sources surface (→ merged into OQ-0016e) · (e) translation sequencing (architecture decided, DEC-0016; ARC-00 pilot shipped)
 CONTEXT (audit method: full read of ~30 lessons across all arcs + stem/takeaway sweep of the rest +
 scenario samples + nodeInfo; judged against SPINE durability, LR-011a/b/c, and technical correctness):
 - VERDICT: content is genuinely strong. No factual errors found (BM25/vector blind spots, RRF, contextual
@@ -327,3 +327,32 @@ OPEN (ordered):
   cite nothing in-app. A per-lesson "sources" line would raise credibility (roadmap.sh style). User call.
 - (e) TRANSLATION SEQUENCING: translate only after (a)-(c) fixes per arc; needs a LocalizedText decision
   in lessonModel (per-field `{de,en}` vs parallel lesson files) — spec before the pilot arc.
+
+### OQ-0016 — External validity audit (2026-07-05): coverage gaps vs. industry/OWASP + the "real reps" ceiling
+
+PRIORITY: MEDIUM-HIGH (product calls — these decide whether the app is "TryHackMe-valuable" or "very good quiz")
+PHASE: post-V1 curriculum expansion
+STATUS: open — audited against external sources, needs user direction
+CONTEXT (checked against 2026 hiring data, OWASP LLM Top 10 v2 + OWASP Agentic Top 10 2026, and the
+TryHackMe learning model):
+- COVERAGE CONFIRMED STRONG: 2026 role demand = RAG, agent workflows, tool use, MCP, eval literacy
+  ("the single biggest hire signal"), context engineering (now a job title), translating AI capability
+  into product behavior — every one of these is a dedicated arc here; the DIRECTION track maps to the
+  emerging lead/PM-of-agents roles almost verbatim. Pedagogy aligns with testing-effect/active-learning
+  research: forced retrieval, immediate diagnostic feedback, spaced review, transfer scenarios.
+OPEN (ordered by value):
+- (a) SECURITY GAPS vs OWASP LLM Top 10 v2: RAG/data POISONING (LLM04) and vector/embedding weaknesses
+  (LLM08) are untaught; unbounded consumption/cost-DoS (LLM10) only implicitly (loop stop-conditions).
+  Candidates for 2–3 new ARC-08 nodes — poisoned-corpus incident fits the existing incident-room engine.
+- (b) THE "REAL REPS" CEILING (PC-024, now sharpened): TryHackMe's edge is real VMs — learners DO the
+  thing. Everything here is simulated judgment. The bridge exists already: the capstone/direction track
+  could end in a REAL directed build (learner writes an actual brief → runs a real agent (Claude Code
+  or similar) → accepts/rejects real output against their brief). Even ONE real round-trip would move
+  the app from "excellent simulator" to "practice ground". Big product call: scope, safety, cost.
+- (c) OPERATIONS THINNESS vs job listings: deployment/serving, streaming UX, latency/cost engineering
+  beyond the trade-off duel, RAG-corpus upkeep (re-indexing, freshness) are barely present. Fine for
+  the architecture-first thesis — but worth one "ops reality" node or arc.
+- (d) ROLE SIGNAL: THM converts learning into hireable signal (role paths, certificates, shareable
+  profiles). Nearest cheap equivalent: a shareable capstone/mastery summary (static export). Optional.
+- (e) SOURCES SURFACE (carried from OQ-0015d): research notes exist in /source_material/research but
+  the app cites nothing. A per-lesson "sources" line = credibility + follow-up reading. Cheap, high value.

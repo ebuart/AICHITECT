@@ -2428,3 +2428,41 @@ BottomNav + ThemeToggle + HomePage localized; EN shows a German-first content no
 translation NOT included (deliberate — rolls out per arc after OQ-0015 content fixes).
 - QA: build green; `npx eslint .` 0 errors; `npm test` **221/221** (new `tests/locale.test.ts`: default de,
   stored en, html-lang application, persist+apply, DE/EN dictionaries genuinely differ + EN notice exists).
+
+### FL-0069 — Content polish pass: duplicate/echo/restate fixes + lesson-level quality gates (OQ-0015 a–c)
+
+Six exercises rewritten so each APPLIES its concept in a new situation instead of restating the note:
+05-01 `why-rag` (was near-duplicate of 01-01 → now compliance-handbook RAG vs fine-tune vs
+whole-book-in-context vs disclaimer), 04-01 `default-bias` (→ operating-cost of a correct agent),
+04-03 `when-orch` → `orch-contract-breach` (return-contract diagnostic; also removed the 04-02 echo),
+00-02 `iceberg-why` (→ where-to-look-first with a restore-the-demo distractor), 02-01 `budget-principle`
+(→ truncation diagnosis correlated with yesterday's change), 02-02 `noise-principle` (→ wrong-source
+citations with premise-reading forced). GUARDS: LAZY_FILLER regex now catches the ß spelling
+("größeres Modell" slipped through — and was live in 05-01); LR-011a/b/c now also scan lesson exercise
+CHOICE surfaces (300+; spot/multispot/annotate/diff exempt — weak lines there are the intended target).
+- QA: 229 tests green (incl. 4 new lesson-guard tests).
+
+### FL-0070 — EN pilot arc (DEC-0016): parallel English lessons for ARC-00 + localized exercise chrome
+
+`content/lessons/en/*.en.ts` full Lesson variants for LESSON-00-01/00-02 (translated AFTER FL-0069, so
+EN ships the fixed versions); `getLesson(id, locale)` with German fallback; LessonPage locale-aware.
+Exercise/lesson chrome (Prüfen/Richtig/Daneben/Verpasst/Lektion abschließen/…) moved into the i18n
+dictionary across ExerciseView, LessonView, Order/Budget/Contradiction/Threshold. NEW TEST
+`lessonTranslations.test.ts`: EN must mirror DE structurally (exercise ids, option ids, correct flags,
+buckets) — a translation cannot silently drift the pedagogy.
+
+### FL-0071 — Werft file split + React-Compiler lint hygiene (closes OQ-0014g)
+
+gameModel.ts 641→483 (catalog/types/zones → `buildings.ts`, re-exported for compat) and
+BuildGamePage.tsx 940→497 (`WerftHud.tsx` + `WerftPanels.tsx` + `useWerftKeyboard.ts`). Hook fixes:
+csRef/kb latest-refs written in effects (not render); release countdown reads sampled nowMs/tickAtMs
+STATE instead of performance.now() in render; SkillCanvas position map = useMemo for render + ref
+synced by effect for pointer handlers. `react-hooks/refs|purity|immutability` now pass at ERROR level;
+only `set-state-in-effect` stays warn-scoped (two legit external-sync effects: quest reconciliation,
+tick-interval arming). 229 tests green; build green.
+
+### FL-0072 — README screenshots + capture script
+
+`scripts/screenshots.mjs` (puppeteer-core + system Chrome against the dev server) captures
+werft/roadmap/lesson/lesson-mobile into `docs/screenshots/`; embedded in the README as a 2×2 grid.
+Werft shot shows the active onboarding tour; lesson shot is the 08-03 injection spot exercise.

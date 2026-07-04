@@ -479,3 +479,27 @@ CONSEQUENCES:
   still pending split (OQ-0014g).
 - follow_up: deploy to Vercel (live demo URL in README), screenshots/GIF for the README, content
   translation pilot arc, OQ-0015 content fixes.
+
+### DEC-0016 — Content translation = parallel Lesson files per locale, structurally mirrored
+
+DATE: 2026-07-05
+STATUS: accepted
+CONTEXT:
+- OQ-0015(e) needed an architecture for EN content on top of the DEC-0015 chrome locale. Options:
+  per-field `LocalizedText = string | {de,en}` unions (touches every render site + every lesson type),
+  key-based externalized strings (destroys the readable data-first authoring format), or parallel
+  Lesson objects per locale.
+DECISION:
+- Parallel files: `content/lessons/en/<name>.en.ts` export a full `Lesson` with the SAME ids/structure,
+  registered in `lessonEnById`; `getLesson(id, locale)` falls back to German. Rendering stays 100%
+  untouched — a translated lesson is just another Lesson.
+- Drift protection is a TEST, not discipline: `lessonTranslations.test.ts` asserts EN mirrors DE in
+  exercise ids, option ids, correct flags and bucket assignments.
+- Rollout order: an arc is translated only AFTER it passes the content-polish bar (OQ-0015) — never
+  translate text that is about to be rewritten. Pilot = ARC-00 (2 lessons), shipped.
+CONSEQUENCES:
+- positive: zero type churn, zero render changes, readable EN sources, pedagogy locked to DE by test.
+- negative: full duplication per lesson (~150 lines each; edits must touch both files — the mirror
+  test catches structural drift but TEXT drift needs review); 52 lessons remain to translate.
+- follow_up: translate ARC-01/02 after their polish pass; decide whether scenario/lab data and
+  nodeInfo get the same parallel-file treatment when their turn comes.

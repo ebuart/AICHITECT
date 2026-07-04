@@ -8,7 +8,13 @@ A gamified PWA that teaches **AI-native system architecture** — the durable se
 
 Think roadmap.sh × TryHackMe × Plague Inc., for AI engineering.
 
-> **Language:** lesson content is German-first (the app chrome has a DE/EN toggle; an English content translation rolls out arc by arc). This README is English so you can judge the engineering either way.
+> **Language:** lesson content is German-first (the app chrome has a DE/EN toggle; an English content translation rolls out arc by arc — the first arc is live). This README is English so you can judge the engineering either way.
+
+| The Werft — real-time build-game with active onboarding | Prompt-injection lesson — spot the attack in a PR |
+|---|---|
+| ![Werft](docs/screenshots/werft.png) | ![Lesson](docs/screenshots/lesson.png) |
+| **54-node roadmap with prerequisite gating** | **Mobile lesson view** |
+| ![Roadmap](docs/screenshots/roadmap.png) | ![Mobile](docs/screenshots/lesson-mobile.png) |
 
 ## What's inside
 
