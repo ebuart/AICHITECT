@@ -23,15 +23,13 @@ export default tseslint.config(
     },
   },
   {
-    // The Werft canvas game predates the compiler-powered react-hooks v7 lints; its
-    // ref-driven game loop trips them. Findings are real but need a careful refactor
-    // (tracked in OQ-0014g), not a blind fix — warn here, error everywhere else.
+    // Werft game loop (FL-0069 refactor done): refs/purity/immutability findings are fixed.
+    // What remains is setState inside two effects that genuinely sync external things — the
+    // roadmap-progress → quest reconciliation and arming the day-tick interval. Both are the
+    // documented sync-with-external pattern, so this rule stays warn-scoped here.
     files: ['src/features/buildgame/**/*.tsx'],
     rules: {
-      'react-hooks/refs': 'warn',
       'react-hooks/set-state-in-effect': 'warn',
-      'react-hooks/purity': 'warn',
-      'react-hooks/immutability': 'warn',
     },
   },
 )

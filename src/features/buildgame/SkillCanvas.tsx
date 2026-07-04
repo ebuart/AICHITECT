@@ -1,4 +1,4 @@
-import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { cn } from '@/lib/utils/cn'
 
 // A generic pan/zoom canvas of KNIME-style nodes + elbow wires. Drag empty space to pan, wheel/
@@ -89,10 +89,19 @@ export const SkillCanvas = forwardRef<SkillCanvasHandle, SkillCanvasProps>(funct
   const downNode = useRef<string | null>(null) // selectable node under the press (for tap-select)
   const [dragPos, setDragPos] = useState<{ id: string; x: number; y: number } | null>(null)
 
-  const pos = useRef<Record<string, { x: number; y: number }>>({})
-  pos.current = Object.fromEntries(
-    nodes.map((n) => [n.id, dragPos?.id === n.id ? { x: dragPos.x, y: dragPos.y } : { x: n.x, y: n.y }]),
+  // Live node positions (drag overrides the graph position). Render reads the memo;
+  // pointer handlers read the ref (kept in sync via effect) so they never go stale.
+  const posMap = useMemo(
+    () =>
+      Object.fromEntries(
+        nodes.map((n) => [n.id, dragPos?.id === n.id ? { x: dragPos.x, y: dragPos.y } : { x: n.x, y: n.y }]),
+      ) as Record<string, { x: number; y: number }>,
+    [nodes, dragPos],
   )
+  const pos = useRef<Record<string, { x: number; y: number }>>({})
+  useEffect(() => {
+    pos.current = posMap
+  }, [posMap])
 
   // Fit-to-view ONCE per mount. (Placement changes worldH as the Lager shrinks; re-fitting on every
   // drop would yank the camera. The parent remounts us with key={view} so each view still gets a fit.)
@@ -269,8 +278,8 @@ export const SkillCanvas = forwardRef<SkillCanvasHandle, SkillCanvasProps>(funct
               <line key={`d${i}`} x1={x} y1={0} x2={x} y2={worldH} className="stroke-deck-border-dim" strokeWidth={1} strokeDasharray="2 6" />
             ))}
             {edges.map((e, i) => {
-              const a = pos.current[e.from]
-              const b = pos.current[e.to]
+              const a = posMap[e.from]
+              const b = posMap[e.to]
               if (!a || !b) return null
               return (
                 <path
@@ -294,7 +303,7 @@ export const SkillCanvas = forwardRef<SkillCanvasHandle, SkillCanvasProps>(funct
             </span>
           ))}
           {nodes.map((n) => {
-            const p = pos.current[n.id]
+            const p = posMap[n.id]
             return (
               <NodeBox
                 key={n.id}
