@@ -294,6 +294,9 @@ export type LessonBlock =
   | { kind: 'challenge'; scenarioId: string }
   // A bespoke concrete exercise (see above). Answering it counts toward completion.
   | { kind: 'exercise'; exercise: Exercise }
+  // A feel-first interactive (control/10 IX-1/IX-8): explore and manipulate BEFORE being
+  // quizzed. Does not gate completion — the exercises after it do.
+  | { kind: 'explorer'; explorerId: string }
   // The Build Campaign — a stateful "direct the whole build" strategy sim (the production
   // capstone). Completing the scorecard completes the lesson (like a challenge).
   | { kind: 'campaign'; campaign: CampaignDef }

@@ -77,7 +77,7 @@ const de = {
   localeAria: 'Switch app language to English',
   homeWelcome: 'Willkommen',
   homeTagline:
-    'Dein geführter Weg zu AI Engineering und AI-native System Architecture. Folge der Roadmap Schritt für Schritt — jede Node baut auf der vorherigen auf.',
+    'Hier lernst du, AI-Systeme so zu bauen, wie Seniors sie bauen: Retrieval, Tools, Evals, Security, und wie man einen Schwarm von Agenten dirigiert. Nicht durch Zuschauen. In jeder Lektion machst du etwas kaputt, reparierst es oder entscheidest — und siehst, was dann passiert.',
   homeProgress: (done: number, total: number) => `${done} von ${total} Nodes abgeschlossen`,
   homeNext: (title: string) => `Als Nächstes: ${title}`,
   homeAllDone: 'Alle Nodes abgeschlossen 🎉',
@@ -107,7 +107,7 @@ const en: typeof de = {
   localeAria: 'App-Sprache auf Deutsch umstellen',
   homeWelcome: 'Welcome',
   homeTagline:
-    'Your guided path to AI engineering and AI-native system architecture. Follow the roadmap step by step — every node builds on the previous one.',
+    "Learn to build AI systems the way seniors build them: retrieval, tools, evals, security, and how to direct a swarm of agents. Not by watching — every lesson has you break something, fix it, or make the call, and then shows you what happens.",
   homeProgress: (done: number, total: number) => `${done} of ${total} nodes completed`,
   homeNext: (title: string) => `Up next: ${title}`,
   homeAllDone: 'All nodes completed 🎉',

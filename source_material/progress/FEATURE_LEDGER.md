@@ -2466,3 +2466,30 @@ tick-interval arming). 229 tests green; build green.
 `scripts/screenshots.mjs` (puppeteer-core + system Chrome against the dev server) captures
 werft/roadmap/lesson/lesson-mobile into `docs/screenshots/`; embedded in the README as a 2×2 grid.
 Werft shot shows the active onboarding tour; lesson shot is the 08-03 injection spot exercise.
+
+### FL-0073 — control/10 experience-overhaul standard + voice ratchet (DEC-0017)
+
+New control doc: VX voice rules (9 named AI-tells found in our own content + the bar + enforcement),
+IX interaction doctrine (incl. IX-8 one-concept-many-uses node anatomy per user 2026-07-05, IX-9
+nothing-sacred), per-arc treatment map with rollout order. `tests/voiceRatchet.test.ts` pins tell
+counts (em-dash 729 · "Genau…" openers 16 · maxim-takeaways 67) as ceilings that only go down.
+
+### FL-0074 — RequestFlowExplorer (EXP-REQUEST-FLOW): the first feel-first flagship
+
+New block kind `explorer` (lessonModel + LessonBlockView + features/explorers/registry). The
+explorer: one request travels Anfrage→Grenze→Retrieval→Context→Modell→Tool-Gate→Check; every
+station is tappable and shows its actual payload (log-like lines); four layer toggles
+(Retrieval/Kuration/Tool-Gate/Check) produce four DISTINCT incidents — stale-confident answer,
+wrong-doc-with-citation (grounded≠correct blind spot shown honestly), unasked CRM write on a
+CORRECT answer, and the check's graceful degradation (blocked > wrong). Pure model
+(requestFlow/model.ts) with truth-table tests (tests/requestFlow.test.ts, 6 cases incl. all-
+failures-distinct). UI: brutalist pipeline, animated hop, inverted-selection inspector, verdict
+card. Screenshot-iterated (scripts/shoot-explorer.mjs; idle/run/fail/mobile shots in docs/screenshots).
+
+### FL-0075 — ARC-00/01 voice pass + NODE-01-03 re-anatomied as overhaul pilot
+
+NODE-01-03 = pilot of IX-8: short scene note → explorer (use #1: experiment) → incidents-to-
+repair-layer categorize (use #2: apply, references what the learner just SAW) → model-upgrade/
+loose-contract transfer pick (use #3). 00-01/00-02/01-01/01-02 re-authored (not paraphrased) per
+VX: sprint-board scene, Friday-demo/Monday-production scene, CTO question, architecture-review
+scene; EN pilot files rewritten to match; Home tagline (DE+EN) rewritten. 238 tests green.

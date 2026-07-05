@@ -1,9 +1,7 @@
 import type { Lesson } from '@/features/lessons/lessonModel'
 
-// NODE-00-02 · post-template redesign, HARD. Bespoke puzzle exercises (categorize · pick). The
-// visible prompt/answer is the tip; the reliability lives in the hidden engineering beneath
-// (context assembly, retrieval, tools, evals, guardrails). Mistaking the tip for the system is
-// the demo-vs-system trap.
+// NODE-00-02 · voice per control/10 VX rules (2026-07-05). Concept: the visible prompt/answer
+// is the tip; reliability lives in the engineering below the waterline. Demo ≠ system.
 export const icebergModel: Lesson = {
   id: 'LESSON-00-02',
   roadmapNodeId: 'NODE-00-02',
@@ -12,7 +10,7 @@ export const icebergModel: Lesson = {
   title: 'The Iceberg Model',
   estimatedMinutes: 6,
   lessonMode: 'task-first',
-  learningGoal: 'Die sichtbare Spitze vom versteckten Engineering trennen, das ein AI-Feature verlässlich macht.',
+  learningGoal: 'Die sichtbare Spitze vom Engineering trennen, das ein AI-Feature verlässlich macht.',
   interactionType: 'layer-stack-builder',
   visualModelId: null,
   feedbackPatternId: null,
@@ -21,28 +19,28 @@ export const icebergModel: Lesson = {
     {
       kind: 'note',
       tone: 'info',
-      title: 'Spitze vs. Eisberg',
-      text: 'Sichtbar ist nur die Spitze: das Prompt und die Antwort. Was ein Feature verlässlich macht, liegt darunter — Context-Assembly, Retrieval, Tool-Wiring, Evals, Guardrails. Eine Demo zeigt die Spitze; ein System ist der ganze Eisberg.',
+      title: 'Freitag Demo, Montag Produktion',
+      text: 'Freitagnachmittag zeigt jemand dem Management einen Chatbot. Frage rein, gute Antwort raus, Applaus. Was das Management gesehen hat: ein Prompt und eine Antwort. Was es nicht gesehen hat: dass es dazwischen nichts gibt. Keine Versorgung mit Belegen, keine Messung, keine Absicherung. Die Demo zeigt die Spitze. Ob das Ding montags 5 000 echte Anfragen übersteht, entscheidet alles unterhalb der Wasserlinie.',
     },
     {
       kind: 'exercise',
       exercise: {
         id: 'tip-or-iceberg',
         format: 'categorize',
-        stem: 'Was ist sichtbare Spitze, was das verborgene Engineering darunter?',
+        stem: 'Sortier die Bestandteile des Chatbots: Was davon hat das Management in der Demo gesehen — und was liegt unter der Wasserlinie?',
         buckets: [
-          { id: 'tip', label: 'Sichtbare Spitze' },
-          { id: 'deep', label: 'Verborgenes Engineering' },
+          { id: 'tip', label: 'In der Demo sichtbar' },
+          { id: 'deep', label: 'Unter der Wasserlinie' },
         ],
         items: [
-          { id: 'ic-prompt', text: 'Der Prompt-Text, den der Nutzer eintippt', bucketId: 'tip', why: 'Direkt sichtbar — die Oberfläche der Interaktion.' },
-          { id: 'ic-answer', text: 'Die generierte Antwort', bucketId: 'tip', why: 'Das sichtbare Ergebnis — sagt nichts darüber, wie verlässlich es zustande kam.' },
-          { id: 'ic-context', text: 'Welche Belege ins Context-Fenster zusammengestellt werden', bucketId: 'deep', why: 'Context-Assembly entscheidet über die Antwortqualität — und ist unsichtbar.' },
-          { id: 'ic-retrieval', text: 'Die Retrieval-Pipeline, die die Belege findet', bucketId: 'deep', why: 'Das eigentliche Fundament der Antwort — tief unter der Oberfläche.' },
-          { id: 'ic-evals', text: 'Der Eval-Harness, der Regressionen fängt', bucketId: 'deep', why: 'Macht das System verlässlich, sieht der Nutzer nie.' },
-          { id: 'ic-guard', text: 'Approval-Gates und Guardrails für riskante Aktionen', bucketId: 'deep', why: 'Eindämmung im Verborgenen — entscheidet, was schiefgehen kann.' },
+          { id: 'ic-prompt', text: 'Die Frage, die der Vorführende eintippt', bucketId: 'tip', why: 'Sichtbar. Und in der Demo natürlich eine, die gut funktioniert.' },
+          { id: 'ic-answer', text: 'Die Antwort auf dem Beamer', bucketId: 'tip', why: 'Sichtbar. Über die anderen 4 999 möglichen Antworten sagt sie nichts.' },
+          { id: 'ic-context', text: 'Was pro Anfrage an Belegen ins Context-Fenster wandert', bucketId: 'deep', why: 'Entscheidet die Antwortqualität und ist von außen unsichtbar. In der Freitags-Demo: nichts davon vorhanden.' },
+          { id: 'ic-retrieval', text: 'Die Suche, die diese Belege findet', bucketId: 'deep', why: 'Ohne sie beantwortet das Modell alles aus dem Trainingsstand. Fällt erst auf, wenn jemand nach etwas Aktuellem fragt.' },
+          { id: 'ic-evals', text: 'Die Messung, die Verschlechterungen meldet', bucketId: 'deep', why: 'Unsichtbar, bis sie fehlt. Dann merkt man Regressionen daran, dass Kunden sich beschweren.' },
+          { id: 'ic-guard', text: 'Die Freigabe-Schranke vor riskanten Aktionen', bucketId: 'deep', why: 'Interessiert in der Demo niemanden. Nach dem ersten ungefragten Datenbank-Schreibzugriff interessiert sie alle.' },
         ],
-        takeaway: 'Prompt und Antwort sind die Spitze; Context-Assembly, Retrieval, Evals und Guardrails sind der Eisberg, der ein Feature verlässlich macht.',
+        takeaway: 'Wenn dir jemand ein AI-Feature zeigt, frag nach der Wasserlinie: Woher kommen die Belege, wer misst, was passiert bei riskanten Aktionen.',
       },
     },
     {
@@ -50,34 +48,34 @@ export const icebergModel: Lesson = {
       exercise: {
         id: 'iceberg-why',
         format: 'pick',
-        stem: 'Das Feature aus der glänzenden Demo liefert in Produktion teils falsche, veraltete Antworten. Das Team hat einen Nachmittag Zeit. Womit beginnt die Untersuchung?',
+        stem: 'Der Chatbot ist live gegangen. Drei Wochen später: teils falsche, veraltete Antworten, das Team hat einen Nachmittag. Womit fängst du an?',
         options: [
           {
             id: 'below',
-            text: 'Unter der Wasserlinie nachsehen: Welche Belege hat die Context-Assembly für die fehlerhaften Antworten tatsächlich geliefert? Was hat Retrieval gefunden?',
+            text: 'Unter der Wasserlinie nachsehen: Für fünf falsche Antworten prüfen, welche Belege die Context-Assembly tatsächlich geliefert hat und was Retrieval fand.',
             correct: true,
-            why: 'Prompt und Antwort ZEIGEN den Fehler nur an; entstanden ist er in den unsichtbaren Ebenen. Erst wer die gelieferte Evidenz ansieht, weiß, welche Ebene versagt — alles andere ist Raten.',
+            why: 'Prompt und Antwort zeigen den Fehler nur an. Entstanden ist er darunter — und erst wenn du die gelieferte Evidenz gesehen hast, weißt du, welche Ebene ihn produziert. Alles andere ist Raten mit Werkzeug.',
           },
           {
             id: 'prompt',
-            text: 'Den Prompt umformulieren und testen, ob die Antworten besser werden.',
+            text: 'Den System-Prompt umformulieren und schauen, ob die Antworten besser werden.',
             correct: false,
-            why: 'Spitzen-Arbeit auf Verdacht: selbst wenn es zufällig „hilft", weiß niemand warum — und der eigentliche Defekt (z. B. leere Retrieval-Treffer) bleibt liegen.',
+            why: 'Vielleicht wirkt es sogar. Nur weiß danach niemand warum, und der eigentliche Defekt (z. B. leere Retrieval-Treffer) liegt weiter da.',
           },
           {
             id: 'replay',
-            text: 'Die Demo-Umgebung wiederherstellen, in der alles funktionierte, und die Unterschiede zur Produktion einzeln zurückbauen.',
+            text: 'Den Stand wiederherstellen, mit dem die Demo lief — da ging es ja.',
             correct: false,
-            why: 'Verführerisch gründlich, aber rückwärts gedacht: die Demo hat die tieferen Ebenen nie geprüft — sie ist kein „funktionierender Zustand", zu dem man zurück kann, sondern nur ein gelungener Lauf über die Spitze.',
+            why: 'Fühlt sich nach Sorgfalt an, ist aber rückwärts gedacht: Die Demo hat die tiefen Ebenen nie benutzt. Es gibt keinen „funktionierenden Zustand", zu dem du zurück kannst. Es gab einen gelungenen Lauf.',
           },
           {
             id: 'fewshot',
-            text: 'Mehr gute Beispiel-Antworten in den Prompt legen, damit das Modell den Ton trifft.',
+            text: 'Ein paar Muster-Antworten in den Prompt legen, damit das Modell den Ton trifft.',
             correct: false,
-            why: 'Beispiele formen Stil und Format — sie erzeugen keine fehlenden Fakten. Veraltete Antworten sind ein Versorgungsproblem, kein Vorbild-Problem.',
+            why: 'Beispiele formen Stil und Format. Fehlende Fakten erzeugen sie nicht — veraltete Antworten sind ein Versorgungsproblem.',
           },
         ],
-        takeaway: 'Fehlersuche beginnt unter der Wasserlinie: erst nachsehen, welche Evidenz die unsichtbaren Ebenen geliefert haben — nicht an der Spitze (Prompt, Beispiele) polieren.',
+        takeaway: 'Debugging-Reihenfolge für AI-Features: erst die gelieferte Evidenz ansehen, dann urteilen. An der Spitze polieren kommt zuletzt, wenn überhaupt.',
       },
     },
   ],

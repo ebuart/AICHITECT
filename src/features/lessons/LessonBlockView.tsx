@@ -5,6 +5,7 @@ import type { LessonBlock, LessonDecision } from './lessonModel'
 import { LessonVisualRenderer } from './LessonVisualRenderer'
 import { LessonChallenge } from './LessonChallenge'
 import { ExerciseView } from './ExerciseView'
+import { EXPLORERS } from '@/features/explorers/registry'
 import { BuildCampaign } from '@/features/campaign/BuildCampaign'
 import { FeedbackCard } from './FeedbackCard'
 
@@ -104,6 +105,11 @@ export function LessonBlockView({
           onAnswered={(id) => onExerciseAnswered?.(id)}
         />
       )
+
+    case 'explorer': {
+      const Explorer = EXPLORERS[block.explorerId]
+      return Explorer ? <Explorer /> : null
+    }
 
     case 'campaign':
       return <BuildCampaign def={block.campaign} onComplete={() => onChallengeComplete?.()} />

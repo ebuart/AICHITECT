@@ -1,8 +1,7 @@
 import type { Lesson } from '@/features/lessons/lessonModel'
 
-// NODE-01-01 · post-template redesign, HARD. Bespoke puzzle exercises (match · pick). A raw model
-// is augmented by what surrounds it; each augmentation fixes a SPECIFIC limitation — and you add
-// only the ones the requirement needs.
+// NODE-01-01 · voice per control/10 VX rules (2026-07-05). Concept: each augmentation fixes
+// ONE specific weakness of the raw model — and you only add what the requirement needs.
 export const augmentedLlm: Lesson = {
   id: 'LESSON-01-01',
   roadmapNodeId: 'NODE-01-01',
@@ -11,7 +10,7 @@ export const augmentedLlm: Lesson = {
   title: 'Augmented LLM',
   estimatedMinutes: 6,
   lessonMode: 'architecture-builder',
-  learningGoal: 'Jede Augmentierung der Limitierung zuordnen, die sie behebt — und nur Nötiges hinzufügen.',
+  learningGoal: 'Jede Augmentierung der Schwäche zuordnen, die sie behebt — und nur Nötiges anbauen.',
   interactionType: 'architecture-builder',
   visualModelId: null,
   feedbackPatternId: null,
@@ -20,22 +19,22 @@ export const augmentedLlm: Lesson = {
     {
       kind: 'note',
       tone: 'info',
-      title: 'Augmented LLM',
-      text: 'Ein rohes Modell kann nur aus seinem (veralteten) Trainingswissen antworten und nichts in der Welt tun. Augmentierungen — Retrieval, Tools, Memory, strukturierte Ausgabe — beheben je eine bestimmte Schwäche.',
+      title: 'Was ein rohes Modell nicht kann',
+      text: 'Ein LLM ohne alles kann genau eines: aus seinem Trainingsstand Text erzeugen. Es kennt eure Daten nicht, kann nichts nachschlagen, nichts ausführen, vergisst nach der Session alles und liefert Prosa, wo dein Backend JSON braucht. Für jede dieser Schwächen gibt es einen Anbau: Retrieval, Tools, Memory, strukturierte Ausgabe. Der Punkt dieser Lektion: Welcher Anbau behebt welche Schwäche — denn jeder kostet Komplexität, und die falsche Wahl behebt nichts.',
     },
     {
       kind: 'exercise',
       exercise: {
         id: 'augment-fixes',
         format: 'match',
-        stem: 'Welche Augmentierung behebt welche Schwäche des rohen Modells?',
+        stem: 'Ordne jeden Anbau der Schwäche zu, die er tatsächlich behebt.',
         pairs: [
-          { id: 'retrieval', left: 'Retrieval', right: 'Frische/private Fakten, die nicht im Training stehen', why: 'Holt Evidenz von außen in den Context — gegen veraltetes/abwesendes Wissen.' },
-          { id: 'tools', left: 'Tools', right: 'In der Welt handeln + exakt rechnen (statt schätzen)', why: 'Das Modell delegiert Aktionen und präzise Berechnung an Code.' },
-          { id: 'memory', left: 'Memory', right: 'Persistenz über die Session / das Context-Fenster hinaus', why: 'Hält durable State, den der flüchtige Verlauf verliert.' },
-          { id: 'structured', left: 'Strukturierte Ausgabe', right: 'Verlässlich maschinenlesbares Ergebnis für nachgelagerte Systeme', why: 'Erzwingt ein parsebares Schema statt freier Prosa.' },
+          { id: 'retrieval', left: 'Retrieval', right: 'Kennt eure Daten nicht / Wissen ist veraltet', why: 'Holt zur Antwortzeit die echten Dokumente ins Fenster. Das Modell liest sie dann, statt sich zu erinnern.' },
+          { id: 'tools', left: 'Tools', right: 'Kann nichts ausführen und rechnet unzuverlässig', why: '58 × 47 schätzt ein LLM. calc(58*47) rechnet. Gleiches gilt für Kalender, Datenbank, Deployment.' },
+          { id: 'memory', left: 'Memory', right: 'Nach der Session ist alles weg', why: 'Persistenz ist Architektur. Kein Modell „merkt sich" etwas zwischen zwei Läufen von allein.' },
+          { id: 'structured', left: 'Strukturierte Ausgabe', right: 'Backend braucht JSON, bekommt Prosa', why: 'Erzwingt ein Schema beim Generieren. Dein Parser hört auf, an Kommas zu sterben.' },
         ],
-        takeaway: 'Jede Augmentierung hat einen Zweck: Retrieval gegen Wissenslücken, Tools fürs Handeln/Rechnen, Memory für Persistenz, Schema für Parsebarkeit.',
+        takeaway: 'Bevor du etwas anbaust, benenn die Schwäche in einem Satz. Wenn du sie nicht benennen kannst, brauchst du den Anbau noch nicht.',
       },
     },
     {
@@ -43,34 +42,34 @@ export const augmentedLlm: Lesson = {
       exercise: {
         id: 'augment-which',
         format: 'pick',
-        stem: 'Ein Bot soll Fragen zu den AKTUELLEN, sich monatlich ändernden Firmen-Tarifen beantworten. Welche Augmentierung ist die entscheidende?',
+        stem: 'Anforderung aus dem Fachbereich: „Der Bot soll Fragen zu unseren Tarifen beantworten. Die ändern sich jeden Monat." Ein Anbau ist hier der entscheidende — welcher?',
         options: [
           {
             id: 'retrieval',
-            text: 'Retrieval — die aktuellen Tarife zur Antwortzeit holen und in den Context legen.',
+            text: 'Retrieval: die aktuelle Tariftabelle zur Antwortzeit holen und dem Modell ins Fenster legen.',
             correct: true,
-            why: 'Die Schwäche ist fehlendes/veraltetes Wissen; Retrieval bringt die frischen Fakten genau dann, wenn sie gebraucht werden.',
+            why: 'Die Schwäche heißt „Wissen veraltet monatlich". Retrieval liest immer den heutigen Stand. Fertig — mehr braucht diese Anforderung nicht.',
           },
           {
             id: 'memory',
-            text: 'Memory — sich die Tarife dauerhaft merken.',
+            text: 'Memory: sich die Tarife dauerhaft merken.',
             correct: false,
-            why: 'Memory hält State, hält ihn aber nicht aktuell. Monatlich wechselnde Fakten müssen geholt, nicht gemerkt werden.',
+            why: 'Memory konserviert einen Stand. Konservieren ist bei monatlich wechselnden Zahlen das Problem, nicht die Lösung.',
           },
           {
             id: 'tools',
-            text: 'Tools — eine Berechnung ausführen.',
+            text: 'Tools: eine Berechnungsfunktion anbinden.',
             correct: false,
-            why: 'Hier fehlt nicht Rechnen oder Handeln, sondern aktuelles Wissen.',
+            why: 'Hier rechnet niemand. Die Frage ist „was kostet Tarif M?", nicht „was ist 12 × 19,90?".',
           },
           {
             id: 'structured',
-            text: 'Strukturierte Ausgabe — die Antwort als JSON formatieren.',
+            text: 'Strukturierte Ausgabe: die Antwort als sauberes JSON liefern.',
             correct: false,
-            why: 'Format löst das Aktualitätsproblem nicht — ein gut formatierter veralteter Tarif ist immer noch falsch.',
+            why: 'Ein korrekt formatierter alter Preis ist ein alter Preis. Format behebt keine Wissenslücke.',
           },
         ],
-        takeaway: 'Wähle die Augmentierung nach der konkreten Schwäche: bei veralteten/wechselnden Fakten ist es Retrieval.',
+        takeaway: 'Anforderung lesen, Schwäche benennen, den einen passenden Anbau wählen. Wer alle vier anbaut, „weil man sie halt braucht", wartet ab jetzt alle vier.',
       },
     },
   ],

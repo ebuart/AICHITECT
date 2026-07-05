@@ -503,3 +503,31 @@ CONSEQUENCES:
   test catches structural drift but TEXT drift needs review); 52 lessons remain to translate.
 - follow_up: translate ARC-01/02 after their polish pass; decide whether scenario/lab data and
   nodeInfo get the same parallel-file treatment when their turn comes.
+
+### DEC-0017 — Experience overhaul: de-AI voice standard + feel-first doing-anatomy (control/10)
+
+DATE: 2026-07-05
+STATUS: accepted — rollout running arc by arc
+CONTEXT:
+- User verdict: texts read AI-generated ("no soul"); learning feels like cramming, nothing forms a
+  mental image; interactions feel like reskinned quizzes. Goal raised to industry-standard bar
+  ("even redditors will love this"). Additional user call: the quick-lesson node shape is not
+  sacred — nodes must become doing-oriented (information used in multiple ways).
+DECISION:
+- control/10_experience_overhaul.md is the binding standard: VX voice rules (the 9 named machine
+  tells + the TryHackMe-register bar + ratchet enforcement), IX interaction doctrine (feel-before-
+  quiz, native-mechanic-per-concept, no reskins, cause→effect visible, inspectable artifacts,
+  screenshot loop mandatory, pure tested cores, ONE-CONCEPT-MANY-USES node anatomy, nothing sacred),
+  and the per-arc treatment map (explorer/window/bench/stepper/dashboard/attack-replay/repo-explorer).
+- Enforcement is mechanical where possible: tests/voiceRatchet.test.ts pins em-dash density,
+  "Genau …" openers and maxim-takeaway counts at current ceilings; rewrites lower them, new content
+  cannot raise them.
+- New lesson block kind `explorer` + registry (features/explorers) for feel-first interactives;
+  explorers never gate completion, the exercises after them do.
+CONSEQUENCES:
+- positive: "AI-feel" is now a named, measurable defect list instead of a vibe; the anatomy
+  (input → use ×3) matches how retention actually works; every flagship is reusable across arcs.
+- negative: 12+ arcs of content await re-authoring (not paraphrase); legacy station-config boards
+  are now declared legacy; estimatedMinutes rise as nodes get deeper.
+- follow_up: rollout order per control/10 (ARC-02 window → ARC-05 bench → ARC-08 attack replay →
+  ARC-07 dashboard → ARC-03/04 → ARC-09 repo explorer); voice pass rides along per arc.

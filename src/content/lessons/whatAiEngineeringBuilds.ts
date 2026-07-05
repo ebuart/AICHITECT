@@ -1,8 +1,8 @@
 import type { Lesson } from '@/features/lessons/lessonModel'
 
-// NODE-00-01 · the entry node, post-template redesign. Bespoke puzzle exercises (categorize ·
-// pick). AI Engineering = composing and directing existing models into reliable SYSTEMS
-// (retrieval, tools, evals, guardrails) — distinct from ML Engineering (training models).
+// NODE-00-01 · entry node. Voice per control/10 VX rules (2026-07-05): situation-first,
+// concrete anchors, no maxim takeaways. Concept: AI engineering composes existing models
+// into reliable systems; ML engineering builds the models.
 export const whatAiEngineeringBuilds: Lesson = {
   id: 'LESSON-00-01',
   roadmapNodeId: 'NODE-00-01',
@@ -11,7 +11,7 @@ export const whatAiEngineeringBuilds: Lesson = {
   title: 'What AI Engineering Actually Builds',
   estimatedMinutes: 6,
   lessonMode: 'task-first',
-  learningGoal: 'AI Engineering (Modelle zu Systemen komponieren) von ML Engineering (Modelle trainieren) trennen.',
+  learningGoal: 'AI Engineering (Systeme aus Modellen bauen) von ML Engineering (Modelle bauen) trennen.',
   interactionType: 'failure-mode-tree',
   visualModelId: null,
   feedbackPatternId: null,
@@ -20,28 +20,28 @@ export const whatAiEngineeringBuilds: Lesson = {
     {
       kind: 'note',
       tone: 'info',
-      title: 'Komponieren, nicht trainieren',
-      text: 'AI Engineering baut verlässliche Systeme AUS vorhandenen Modellen — Retrieval, Tools, Evals, Guardrails, Kontroll-Fluss. ML Engineering baut die Modelle selbst (trainieren, Daten, Architektur). Zwei verschiedene Berufe.',
+      title: 'Zwei Berufe, ein Buzzword',
+      text: 'AI Engineers trainieren keine Modelle. Sie nehmen fertige (Claude, GPT, ein Embedding-Modell von der Stange) und bauen drumherum das, was aus einer Demo ein System macht: Retrieval, Tools, Evals, Guardrails. Das Modell selbst trainieren, Trainingsdaten kuratieren, an der Loss-Funktion drehen — das ist ML Engineering. Anderer Job, anderes Werkzeug.',
     },
     {
       kind: 'exercise',
       exercise: {
         id: 'aie-vs-mle',
         format: 'categorize',
-        stem: 'Wessen Arbeit ist das?',
+        stem: 'Sprint-Planning bei einem Startup, das einen Support-Assistenten baut. Sechs Tickets liegen auf dem Board. Welche gehören zu dir (AI Engineering), welche ans ML-Team?',
         buckets: [
-          { id: 'aie', label: 'AI Engineering' },
-          { id: 'mle', label: 'ML Engineering' },
+          { id: 'aie', label: 'Dein Board' },
+          { id: 'mle', label: 'ML-Team' },
         ],
         items: [
-          { id: 'w-rag', text: 'Eine RAG-Pipeline über die Firmen-Docs bauen', bucketId: 'aie', why: 'Vorhandene Modelle zu einem System verschalten — Kerngeschäft AI Engineering.' },
-          { id: 'w-train', text: 'Ein neues Embedding-Modell von Grund auf trainieren', bucketId: 'mle', why: 'Ein Modell selbst erzeugen — ML Engineering.' },
-          { id: 'w-tools', text: 'Tool-Contracts und Approval-Gates für einen Agenten entwerfen', bucketId: 'aie', why: 'Interface- und Governance-Arbeit um das Modell herum.' },
-          { id: 'w-loss', text: 'Loss-Funktion und Lernrate eines Modells tunen', bucketId: 'mle', why: 'Im Inneren des Trainings — ML Engineering.' },
-          { id: 'w-eval', text: 'Einen Eval-Harness für Task-Erfolg in Produktion bauen', bucketId: 'aie', why: 'System-Qualität messen — AI Engineering.' },
-          { id: 'w-data', text: 'Einen Pretraining-Datensatz kuratieren und labeln', bucketId: 'mle', why: 'Trainingsdaten erzeugen — gehört zum Modellbau.' },
+          { id: 'w-rag', text: '„Suche über unsere 4 000 Hilfe-Artikel anbinden"', bucketId: 'aie', why: 'Retrieval über einen Bestandskorpus, mit fertigen Embedding-Modellen. Klassisches AI-Engineering-Ticket.' },
+          { id: 'w-train', text: '„Eigenes Embedding-Modell für unsere Fachbegriffe trainieren"', bucketId: 'mle', why: 'Trainieren heißt Trainingsdaten, GPU-Zeit, Loss-Kurven. ML-Team.' },
+          { id: 'w-tools', text: '„refund()-Tool absichern: Contract + Freigabe-Schritt"', bucketId: 'aie', why: 'Interface- und Governance-Arbeit um ein Modell herum, das schon existiert.' },
+          { id: 'w-loss', text: '„Lernrate der Finetuning-Läufe optimieren"', bucketId: 'mle', why: 'Das spielt sich im Training ab. Ohne Trainings-Pipeline gibt es hier nichts zu tun.' },
+          { id: 'w-eval', text: '„Messen, wie oft der Bot ein Ticket wirklich löst"', bucketId: 'aie', why: 'Task-Erfolg messen ist Systemarbeit. Kommt in ARC-07 ausführlich dran.' },
+          { id: 'w-data', text: '„100 000 alte Support-Chats für Pretraining labeln"', bucketId: 'mle', why: 'Trainingsdaten herstellen. Modell-Seite.' },
         ],
-        takeaway: 'AI Engineering arbeitet UM das Modell herum (Retrieval, Tools, Evals, Guardrails); ML Engineering arbeitet IM Modell (Daten, Training, Architektur).',
+        takeaway: 'Faustregel fürs Board: Braucht das Ticket Trainingsdaten oder GPU-Stunden, ist es ML. Braucht es Contracts, Belege oder Messung, ist es deins.',
       },
     },
     {
@@ -49,34 +49,34 @@ export const whatAiEngineeringBuilds: Lesson = {
       exercise: {
         id: 'aie-core',
         format: 'pick',
-        stem: 'Worum dreht sich AI Engineering im Kern?',
+        stem: 'Der CTO fragt trocken: „Wenn ihr die Modelle nicht selbst baut — was baut ihr dann eigentlich?" Welche Antwort trifft es?',
         options: [
           {
             id: 'compose',
-            text: 'Vorhandene Modelle zu verlässlichen Systemen komponieren und dirigieren — Retrieval, Tools, Evals, Guardrails, Kontroll-Fluss.',
+            text: 'Das System um das Modell: die Versorgung mit den richtigen Belegen, die Tool-Anbindung, die Messung, die Absicherung. Das Modell ist ein Bauteil davon.',
             correct: true,
-            why: 'Genau das ist die durable Kompetenz: das System um das Modell, das mit besseren Modellen nur stärker wird.',
+            why: 'Und zwar das austauschbare Bauteil. Kommt nächstes Jahr ein besseres Modell, bleibt deine Arbeit stehen und füttert ab dann ein stärkeres Modell.',
           },
           {
             id: 'train',
-            text: 'Bessere Modelle trainieren.',
+            text: '„Wir finetunen die Modelle auf unsere Domäne."',
             correct: false,
-            why: 'Das ist ML Engineering. AI Engineering nimmt Modelle als gegeben und baut Systeme damit.',
+            why: 'Kann mal ein Werkzeug sein, ist aber nicht der Beruf. Die meisten Produktionssysteme laufen komplett ohne eigenes Training.',
           },
           {
             id: 'prompt',
-            text: 'Möglichst clevere Prompts schreiben.',
+            text: '„Wir schreiben sehr gute Prompts."',
             correct: false,
-            why: 'Prompting ist ein kleines, vergängliches Teilstück — die Architektur (Kontext, Tools, Evals) trägt das System.',
+            why: 'Prompts sind ein kleiner Teil und veralten mit jedem Modellwechsel. Wenn dein Berufsbild in einen Prompt passt, hat der CTO eine Folgefrage, die dir nicht gefällt.',
           },
           {
             id: 'api',
-            text: 'Einfach eine LLM-API aufrufen.',
+            text: '„Im Kern rufen wir eine API auf."',
             correct: false,
-            why: 'Ein API-Call ist die Demo. Zum verlässlichen System fehlen Evidenz-Versorgung, Messung und Eindämmung.',
+            why: 'So sieht der Prototyp aus. Zwischen dem API-Call und einem System, dem eine Firma ihre Kunden anvertraut, liegt der Rest dieser Roadmap.',
           },
         ],
-        takeaway: 'AI Engineering ist System-Bau um das Modell herum — die Fähigkeit, die mit jedem stärkeren Modell wertvoller wird.',
+        takeaway: 'Die CTO-Antwort ist nebenbei auch die Antwort auf „ersetzt AI nicht bald euren Job?": Modelle werden besser. Das System drumherum baut trotzdem jemand.',
       },
     },
   ],
