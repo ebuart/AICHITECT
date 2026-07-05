@@ -113,7 +113,13 @@ export function LessonBlockView({
     }
 
     case 'dossier':
-      return <DossierView intro={block.intro} files={block.files} />
+      return (
+        <DossierView
+          intro={block.intro}
+          files={block.files}
+          onComplete={() => onChallengeComplete?.()}
+        />
+      )
 
     case 'campaign':
       return <BuildCampaign def={block.campaign} onComplete={() => onChallengeComplete?.()} />

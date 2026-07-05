@@ -83,7 +83,7 @@ export function traceRequest(active: Set<string>): TraceResult {
   steps.push({
     station: 'boundary',
     title: 'Grenze',
-    payload: ['quelle: eingeloggter mitarbeiter (intern)', 'input als DATEN markiert — enthält keine anweisungen'],
+    payload: ['quelle: eingeloggter mitarbeiter (intern)', 'klassifiziert: DATEN · anweisungen erkannt: 0'],
     note: 'Eingang geprüft. Ab hier ist die Frage Nutzlast, kein Befehl.',
     status: 'ok',
   })
@@ -95,18 +95,17 @@ export function traceRequest(active: Set<string>): TraceResult {
       payload: curationOn
         ? [
             'suche: "staffelrabatt bestandskunden"',
-            '#1  pricing/rabatte.md §3 · geändert 28.06. ✓',
-            '#2  sales/faq.md (Stand März) — alt, mit drin',
-            '12 weitere Treffer verworfen (Newsletter, Protokolle …)',
+            'übernommen: pricing/rabatte.md §3 (28.06.) · sales/faq.md (12.03.)',
+            'verworfen: 12 treffer (score < 0.42)',
           ]
         : [
             'suche: "staffelrabatt bestandskunden"',
-            '14 Treffer — ALLE übernommen, nichts verworfen',
-            'darunter: faq.md (März), 3 Meeting-Protokolle, newsletter-2025.md',
+            'übernommen: 14/14 treffer · verworfen: 0',
+            'u.a. sales/faq.md (12.03.) · protokoll-q1.md · newsletter-2025.md',
           ],
       note: curationOn
-        ? '2 von 14 Treffern behalten. Der aktuelle Beleg ist dabei.'
-        : 'Nichts aussortiert. Der aktuelle Beleg ist irgendwo da drin.',
+        ? 'Zwei von 14 Treffern behalten, beide aus der Akte bekannt. Einer davon ist der aktuelle.'
+        : 'Nichts aussortiert. Der aktuelle Beleg ist einer von 14.',
       status: curationOn ? 'ok' : 'warn',
     })
   } else {
@@ -114,7 +113,7 @@ export function traceRequest(active: Set<string>): TraceResult {
       station: 'retrieval',
       title: 'Retrieval',
       payload: ['— abgeschaltet —'],
-      note: 'Keine Suche. Was das Modell gleich sagt, kommt aus dem Training.',
+      note: 'Keine Suche. Alles, was danach kommt, speist sich aus dem Trainingsstand des Modells.',
       status: 'off',
     })
   }
@@ -125,50 +124,48 @@ export function traceRequest(active: Set<string>): TraceResult {
       title: 'Context',
       payload: curationOn
         ? [
-            'system-prompt · 380 tok',
-            'rabatte.md §3: "ab 01.07.: 8 % ab 50 Stück" · 210 tok',
-            'faq.md auszug · 120 tok',
-            'frage · 24 tok   ·   output-reserve · 1 000 tok',
+            'assembly: system-prompt (380 tok) · rabatte.md §3 (210 tok) · faq.md auszug (120 tok)',
+            'frage (24 tok) · output-reserve (1 000 tok)',
             'fenster: 1 734 / 8 192 tok',
           ]
         : [
-            'system-prompt · 380 tok',
-            '14 dokumente · 5 900 tok (rabatte.md §3 steht auf position 9)',
-            'frage · 24 tok   ·   output-reserve · 1 000 tok',
-            'fenster: 7 304 / 8 192 tok — fast voll',
+            'assembly: system-prompt (380 tok) · 14 dokumente (5 900 tok)',
+            'position 1: sales/faq.md … position 9: pricing/rabatte.md §3 …',
+            'frage (24 tok) · output-reserve (1 000 tok)',
+            'fenster: 7 304 / 8 192 tok',
           ],
       note: curationOn
-        ? 'Kompakt. Der entscheidende Absatz steht praktisch neben der Frage.'
-        : 'Das Fenster ist voll mit Altem. Der eine richtige Absatz konkurriert mit 13 anderen.',
+        ? 'Kompakte Assembly: zwei Belege direkt neben der Frage.'
+        : 'Voll, aber nicht übergelaufen. Der Absatz aus rabatte.md steht auf Position 9 von 14.',
       status: curationOn ? 'ok' : 'warn',
     })
   } else {
     steps.push({
       station: 'context',
       title: 'Context',
-      payload: ['system-prompt · 380 tok', 'frage · 24 tok', 'KEINE belege', 'output-reserve · 1 000 tok'],
-      note: 'Nur Regeln und Frage. Zur Sache selbst sieht das Modell: nichts.',
+      payload: ['assembly: system-prompt (380 tok) · belege: 0', 'frage (24 tok) · output-reserve (1 000 tok)', 'fenster: 404 / 8 192 tok'],
+      note: 'Nur Regeln und Frage im Fenster. Zur Sache selbst sieht das Modell nichts.',
       status: 'warn',
     })
   }
 
   // What the model drafts depends on what it saw.
   const modelDraft = !retrievalOn
-    ? '"Der Staffelrabatt beträgt 5 % ab 100 Stück." (Trainingsstand — klingt sicher, ist der alte Wert)'
+    ? '"Der Staffelrabatt beträgt 5 % ab 100 Stück."'
     : !curationOn
-      ? '"Laut FAQ: 5 % ab 100 Stück." (zitiert das alte faq.md — der neue Absatz ging im Rauschen unter)'
-      : '"Seit dem 1. Juli gilt: 8 % ab 50 Stück." [Quelle: rabatte.md §3]'
+      ? '"Laut FAQ gilt: 5 % ab 100 Stück." [Quelle: sales/faq.md]'
+      : '"Seit dem 1. Juli gilt: 8 % ab 50 Stück." [Quelle: pricing/rabatte.md §3]'
   steps.push({
     station: 'model',
     title: 'Modell',
     payload: [
       `entwurf: ${modelDraft}`,
-      'tool-vorschlag: update_crm(rabattstufe="neu") — „soll ich das gleich hinterlegen?"',
+      'tool-vorschlag: update_crm(segment="bestand", rabattstufe="neu")',
     ],
     note:
       !retrievalOn || !curationOn
-        ? 'Das Modell schreibt flüssig und überzeugt. Am Ton ist der Fehler nicht zu erkennen.'
-        : 'Entwurf steht, Zahl stammt aus dem Beleg. Zusätzlich schlägt das Modell einen CRM-Eintrag vor.',
+        ? 'Flüssig und überzeugt formuliert. Ob die Zahl stimmt, steht in der Akte, nicht im Ton.'
+        : 'Die Zahl im Entwurf stammt aus dem mitgelieferten Beleg. Dazu ein ungefragter Tool-Vorschlag.',
     status: !retrievalOn || !curationOn ? 'warn' : 'ok',
   })
 
@@ -177,15 +174,15 @@ export function traceRequest(active: Set<string>): TraceResult {
       ? {
           station: 'toolgate',
           title: 'Tool-Gate',
-          payload: ['update_crm(…) → ANGEHALTEN', 'schreibender zugriff auf 214 kundendatensätze', 'wartet auf menschliche freigabe'],
-          note: 'Der Vorschlag bleibt ein Vorschlag. Schreiben ins CRM braucht eine Freigabe.',
+          payload: ['update_crm(segment="bestand", rabattstufe="neu")', 'scope: write:crm/* · betrifft: 214 datensätze', 'status: HOLD · wartet auf freigabe'],
+          note: 'Der Schreibzugriff ist angehalten. Ohne Freigabe passiert im CRM nichts.',
           status: 'ok',
         }
       : {
           station: 'toolgate',
           title: 'Tool-Gate',
-          payload: ['— abgeschaltet —', 'update_crm(…) AUSGEFÜHRT', '214 kundendatensätze geändert'],
-          note: 'Niemand hat gefragt. Der Rabatt steht jetzt in 214 Datensätzen.',
+          payload: ['— abgeschaltet —', 'update_crm(segment="bestand", rabattstufe="neu")', 'status: EXECUTED · 214 datensätze geändert'],
+          note: 'Kein Gate, keine Rückfrage. Der Schreibzugriff ist durchgelaufen.',
           status: 'fail',
         },
   )
@@ -198,24 +195,24 @@ export function traceRequest(active: Set<string>): TraceResult {
       steps.push({
         station: 'check',
         title: 'Check',
-        payload: ['grounding: aussage "5 % ab 100 Stück" ↔ belege: KEINE', 'ergebnis: ungestützt → antwort zurückhalten'],
-        note: 'Keine Quelle für die Zahl. Der Check zieht die Notbremse.',
+        payload: ['grounding: "5 % ab 100 Stück" ↔ belege im context: 0', 'ergebnis: UNGESTÜTZT · aktion: antwort zurückhalten'],
+        note: 'Für die Zahl existiert kein Beleg im Fenster. Der Check hält die Antwort zurück.',
         status: 'fail',
       })
     } else if (!curationOn) {
       steps.push({
         station: 'check',
         title: 'Check',
-        payload: ['grounding: aussage ↔ faq.md (liegt im context) ✓', 'ergebnis: gedeckt — durchgelassen'],
-        note: 'Der Check prüft gegen die MITGELIEFERTEN Belege. Das alte FAQ ist einer. Gedeckt heißt nicht richtig.',
+        payload: ['grounding: "5 % ab 100 Stück" ↔ sales/faq.md: TREFFER', 'ergebnis: GEDECKT · aktion: durchlassen'],
+        note: 'Der Check prüft nur gegen die mitgelieferten Belege. sales/faq.md ist einer davon.',
         status: 'warn',
       })
     } else {
       steps.push({
         station: 'check',
         title: 'Check',
-        payload: ['grounding: "8 % ab 50 Stück" ↔ rabatte.md §3 ✓', 'zahlen exakt übernommen ✓'],
-        note: 'Jede Aussage hat ihren Beleg. Kann raus.',
+        payload: ['grounding: "8 % ab 50 Stück" ↔ pricing/rabatte.md §3: TREFFER', 'ergebnis: GEDECKT · aktion: durchlassen'],
+        note: 'Jede Aussage der Antwort hat einen Beleg im Fenster.',
         status: 'ok',
       })
     }
@@ -224,7 +221,7 @@ export function traceRequest(active: Set<string>): TraceResult {
       station: 'check',
       title: 'Check',
       payload: ['— abgeschaltet —'],
-      note: 'Was immer das Modell geschrieben hat, geht jetzt genau so raus.',
+      note: 'Keine Prüfung. Der Entwurf des Modells geht unverändert raus.',
       status: 'off',
     })
   }

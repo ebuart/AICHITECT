@@ -53,6 +53,28 @@ describe('RequestFlowExplorer trace model', () => {
   })
 })
 
+// Payloads are RAW traces (user 2026-07-05): facts, values, statuses — never the
+// interpretation. Whether a value is outdated is answerable only via the dossier files;
+// editorializing words in a payload would chew the diagnosis for the learner.
+describe('payloads stay raw', () => {
+  const EDITORIALIZING = /\balt\b|alte[rn]? wert|veraltet|klingt|falsch|richtig|rauschen|ging unter|trainingsstand/i
+  it('no payload line interprets itself, in any toggle combination', () => {
+    const combos: string[][] = []
+    const ids = FLOW_TOGGLES.map((t) => t.id)
+    for (let mask = 0; mask < 1 << ids.length; mask++)
+      combos.push(ids.filter((_, i) => mask & (1 << i)))
+    const offenders: string[] = []
+    for (const combo of combos) {
+      for (const s of traceRequest(new Set(combo)).steps) {
+        for (const line of s.payload) {
+          if (EDITORIALIZING.test(line)) offenders.push(`[${combo.join(',') || 'none'}] ${s.station}: "${line}"`)
+        }
+      }
+    }
+    expect(offenders, offenders.join('\n')).toEqual([])
+  })
+})
+
 // The guided protocol must be internally consistent: each run's diagnostic target exists in
 // its trace, and the trace's outcome matches the finding the board will show.
 describe('guided experiment protocol', () => {

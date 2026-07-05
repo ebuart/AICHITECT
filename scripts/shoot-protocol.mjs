@@ -15,12 +15,14 @@ const wait = (ms) => new Promise((r) => setTimeout(r, ms))
 const shot = (name) => page.screenshot({ path: `docs/screenshots/${name}.png` })
 const solveRun = async (station) => { await click(station); await wait(200); await click('melden'); await wait(250) }
 
-await wait(600); await shot('iter-proto-briefing')
-// Run 1: read two stations first (free inspection), then report correctly
-await click('Lauf starten'); await wait(5400); await shot('iter-proto-diagnose')
-await click('Retrieval'); await wait(250); await shot('iter-proto-inspect') // reading ≠ answering
-await click('Modell'); await wait(200); await click('melden'); await wait(250); await shot('iter-proto-miss')
-await solveRun('Tool-Gate'); await shot('iter-proto-solved')
+await wait(600); await shot('iter-gate-dossier-only')     // explorer must NOT be visible yet
+await click('sales/faq.md'); await wait(200)
+await click('update_crm'); await wait(200)
+await click('#pricing-updates'); await wait(300)
+await shot('iter-gate-unlocked')                           // all read → note + explorer appear
+await click('Lauf starten'); await wait(5400)
+await click('Modell'); await wait(250); await shot('iter-raw-payload')  // raw draft, no chewing
+await solveRun('Tool-Gate'); await shot('iter-annotation') // note appears only now
 await click('Weiter zu Lauf 2'); await wait(200); await click('Lauf starten'); await wait(3600)
 await solveRun('Check')
 await click('Weiter zu Lauf 3'); await wait(200); await click('Lauf starten'); await wait(3600)
@@ -28,7 +30,7 @@ await solveRun('Context')
 await click('Weiter zu Lauf 4'); await wait(200); await click('Lauf starten'); await wait(3600)
 await solveRun('Tool-Gate')
 await click('Weiter zu Lauf 5'); await wait(200); await click('Lauf starten'); await wait(3600)
-await solveRun('Check'); await shot('iter-proto-final')
-await click('Protokoll abschließen'); await wait(400); await shot('iter-proto-free')
+await solveRun('Check')
+await click('Protokoll abschließen'); await wait(400); await shot('iter-gate-free')
 await browser.close()
 console.log('done')

@@ -46,19 +46,17 @@ export function LessonView({ lesson, onComplete }: LessonViewProps) {
     exercises.every((e) => doneExercises.has(e.id))
   const mode = lessonModeInfo(lesson.lessonMode)
 
-  // Challenges, campaigns AND explorer protocols are required work: the lesson completes
-  // only when all of them are finished — and, where exercises exist, those too (IX-8).
-  const challengeIndices = lesson.blocks.flatMap((b, i) =>
-    b.kind === 'challenge' || b.kind === 'campaign' || b.kind === 'explorer' ? [i] : [],
-  )
+  // Challenges, campaigns, explorer protocols AND dossiers are required work: the lesson
+  // completes only when all of them are finished — and, where exercises exist, those too (IX-8).
+  const REQUIRED_KINDS = new Set(['challenge', 'campaign', 'explorer', 'dossier'])
+  const challengeIndices = lesson.blocks.flatMap((b, i) => (REQUIRED_KINDS.has(b.kind) ? [i] : []))
   const hasChallenge = challengeIndices.length > 0
 
-  // Sequential reveal: show blocks up to and including the first not-yet-finished
-  // challenge/explorer; hide everything after it until that block is done.
+  // Sequential reveal: show blocks up to and including the first not-yet-finished required
+  // block; hide everything after it until that block is done (dossier: all files read).
   let shownThrough = lesson.blocks.length
   for (let i = 0; i < lesson.blocks.length; i++) {
-    const k = lesson.blocks[i].kind
-    if ((k === 'challenge' || k === 'campaign' || k === 'explorer') && !doneChallenges.has(i)) {
+    if (REQUIRED_KINDS.has(lesson.blocks[i].kind) && !doneChallenges.has(i)) {
       shownThrough = i + 1
       break
     }

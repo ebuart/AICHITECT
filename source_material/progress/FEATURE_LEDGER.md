@@ -2539,3 +2539,17 @@ PROTOKOLL and hidden during diagnosis. Three labeled zones total: AUFGABE · PAY
 (4) Every run has a `watch` primer shown before and during the animation; a test asserts every
 watch exists and never names the target station. Replayed end-to-end via browser automation
 (read-first inspection, deliberate wrong report, full solve). 243 tests green.
+
+### FL-0079 — Raw traces + force-read dossier (user feedback 2026-07-05: "no pre-chewed food")
+
+Payloads editorialized themselves („alt, mit drin", „ist der alte Wert") — the dossier was
+decoration. Rework: (1) ALL payload lines are now raw trace format (filenames, dates, token
+counts, statuses like HOLD/EXECUTED/GEDECKT — no interpretation); whether „5 % ab 100" is stale
+is answerable only against rabatte.md/faq.md from the Akte. Guard test sweeps all 16 toggle
+combinations for editorializing words (alt/veraltet/falsch/richtig/klingt/trainingsstand/…).
+(2) Station notes (the explaining sentence) are ANNOTATIONS, hidden until the run is solved —
+like the colors: evidence first, interpretation as reward. (3) The dossier is required reading:
+DossierView fires onComplete when every file was opened („Akte x/4 gelesen" header), `dossier`
+joined the required-block kinds, and sequential reveal hides note+explorer until the Akte is
+fully read. Single-file dossiers auto-complete. Browser-replayed: gate verified (first render
+shows only the Akte), raw Modell payload verified, annotation unlock verified. 244 tests green.

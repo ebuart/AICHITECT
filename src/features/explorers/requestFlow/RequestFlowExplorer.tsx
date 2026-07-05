@@ -284,7 +284,8 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
               </code>
             ))}
           </div>
-          <p className="text-[12px] leading-snug text-deck-muted">{shown.note}</p>
+          {/* Annotations are earned: raw trace while diagnosing, explanation after the solve. */}
+          {revealColors && <p className="text-[12px] leading-snug text-deck-muted">{shown.note}</p>}
           {phase === 'diagnose' && (
             <div className="flex flex-wrap items-center gap-2">
               <button

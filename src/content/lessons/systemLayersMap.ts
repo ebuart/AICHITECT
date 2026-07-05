@@ -21,7 +21,7 @@ export const systemLayersMap: Lesson = {
     {
       kind: 'dossier',
       intro:
-        'Der Fall spielt bei einem Software-Händler mit internem AI-Assistenten. Das sind die relevanten Dateien aus dem Firmen-Repo. Die Stationen weiter unten zitieren genau diese Quellen.',
+        'Der Fall spielt bei einem Software-Händler mit internem AI-Assistenten. Das sind die relevanten Dateien aus dem Firmen-Repo. Die Traces weiter unten zeigen nur rohe Werte; was aktuell ist und was nicht, steht ausschließlich hier. Alle vier Dateien öffnen, dann geht es weiter.',
       files: [
         {
           name: 'pricing/rabatte.md',
