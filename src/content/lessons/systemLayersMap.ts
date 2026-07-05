@@ -21,7 +21,7 @@ export const systemLayersMap: Lesson = {
     {
       kind: 'dossier',
       intro:
-        'Ein Software-Händler mit internem AI-Assistenten. Die relevanten Dateien aus dem Firmen-Repo; die Traces unten zeigen nur rohe Werte, was davon aktuell ist, steht allein hier.',
+        'Ein Software-Händler mit internem AI-Assistenten. Die relevanten Dateien aus dem Firmen-Repo.',
       files: [
         {
           name: 'pricing/rabatte.md',

@@ -2567,3 +2567,19 @@ grammar earned on the pilot (required-not-optional, dossier-first force-read, ra
 reading-free/answering-explicit, reveal-on-solve, one task panel, prime-don't-spoil, findings-as-
 artifact, no narration). Each rule cites why it exists; every future explorer inherits them.
 244 tests green.
+
+### FL-0081 — Self-answering runs fixed, prompts de-analyzed, the road shows its holes (user feedback 2026-07-05)
+
+Three defects: (a) runs 4/5 answered themselves (disabled toggle = target station); (b) prompts
+pre-analyzed the outcome („Falsche Zahl, mit echter Quellenangabe" — the citation is visible in
+the outcome line); (c) visually nothing changed when a layer was missing. Fixes: TARGETS
+REDESIGNED so every diagnosis needs the trace — run 1: where did part of the model output stay
+behind (gate HOLD) · run 2: where was the draft stopped (check) · run 3: where did sales/faq.md
+ENTER the run (retrieval, not the toggle-named context) · run 4: where did the CRM write
+ORIGINATE (model — the unasked proposal) · run 5 unchanged (run-2 comparison). Prompts state only
+what the outcome line cannot show; filler intro sentence cut. NEW GUARD: a run must never target
+the station of its own disabled toggle (comparison runs excepted). ROAD VISUALS: directional
+links with arrowheads + marching-dash animation on the traversed segment (index.css deck-flow-*);
+disabled stations render broken always — hatched, dashed border, struck label, hollow dot
+(structure ≠ spoiler; verdict colors still wait for the solve). Rules codified as IX-19/IX-20.
+Browser-replayed with the new targets; hole + flow verified in shots. 245 tests green.

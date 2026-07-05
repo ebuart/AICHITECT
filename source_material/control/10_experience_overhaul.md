@@ -130,6 +130,16 @@ rooms and good official courses, and (c) making concepts SEEN and FELT before th
 [IX-18] NO NETFLIX NARRATION (= VX-T10, interaction side): never explain what a visible control
         does, never restate a counter in prose, mechanics hints appear exactly once (first run)
         and never again. Framing text carries only premise and stakes.
+[IX-19] THE DIAGNOSIS IS NEVER DERIVABLE FROM THE CONTROLS: if a run disables layer X, the
+        question must not have X's station as its answer ("ohne Tool-Gate → tap Tool-Gate" is a
+        non-question). Ask where consequences ORIGINATED, where something ENTERED, where it was
+        last TOUCHED — stations the toggles say nothing about. Cross-run comparisons are the one
+        exception (the answer is a diff, not a toggle read). Guard-tested.
+[IX-20] THE ROAD SHOWS ITS HOLES: flow visuals are directional (arrowed links, movement while
+        traversing), and a disabled station renders visibly BROKEN (hatched, dashed, struck
+        label, hollow marker) — structure is never a spoiler, so brokenness shows immediately;
+        only VERDICTS wait for the solve (IX-14). Prompts never re-describe what the outcome
+        line or the trace already shows.
 
 ## PART 3 — TREATMENT MAP (what each arc's flagship interaction IS)
 

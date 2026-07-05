@@ -137,3 +137,25 @@ kbd,
 samp {
   font-family: var(--font-typer);
 }
+
+/* RequestFlowExplorer road (control/10 IX): the data path reads as a directed road.
+   Links carry marching dashes while the packet traverses them; a disabled station is a
+   visible hole in the road (hatched, dashed border — styled in the component). */
+@keyframes deck-flow {
+  from { background-position-x: 0; }
+  to { background-position-x: 12px; }
+}
+.deck-flow-line {
+  height: 2px;
+  background-image: repeating-linear-gradient(90deg, currentColor 0 6px, transparent 6px 12px);
+  background-size: 12px 2px;
+  background-repeat: repeat-x;
+}
+.deck-flow-anim { animation: deck-flow 0.35s linear infinite; }
+.deck-flow-solid { background-image: none; background-color: currentColor; }
+.deck-station-off {
+  background-image: repeating-linear-gradient(135deg, transparent 0 5px, rgba(128, 128, 128, 0.18) 5px 10px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .deck-flow-anim { animation: none; }
+}

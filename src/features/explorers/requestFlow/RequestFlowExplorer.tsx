@@ -223,13 +223,15 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
         </div>
       )}
 
-      {/* Pipeline */}
+      {/* Pipeline — a directed road. Disabled stations are visible holes (hatched, dashed,
+          hollow dot, struck label); links carry marching dashes while the packet passes. */}
       {phase !== 'briefing' && (
         <div className="flex items-stretch gap-0 overflow-x-auto pb-1">
           {trace.steps.map((s, i) => {
             const reached = running ? i <= step : true
             const isCurrent = running && i === step
             const isShown = shownIndex === i
+            const isOff = s.status === 'off'
             return (
               <div key={s.station} className="flex min-w-0 flex-1 items-center" style={{ minWidth: 86 }}>
                 <button
@@ -237,7 +239,8 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
                   onClick={() => !running && setInspected(i)}
                   className={cn(
                     'flex w-full flex-col items-center gap-1 border px-1.5 py-2 transition-all duration-300',
-                    isShown ? 'border-white bg-white' : 'border-deck-border-dim bg-deck-bg',
+                    isShown ? 'border-white bg-white' : 'bg-deck-bg',
+                    !isShown && (isOff ? 'border-dashed border-deck-border-dim deck-station-off' : 'border-deck-border-dim'),
                     isCurrent && 'border-white',
                     !reached && 'opacity-40',
                     phase === 'diagnose' && !isShown && 'hover:border-white',
@@ -245,15 +248,23 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
                 >
                   <span
                     className={cn(
-                      'h-2 w-2 rounded-full transition-colors duration-300',
-                      reached ? (revealColors ? statusDot[s.status] : isShown ? 'bg-black' : 'bg-white') : 'bg-deck-border-dim',
+                      'h-2 w-2 rounded-full border transition-colors duration-300',
+                      isOff
+                        ? 'border-deck-border-dim bg-transparent'
+                        : reached
+                          ? revealColors
+                            ? cn('border-transparent', statusDot[s.status])
+                            : isShown
+                              ? 'border-transparent bg-black'
+                              : 'border-transparent bg-white'
+                          : 'border-transparent bg-deck-border-dim',
                       isCurrent && 'animate-pulse',
                     )}
                   />
                   <span
                     className={cn(
                       'truncate font-typer text-[10px] uppercase tracking-wide',
-                      isShown ? 'text-black' : 'text-white',
+                      isShown ? 'text-black' : isOff ? 'text-deck-muted line-through' : 'text-white',
                     )}
                   >
                     {s.title}
@@ -263,10 +274,18 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
                   <span
                     aria-hidden
                     className={cn(
-                      'h-px w-3 shrink-0 transition-colors duration-300 sm:w-4',
-                      (running ? i < step : true) ? 'bg-white' : 'bg-deck-border-dim',
+                      'flex w-4 shrink-0 items-center transition-colors duration-300 sm:w-6',
+                      (running ? i <= step - 1 : true) ? 'text-white' : 'text-deck-border-dim',
                     )}
-                  />
+                  >
+                    <span
+                      className={cn(
+                        'deck-flow-line min-w-0 flex-1',
+                        running && i === step - 1 ? 'deck-flow-anim' : (running ? i < step - 1 : true) && 'deck-flow-solid',
+                      )}
+                    />
+                    <span className="-ml-0.5 text-[9px] leading-none">▸</span>
+                  </span>
                 )}
               </div>
             )

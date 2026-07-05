@@ -99,6 +99,24 @@ describe('guided experiment protocol', () => {
     }
   })
 
+  it('the diagnosis is never derivable from the controls: a run must not target the station of its own disabled toggle (except cross-run comparisons)', () => {
+    // Which station a toggle switches off — targeting it would make the toggle chips the answer.
+    const TOGGLE_STATION: Record<string, string> = {
+      retrieval: 'retrieval',
+      curation: 'context',
+      toolgate: 'toolgate',
+      check: 'check',
+    }
+    const COMPARISON_RUNS = new Set(['no-net']) // answered by diffing against an earlier run
+    for (const e of EXPERIMENTS) {
+      if (COMPARISON_RUNS.has(e.id)) continue
+      const disabled = FLOW_TOGGLES.map((t) => t.id).filter((id) => !e.active.includes(id))
+      for (const d of disabled) {
+        expect(e.target, `${e.id}: target equals its disabled layer "${d}"`).not.toBe(TOGGLE_STATION[d])
+      }
+    }
+  })
+
   it('diagnostic targets are live stations — except no-net, where the absence IS the answer', () => {
     for (const e of EXPERIMENTS) {
       const t = traceRequest(new Set(e.active))
