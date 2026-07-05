@@ -9,13 +9,14 @@ import {
   type StationStatus,
 } from './model'
 
-// RequestFlowExplorer (EXP-REQUEST-FLOW, control/10). GUIDED PROTOCOL, not a sandbox
-// (user feedback 2026-07-05): five prescribed runs, each removing a layer. After every run
-// a diagnostic question must be answered by TAPPING the right station — wrong taps open
-// that station's payload (reading is the point), the next run only unlocks after the
-// correct tap. Every solved run fills a row of the findings board; at the end the
-// layer→incident map stands as a visible artifact and the toggles unlock for free play.
-// onComplete fires when the protocol is done — the lesson requires it.
+// RequestFlowExplorer (EXP-REQUEST-FLOW, control/10). Guided protocol, reworked after user
+// testing (2026-07-05): tapping a station only INSPECTS its payload — answering is the
+// explicit "melden" button inside the payload panel, so reading first is free. Status
+// colors stay hidden until a run is solved (SPOILER_RULE: the payloads are the evidence,
+// the colors are the confirmation). One AUFGABE panel carries briefing → watch-hint →
+// question (with the user-visible outcome inline) → solved note, so there is exactly one
+// place that says what to do. The PROTOKOLL board fills per solved run; free play unlocks
+// at the end. onComplete fires when the protocol is done — the lesson requires it.
 
 const STEP_MS_FIRST = 620
 const STEP_MS_FAST = 340
@@ -42,19 +43,21 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
   const [trace, setTrace] = useState(() => traceRequest(new Set(EXPERIMENTS[0].active)))
   const [step, setStep] = useState(-1)
   const [inspected, setInspected] = useState<number | null>(null)
-  const [missTap, setMissTap] = useState(false)
+  const [missReport, setMissReport] = useState(false)
   const timer = useRef<ReturnType<typeof setInterval> | null>(null)
   const completed = useRef(false)
 
   const exp = EXPERIMENTS[expIdx]
   const inProtocol = phase !== 'free'
   const running = phase === 'running'
+  // The payloads are the evidence; colors would give the diagnosis away. Reveal on solve.
+  const revealColors = phase === 'solved' || phase === 'free'
 
   const startRun = (toggles: Set<string>) => {
     const t = traceRequest(toggles)
     setTrace(t)
     setInspected(null)
-    setMissTap(false)
+    setMissReport(false)
     setStep(0)
     setPhase('running')
   }
@@ -79,12 +82,10 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [running, trace])
 
-  const tapStation = (i: number) => {
-    if (running) return
-    setInspected(i)
-    if (phase !== 'diagnose') return
-    if (trace.steps[i]?.station === exp.target) {
-      setMissTap(false)
+  const reportInspected = () => {
+    if (phase !== 'diagnose' || inspected == null) return
+    if (trace.steps[inspected]?.station === exp.target) {
+      setMissReport(false)
       setPhase('solved')
       const solved = solvedCount + 1
       setSolvedCount(solved)
@@ -93,7 +94,7 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
         onComplete?.()
       }
     } else {
-      setMissTap(true)
+      setMissReport(true)
     }
   }
 
@@ -109,6 +110,7 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
     setPhase('briefing')
     setStep(-1)
     setInspected(null)
+    setMissReport(false)
   }
 
   const toggleFree = (id: string) => {
@@ -122,13 +124,13 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
   }
 
   const done = step >= trace.steps.length
-  const shownIndex = inspected ?? (running ? step : done ? trace.steps.length - 1 : null)
+  const shownIndex = inspected ?? (running ? step : done && phase !== 'diagnose' ? trace.steps.length - 1 : null)
   const shown: StationSnapshot | null = shownIndex != null ? (trace.steps[shownIndex] ?? null) : null
   const findings = EXPERIMENTS.slice(0, solvedCount)
 
   return (
     <div className="flex flex-col gap-3 border border-deck-border bg-deck-surface p-3">
-      {/* Protocol header / free-play switchboard */}
+      {/* Header: protocol progress + layer state */}
       <div className="flex flex-wrap items-center gap-1.5">
         <span className="mr-1 font-typer text-[10px] uppercase tracking-widest text-deck-muted">
           {inProtocol ? `Protokoll ${Math.min(solvedCount + 1, EXPERIMENTS.length)}/${EXPERIMENTS.length}` : 'Freies Experimentieren'}
@@ -163,24 +165,58 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
         )}
       </div>
 
-      {/* Experiment card */}
-      {phase === 'briefing' && (
-        <div className="flex flex-wrap items-center justify-between gap-2 border-l-2 border-deck-accent bg-deck-bg px-3 py-2">
-          <div className="min-w-0">
-            <p className="font-typer text-[11px] uppercase tracking-wide text-white">{exp.title}</p>
-            <p className="text-[12px] leading-snug text-deck-muted">
-              {exp.missing === '—'
-                ? 'Erst die Referenz: das vollständige System.'
-                : `Diesmal fehlt: ${exp.missing}. Gleiche Anfrage, anderes System.`}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => startRun(new Set(exp.active))}
-            className="shrink-0 border border-white px-3 py-1.5 font-typer text-[11px] uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-black"
-          >
-            Lauf starten ▸
-          </button>
+      {/* AUFGABE — the one panel that says what to do right now */}
+      {inProtocol && (
+        <div
+          className={cn(
+            'flex flex-col gap-1.5 border-l-2 bg-deck-bg px-3 py-2',
+            phase === 'solved' ? 'border-deck-success' : 'border-deck-accent',
+          )}
+        >
+          <span className="font-typer text-[9px] uppercase tracking-widest text-deck-muted">
+            Aufgabe · {exp.title}
+          </span>
+          {phase === 'briefing' && (
+            <>
+              <p className="text-[13px] leading-snug text-white">
+                {exp.missing === '—'
+                  ? 'Erst die Referenz: das vollständige System.'
+                  : `Diesmal fehlt: ${exp.missing}. Gleiche Anfrage, anderes System.`}
+              </p>
+              <p className="text-[12px] leading-snug text-deck-muted">{exp.watch}</p>
+              <button
+                type="button"
+                onClick={() => startRun(new Set(exp.active))}
+                className="mt-0.5 self-start border border-white px-3 py-1.5 font-typer text-[11px] uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-black"
+              >
+                Lauf starten ▸
+              </button>
+            </>
+          )}
+          {phase === 'running' && <p className="text-[12px] leading-snug text-deck-muted">{exp.watch}</p>}
+          {phase === 'diagnose' && (
+            <>
+              <p className="text-[12px] leading-snug text-deck-muted">
+                Beim Nutzer kommt an: <span className="text-white">{trace.answer.text}</span>
+              </p>
+              <p className="text-[13px] font-medium leading-snug text-white">{exp.prompt}</p>
+              <p className="font-typer text-[10px] uppercase tracking-wide text-deck-muted">
+                Stationen antippen und Payloads lesen · melden im Payload-Fenster
+              </p>
+            </>
+          )}
+          {phase === 'solved' && (
+            <>
+              <p className="text-[13px] leading-snug text-white">{exp.solvedNote}</p>
+              <button
+                type="button"
+                onClick={nextRun}
+                className="mt-0.5 self-start border border-white px-3 py-1.5 font-typer text-[11px] uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-black"
+              >
+                {solvedCount >= EXPERIMENTS.length ? 'Protokoll abschließen ▸' : `Weiter zu Lauf ${solvedCount + 1} ▸`}
+              </button>
+            </>
+          )}
         </div>
       )}
 
@@ -195,7 +231,7 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
               <div key={s.station} className="flex min-w-0 flex-1 items-center" style={{ minWidth: 86 }}>
                 <button
                   type="button"
-                  onClick={() => tapStation(i)}
+                  onClick={() => !running && setInspected(i)}
                   className={cn(
                     'flex w-full flex-col items-center gap-1 border px-1.5 py-2 transition-all duration-300',
                     isShown ? 'border-white bg-white' : 'border-deck-border-dim bg-deck-bg',
@@ -207,7 +243,7 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
                   <span
                     className={cn(
                       'h-2 w-2 rounded-full transition-colors duration-300',
-                      reached ? statusDot[s.status] : 'bg-deck-border-dim',
+                      reached ? (revealColors ? statusDot[s.status] : isShown ? 'bg-black' : 'bg-white') : 'bg-deck-border-dim',
                       isCurrent && 'animate-pulse',
                     )}
                   />
@@ -235,35 +271,11 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
         </div>
       )}
 
-      {/* Diagnostic prompt */}
-      {phase === 'diagnose' && (
-        <div className="flex flex-col gap-1 border-l-2 border-deck-warning bg-deck-bg px-3 py-2">
-          <p className="text-[13px] font-medium leading-snug text-white">{exp.prompt}</p>
-          {missTap && (
-            <p className="font-typer text-[11px] text-deck-warning">
-              Nicht diese. Die Payloads erzählen, wo es passiert ist — Stationen ansehen und nochmal.
-            </p>
-          )}
-        </div>
-      )}
-      {phase === 'solved' && (
-        <div className="flex flex-col gap-1.5 border-l-2 border-deck-success bg-deck-bg px-3 py-2">
-          <p className="text-[13px] leading-snug text-white">{exp.solvedNote}</p>
-          <button
-            type="button"
-            onClick={nextRun}
-            className="self-start border border-white px-3 py-1.5 font-typer text-[11px] uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-black"
-          >
-            {solvedCount >= EXPERIMENTS.length ? 'Protokoll abschließen ▸' : `Weiter zu Lauf ${solvedCount + 1} ▸`}
-          </button>
-        </div>
-      )}
-
-      {/* Inspector */}
+      {/* PAYLOAD — inspector; during diagnose it carries the explicit answer button */}
       {phase !== 'briefing' && shown && (
         <div className="flex flex-col gap-1.5 border-l-2 border-deck-border pl-2.5">
           <span className="font-typer text-[10px] uppercase tracking-widest text-deck-muted">
-            {shown.title} · Payload
+            Payload · {shown.title}
           </span>
           <div className="flex flex-col gap-0.5 border border-deck-border-dim bg-deck-bg px-2 py-1.5">
             {shown.payload.map((line, i) => (
@@ -273,22 +285,43 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
             ))}
           </div>
           <p className="text-[12px] leading-snug text-deck-muted">{shown.note}</p>
+          {phase === 'diagnose' && (
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={reportInspected}
+                className="border border-white px-3 py-1.5 font-typer text-[11px] uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-black"
+              >
+                Hier ist es passiert · melden ▸
+              </button>
+              {missReport && (
+                <span className="font-typer text-[11px] text-deck-warning">
+                  Nicht diese Station. Weiterlesen, der Payload einer anderen erzählt es.
+                </span>
+              )}
+            </div>
+          )}
         </div>
       )}
+      {phase === 'diagnose' && !shown && (
+        <p className="text-[12px] leading-snug text-deck-muted">
+          Eine Station antippen, um ihren Payload zu lesen.
+        </p>
+      )}
 
-      {/* Answer */}
-      {done && !running && (
+      {/* Answer card only in free play (during the protocol it lives inside AUFGABE) */}
+      {phase === 'free' && done && (
         <div className={cn('flex flex-col gap-1 border-l-4 bg-deck-bg px-3 py-2', verdictBorder[trace.answer.verdict])}>
           <span className="text-[13px] font-medium leading-snug text-white">{trace.answer.text}</span>
           <span className="text-[12px] leading-snug text-deck-muted">{trace.answer.explain}</span>
         </div>
       )}
 
-      {/* Findings board — fills run by run; at the end it IS the break-map */}
-      {findings.length > 0 && (
+      {/* PROTOKOLL — fills per solved run; at 5/5 it is the layer→incident map */}
+      {findings.length > 0 && phase !== 'diagnose' && (
         <div className="flex flex-col gap-1">
           <span className="font-typer text-[10px] uppercase tracking-widest text-deck-muted">
-            Befunde {findings.length}/{EXPERIMENTS.length}
+            Protokoll {findings.length}/{EXPERIMENTS.length}
           </span>
           <div className="flex flex-col">
             {findings.map((f) => (
@@ -305,7 +338,7 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
           </div>
           {phase === 'free' && (
             <p className="text-[11px] leading-snug text-deck-muted">
-              Protokoll abgeschlossen. Die Ebenen oben sind jetzt frei schaltbar — auch in Kombinationen, die im Protokoll nicht vorkamen.
+              Protokoll abgeschlossen. Die Ebenen oben sind jetzt frei schaltbar, auch in Kombinationen, die im Protokoll nicht vorkamen.
             </p>
           )}
         </div>

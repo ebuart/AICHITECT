@@ -61,6 +61,14 @@ describe('guided experiment protocol', () => {
     expect(new Set(EXPERIMENTS[0].active)).toEqual(new Set(ALL_ON))
   })
 
+  it('every run primes attention (watch) and never spells out the target station in it', () => {
+    for (const e of EXPERIMENTS) {
+      expect(e.watch.length, `${e.id} watch`).toBeGreaterThan(20)
+      const targetTitle = traceRequest(new Set(e.active)).steps.find((s) => s.station === e.target)!.title
+      expect(e.watch.toLowerCase()).not.toContain(targetTitle.toLowerCase())
+    }
+  })
+
   it('every experiment target station exists and its verdict matches the trace', () => {
     for (const e of EXPERIMENTS) {
       const t = traceRequest(new Set(e.active))

@@ -7,27 +7,28 @@ await page.setViewport({ width: 1360, height: 900, deviceScaleFactor: 2 })
 await page.goto(URL, { waitUntil: 'networkidle0' })
 const click = async (text) => page.evaluate((t) => {
   const els = [...document.querySelectorAll('button')].filter((b) => b.textContent?.includes(t) && !b.disabled)
-  const el = els[els.length - 1] // stations render after toggle chips — take the last match
+  const el = els[els.length - 1]
   if (el) el.click()
   return els.length
 }, text)
 const wait = (ms) => new Promise((r) => setTimeout(r, ms))
 const shot = (name) => page.screenshot({ path: `docs/screenshots/${name}.png` })
+const solveRun = async (station) => { await click(station); await wait(200); await click('melden'); await wait(250) }
 
-await wait(600)
-await shot('iter-proto-briefing')
+await wait(600); await shot('iter-proto-briefing')
+// Run 1: read two stations first (free inspection), then report correctly
 await click('Lauf starten'); await wait(5400); await shot('iter-proto-diagnose')
-await click('Tool-Gate'); await wait(300); await shot('iter-proto-solved')
+await click('Retrieval'); await wait(250); await shot('iter-proto-inspect') // reading ≠ answering
+await click('Modell'); await wait(200); await click('melden'); await wait(250); await shot('iter-proto-miss')
+await solveRun('Tool-Gate'); await shot('iter-proto-solved')
 await click('Weiter zu Lauf 2'); await wait(200); await click('Lauf starten'); await wait(3600)
-await click('Modell'); await wait(250); await shot('iter-proto-miss') // deliberate wrong tap
-await click('Check'); await wait(250)
+await solveRun('Check')
 await click('Weiter zu Lauf 3'); await wait(200); await click('Lauf starten'); await wait(3600)
-await click('Context'); await wait(250)
+await solveRun('Context')
 await click('Weiter zu Lauf 4'); await wait(200); await click('Lauf starten'); await wait(3600)
-await click('Tool-Gate'); await wait(250)
+await solveRun('Tool-Gate')
 await click('Weiter zu Lauf 5'); await wait(200); await click('Lauf starten'); await wait(3600)
-await click('Check'); await wait(250); await shot('iter-proto-final')
-await click('Protokoll abschließen'); await wait(400)
-await shot('iter-proto-free')
+await solveRun('Check'); await shot('iter-proto-final')
+await click('Protokoll abschließen'); await wait(400); await shot('iter-proto-free')
 await browser.close()
 console.log('done')

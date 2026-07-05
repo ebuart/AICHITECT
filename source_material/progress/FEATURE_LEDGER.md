@@ -2524,3 +2524,18 @@ lessons exist, verified). Protocol consistency pinned in tests (targets exist, v
 findings, no-net exception documented). Played end-to-end via browser automation incl. a
 deliberate wrong tap (scripts/shoot-protocol.mjs); the driver itself had a bug the screenshots
 caught (case-sensitive text match clicked nothing) — fixed, replayed, verified. 242 tests green.
+
+### FL-0078 — Protocol UX rework: inspect≠answer, colors as confirmation, one task panel (user feedback 2026-07-05)
+
+Feedback on FL-0077: every station tap counted as the answer (reading was punished), the status
+colors leaked the diagnosis, the area below the runs was competing boxes (Befund/Payload/Check),
+and runs started without telling the learner what to watch. Rework: (1) tapping a station only
+INSPECTS; answering is the explicit „Hier ist es passiert · melden" button inside the PAYLOAD
+panel — wrong reports hint and reading continues. (2) Status dots stay NEUTRAL until the run is
+solved (SPOILER_RULE applied to the explorer: payloads are the evidence, colors the confirmation;
+reveal on solve). (3) One AUFGABE panel carries briefing → watch → question (with the user-visible
+outcome inline) → solved note; the separate answer card exists only in free play; board renamed
+PROTOKOLL and hidden during diagnosis. Three labeled zones total: AUFGABE · PAYLOAD · PROTOKOLL.
+(4) Every run has a `watch` primer shown before and during the animation; a test asserts every
+watch exists and never names the target station. Replayed end-to-end via browser automation
+(read-first inspection, deliberate wrong report, full solve). 243 tests green.

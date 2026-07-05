@@ -281,7 +281,9 @@ export interface Experiment {
   missing: string
   /** Toggle ids that stay ON for this run. */
   active: string[]
-  /** Diagnostic question after the run — answered by tapping a station. */
+  /** Attention primer shown BEFORE and DURING the run (direction, not spoiler). */
+  watch: string
+  /** Diagnostic question after the run — answered by reporting a station. */
   prompt: string
   /** The station that answers the prompt. */
   target: StationId
@@ -301,7 +303,8 @@ export const EXPERIMENTS: Experiment[] = [
     title: 'Lauf 1 · alle Ebenen an',
     missing: '—',
     active: [...ids],
-    prompt: 'Sauberer Lauf. Eine Station hat trotzdem eingegriffen und eine riskante Aktion angehalten. Welche? Antippen.',
+    watch: 'Beim Durchlauf beobachten: Welche Stationen verändern die Anfrage, und wo wird etwas angehalten?',
+    prompt: 'Sauberer Lauf. Eine Station hat trotzdem eingegriffen und eine riskante Aktion angehalten. Welche?',
     target: 'toolgate',
     solvedNote: 'Das Tool-Gate. Der CRM-Schreibzugriff bleibt ein Vorschlag, bis ein Mensch freigibt. In den nächsten Läufen fällt je eine Ebene weg.',
     finding: 'Belegte Antwort. Riskante Aktion angehalten.',
@@ -312,7 +315,8 @@ export const EXPERIMENTS: Experiment[] = [
     title: 'Lauf 2 · ohne Retrieval',
     missing: 'Retrieval',
     active: except('retrieval'),
-    prompt: 'Der Nutzer bekommt keine Antwort. Welche Station hat die Notbremse gezogen? Antippen.',
+    watch: 'Worauf achten: Was liegt diesmal im Context-Fenster, und woher stammt die Zahl im Modell-Entwurf?',
+    prompt: 'Der Nutzer bekommt keine Antwort. Welche Station hat die Notbremse gezogen?',
     target: 'check',
     solvedNote: 'Der Check. Ohne Belege war die Zahl des Modells ungestützt, also hält er sie zurück. Unbefriedigend, aber kein Schaden.',
     finding: 'Keine Antwort. Check zieht die Notbremse.',
@@ -323,7 +327,8 @@ export const EXPERIMENTS: Experiment[] = [
     title: 'Lauf 3 · ohne Context-Kuration',
     missing: 'Kuration',
     active: except('curation'),
-    prompt: 'Falsche Zahl, mit echter Quellenangabe. An welcher Station ist der Schaden entstanden? Antippen.',
+    watch: 'Worauf achten: Wie viele Dokumente erreichen das Fenster, und welches davon zitiert der Entwurf am Ende?',
+    prompt: 'Falsche Zahl, mit echter Quellenangabe. An welcher Station ist der Schaden entstanden?',
     target: 'context',
     solvedNote: 'Im Context. 14 Dokumente im Fenster, der richtige Absatz auf Position 9, das alte FAQ gewinnt. Der Check lässt es durch, denn „gedeckt" heißt nicht „richtig".',
     finding: 'Falsche Zahl, mit Quellenangabe.',
@@ -334,7 +339,8 @@ export const EXPERIMENTS: Experiment[] = [
     title: 'Lauf 4 · ohne Tool-Gate',
     missing: 'Tool-Gate',
     active: except('toolgate'),
-    prompt: 'Die Antwort stimmt. Trotzdem ist heute ein Vorfall passiert. An welcher Station? Antippen.',
+    watch: 'Worauf achten: Der Modell-Entwurf enthält mehr als nur eine Antwort. Was passiert diesmal mit dem zweiten Teil?',
+    prompt: 'Die Antwort stimmt. Trotzdem ist heute ein Vorfall passiert. An welcher Station?',
     target: 'toolgate',
     solvedNote: 'Am fehlenden Gate: update_crm lief ungefragt durch, 214 Datensätze geändert. Eine richtige Antwort und ein Schaden schließen sich nicht aus.',
     finding: '214 CRM-Einträge ungefragt geändert.',
@@ -345,7 +351,8 @@ export const EXPERIMENTS: Experiment[] = [
     title: 'Lauf 5 · ohne Retrieval und ohne Check',
     missing: 'Retrieval + Check',
     active: except('retrieval', 'check'),
-    prompt: 'Die erfundene Zahl erreicht den Nutzer. Welche Station hätte sie als letzte noch stoppen können? Antippen.',
+    watch: 'Zum Vergleich mit Lauf 2: gleiche Wissenslücke, eine Schutzebene weniger. Was ändert sich am Ende?',
+    prompt: 'Die erfundene Zahl erreicht den Nutzer. Welche Station hätte sie als letzte noch stoppen können?',
     target: 'check',
     solvedNote: 'Der Check, wie in Lauf 2. Der Unterschied zwischen „keine Antwort" und „falsche Antwort beim Kunden" war genau eine Ebene. Das ist Defense in Depth.',
     finding: 'Erfundene Zahl erreicht den Nutzer.',
