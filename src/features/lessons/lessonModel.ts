@@ -283,6 +283,15 @@ export type Exercise =
       takeaway?: string
     }
 
+export interface DossierFile {
+  /** Path-like name, e.g. "pricing/rabatte.md". */
+  name: string
+  /** Small meta chip, e.g. "geändert vor 6 Tagen" / "Stand: März". */
+  meta?: string
+  /** Monospace body — the artifact itself. */
+  body: string
+}
+
 export type LessonBlock =
   | { kind: 'prose'; text: string }
   | { kind: 'term'; term: string; definition: string; example?: string }
@@ -297,6 +306,10 @@ export type LessonBlock =
   // A feel-first interactive (control/10 IX-1/IX-8): explore and manipulate BEFORE being
   // quizzed. Does not gate completion — the exercises after it do.
   | { kind: 'explorer'; explorerId: string }
+  // Case files (control/10 IX-5): the scenario's actual artifacts — docs, configs, logs —
+  // as a clickable file panel. Grounds where the information comes from; the interactives
+  // and exercises below quote exactly these files.
+  | { kind: 'dossier'; intro?: string; files: DossierFile[] }
   // The Build Campaign — a stateful "direct the whole build" strategy sim (the production
   // capstone). Completing the scorecard completes the lesson (like a challenge).
   | { kind: 'campaign'; campaign: CampaignDef }

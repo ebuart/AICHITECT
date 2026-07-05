@@ -34,8 +34,13 @@ rooms and good official courses, and (c) making concepts SEEN and FELT before th
 
 ### The bar (how TryHackMe / good official courses actually read)
 
-[VX-B1] SITUATION FIRST, ADDRESSED TO YOU: "Du bekommst das Ticket rein…", "Open the trace and
-        look at step 3." The learner is inside a scene, not in front of a flashcard.
+[VX-B1] SITUATION FIRST, IMPERSONAL REGISTER (user 2026-07-05, confirms FL-0051): the learner is
+        inside a concrete scene, but the SITE DOES NOT TALK TO THEM. No conversational du in
+        stems/whys/takeaways ("reparierst du", "dein Board", "merkst du" = generative-AI chat
+        feel). Scenes are stated: "Vier Vorfälle aus echten Systemen. Wo ist jeder entstanden?"
+        Functional instructions use German infinitive-imperative UI style ("Anfrage abschicken,
+        Station antippen"), never chatty imperatives. EN keeps a professional "you" where English
+        needs it (impersonal English reads stilted) but drops all chattiness.
 [VX-B2] PLAIN SENTENCES ARE ALLOWED. Not every sentence lands a punchline. Some just state a fact
         and move on. This is the single biggest de-AI lever.
 [VX-B3] CONCRETE ANCHORS: real tool names, plausible numbers, one realistic log/config/payload
@@ -54,8 +59,9 @@ rooms and good official courses, and (c) making concepts SEEN and FELT before th
 ### Enforcement
 
 [VX-E1] RATCHET TEST (tests/voiceRatchet.test.ts): counts measurable tells (em-dash density,
-        "Genau d…" openers, maxim-shaped takeaways) across content. Ceilings = current counts;
-        every rewrite lowers them; new content cannot raise them. Numbers go DOWN, never up.
+        "Genau d…" openers, maxim-shaped takeaways, conversational du-forms in stems/takeaways)
+        across content. Ceilings = current counts; every rewrite lowers them; new content cannot
+        raise them. Numbers go DOWN, never up.
 [VX-E2] Rewrite unit = one arc. Rewrite = re-author, not paraphrase: re-imagine stem scenes,
         cut takeaways that only restate, add one concrete anchor per lesson minimum.
 [VX-E3] EN translations follow the same rules in English (TryHackMe register, not BBC formal).

@@ -10,7 +10,7 @@ export const augmentedLlm: Lesson = {
   title: 'Augmented LLM',
   estimatedMinutes: 6,
   lessonMode: 'architecture-builder',
-  learningGoal: 'Jede Augmentierung der Schwäche zuordnen, die sie behebt — und nur Nötiges anbauen.',
+  learningGoal: 'Jede Augmentierung der Schwäche zuordnen, die sie behebt. Und nur Nötiges anbauen.',
   interactionType: 'architecture-builder',
   visualModelId: null,
   feedbackPatternId: null,
@@ -20,7 +20,7 @@ export const augmentedLlm: Lesson = {
       kind: 'note',
       tone: 'info',
       title: 'Was ein rohes Modell nicht kann',
-      text: 'Ein LLM ohne alles kann genau eines: aus seinem Trainingsstand Text erzeugen. Es kennt eure Daten nicht, kann nichts nachschlagen, nichts ausführen, vergisst nach der Session alles und liefert Prosa, wo dein Backend JSON braucht. Für jede dieser Schwächen gibt es einen Anbau: Retrieval, Tools, Memory, strukturierte Ausgabe. Der Punkt dieser Lektion: Welcher Anbau behebt welche Schwäche — denn jeder kostet Komplexität, und die falsche Wahl behebt nichts.',
+      text: 'Ein LLM ohne alles kann genau eines: aus seinem Trainingsstand Text erzeugen. Es kennt keine internen Daten, kann nichts nachschlagen, nichts ausführen, vergisst nach der Session alles und liefert Prosa, wo das Backend JSON braucht. Für jede dieser Schwächen gibt es einen Anbau: Retrieval, Tools, Memory, strukturierte Ausgabe. Der Punkt dieser Lektion: Welcher Anbau behebt welche Schwäche. Denn jeder kostet Komplexität, und die falsche Wahl behebt nichts.',
     },
     {
       kind: 'exercise',
@@ -29,12 +29,12 @@ export const augmentedLlm: Lesson = {
         format: 'match',
         stem: 'Ordne jeden Anbau der Schwäche zu, die er tatsächlich behebt.',
         pairs: [
-          { id: 'retrieval', left: 'Retrieval', right: 'Kennt eure Daten nicht / Wissen ist veraltet', why: 'Holt zur Antwortzeit die echten Dokumente ins Fenster. Das Modell liest sie dann, statt sich zu erinnern.' },
+          { id: 'retrieval', left: 'Retrieval', right: 'Kennt interne Daten nicht / Wissen ist veraltet', why: 'Holt zur Antwortzeit die echten Dokumente ins Fenster. Das Modell liest sie dann, statt sich zu erinnern.' },
           { id: 'tools', left: 'Tools', right: 'Kann nichts ausführen und rechnet unzuverlässig', why: '58 × 47 schätzt ein LLM. calc(58*47) rechnet. Gleiches gilt für Kalender, Datenbank, Deployment.' },
           { id: 'memory', left: 'Memory', right: 'Nach der Session ist alles weg', why: 'Persistenz ist Architektur. Kein Modell „merkt sich" etwas zwischen zwei Läufen von allein.' },
-          { id: 'structured', left: 'Strukturierte Ausgabe', right: 'Backend braucht JSON, bekommt Prosa', why: 'Erzwingt ein Schema beim Generieren. Dein Parser hört auf, an Kommas zu sterben.' },
+          { id: 'structured', left: 'Strukturierte Ausgabe', right: 'Backend braucht JSON, bekommt Prosa', why: 'Erzwingt ein Schema beim Generieren. Der Parser hört auf, an Kommas zu sterben.' },
         ],
-        takeaway: 'Bevor du etwas anbaust, benenn die Schwäche in einem Satz. Wenn du sie nicht benennen kannst, brauchst du den Anbau noch nicht.',
+        takeaway: 'Vor jedem Anbau gehört die Schwäche in einen Satz. Lässt sie sich nicht benennen, ist der Anbau noch nicht nötig.',
       },
     },
     {
@@ -42,13 +42,13 @@ export const augmentedLlm: Lesson = {
       exercise: {
         id: 'augment-which',
         format: 'pick',
-        stem: 'Anforderung aus dem Fachbereich: „Der Bot soll Fragen zu unseren Tarifen beantworten. Die ändern sich jeden Monat." Ein Anbau ist hier der entscheidende — welcher?',
+        stem: 'Anforderung aus dem Fachbereich: „Der Bot soll Fragen zu unseren Tarifen beantworten. Die ändern sich jeden Monat." Einer der vier Anbauten ist hier der entscheidende. Welcher?',
         options: [
           {
             id: 'retrieval',
             text: 'Retrieval: die aktuelle Tariftabelle zur Antwortzeit holen und dem Modell ins Fenster legen.',
             correct: true,
-            why: 'Die Schwäche heißt „Wissen veraltet monatlich". Retrieval liest immer den heutigen Stand. Fertig — mehr braucht diese Anforderung nicht.',
+            why: 'Die Schwäche heißt „Wissen veraltet monatlich". Retrieval liest immer den heutigen Stand. Mehr braucht diese Anforderung nicht.',
           },
           {
             id: 'memory',

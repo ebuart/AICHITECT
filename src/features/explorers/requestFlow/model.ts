@@ -167,7 +167,7 @@ export function traceRequest(active: Set<string>): TraceResult {
     ],
     note:
       !retrievalOn || !curationOn
-        ? 'Das Modell schreibt flüssig und überzeugt. Am Ton erkennst du den Fehler nicht.'
+        ? 'Das Modell schreibt flüssig und überzeugt. Am Ton ist der Fehler nicht zu erkennen.'
         : 'Entwurf steht, Zahl stammt aus dem Beleg. Zusätzlich schlägt das Modell einen CRM-Eintrag vor.',
     status: !retrievalOn || !curationOn ? 'warn' : 'ok',
   })

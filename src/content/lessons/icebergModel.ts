@@ -27,7 +27,7 @@ export const icebergModel: Lesson = {
       exercise: {
         id: 'tip-or-iceberg',
         format: 'categorize',
-        stem: 'Sortier die Bestandteile des Chatbots: Was davon hat das Management in der Demo gesehen — und was liegt unter der Wasserlinie?',
+        stem: 'Sortier die Bestandteile des Chatbots: Was davon hat das Management in der Demo gesehen, und was liegt unter der Wasserlinie?',
         buckets: [
           { id: 'tip', label: 'In der Demo sichtbar' },
           { id: 'deep', label: 'Unter der Wasserlinie' },
@@ -40,7 +40,7 @@ export const icebergModel: Lesson = {
           { id: 'ic-evals', text: 'Die Messung, die Verschlechterungen meldet', bucketId: 'deep', why: 'Unsichtbar, bis sie fehlt. Dann merkt man Regressionen daran, dass Kunden sich beschweren.' },
           { id: 'ic-guard', text: 'Die Freigabe-Schranke vor riskanten Aktionen', bucketId: 'deep', why: 'Interessiert in der Demo niemanden. Nach dem ersten ungefragten Datenbank-Schreibzugriff interessiert sie alle.' },
         ],
-        takeaway: 'Wenn dir jemand ein AI-Feature zeigt, frag nach der Wasserlinie: Woher kommen die Belege, wer misst, was passiert bei riskanten Aktionen.',
+        takeaway: 'Bei jedem vorgeführten AI-Feature lohnt der Blick unter die Wasserlinie: Woher kommen die Belege, wer misst, was passiert bei riskanten Aktionen?',
       },
     },
     {
@@ -48,13 +48,13 @@ export const icebergModel: Lesson = {
       exercise: {
         id: 'iceberg-why',
         format: 'pick',
-        stem: 'Der Chatbot ist live gegangen. Drei Wochen später: teils falsche, veraltete Antworten, das Team hat einen Nachmittag. Womit fängst du an?',
+        stem: 'Der Chatbot ist live gegangen. Drei Wochen später: teils falsche, veraltete Antworten, und das Team hat einen Nachmittag. Womit beginnt die Untersuchung?',
         options: [
           {
             id: 'below',
             text: 'Unter der Wasserlinie nachsehen: Für fünf falsche Antworten prüfen, welche Belege die Context-Assembly tatsächlich geliefert hat und was Retrieval fand.',
             correct: true,
-            why: 'Prompt und Antwort zeigen den Fehler nur an. Entstanden ist er darunter — und erst wenn du die gelieferte Evidenz gesehen hast, weißt du, welche Ebene ihn produziert. Alles andere ist Raten mit Werkzeug.',
+            why: 'Prompt und Antwort zeigen den Fehler nur an. Entstanden ist er darunter, und erst die gelieferte Evidenz verrät, welche Ebene ihn produziert. Alles andere ist Raten mit Werkzeug.',
           },
           {
             id: 'prompt',
@@ -64,15 +64,15 @@ export const icebergModel: Lesson = {
           },
           {
             id: 'replay',
-            text: 'Den Stand wiederherstellen, mit dem die Demo lief — da ging es ja.',
+            text: 'Den Stand wiederherstellen, mit dem die Demo lief. Da ging es ja.',
             correct: false,
-            why: 'Fühlt sich nach Sorgfalt an, ist aber rückwärts gedacht: Die Demo hat die tiefen Ebenen nie benutzt. Es gibt keinen „funktionierenden Zustand", zu dem du zurück kannst. Es gab einen gelungenen Lauf.',
+            why: 'Fühlt sich nach Sorgfalt an, ist aber rückwärts gedacht: Die Demo hat die tiefen Ebenen nie benutzt. Es gibt keinen „funktionierenden Zustand", zu dem sich zurückkehren ließe. Es gab einen gelungenen Lauf.',
           },
           {
             id: 'fewshot',
             text: 'Ein paar Muster-Antworten in den Prompt legen, damit das Modell den Ton trifft.',
             correct: false,
-            why: 'Beispiele formen Stil und Format. Fehlende Fakten erzeugen sie nicht — veraltete Antworten sind ein Versorgungsproblem.',
+            why: 'Beispiele formen Stil und Format. Fehlende Fakten erzeugen sie nicht. Veraltete Antworten sind ein Versorgungsproblem.',
           },
         ],
         takeaway: 'Debugging-Reihenfolge für AI-Features: erst die gelieferte Evidenz ansehen, dann urteilen. An der Spitze polieren kommt zuletzt, wenn überhaupt.',

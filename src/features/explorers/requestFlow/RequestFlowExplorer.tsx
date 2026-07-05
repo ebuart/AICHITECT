@@ -177,8 +177,9 @@ export function RequestFlowExplorer() {
         </div>
       ) : (
         <p className="text-[12px] leading-snug text-deck-muted">
-          Schick die Anfrage los und tipp danach jede Station an, um zu sehen, wie sie dort aussieht.
-          Dann: schalt eine Ebene ab und schick sie nochmal.
+          Anfrage abschicken, danach jede Station antippen — dort steht, wie die Anfrage an diesem
+          Punkt aussieht. Anschließend eine Ebene abschalten und nochmal senden: gleicher Input,
+          anderer Vorfall.
         </p>
       )}
 

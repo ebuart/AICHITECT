@@ -21,16 +21,16 @@ export const whatAiEngineeringBuilds: Lesson = {
       kind: 'note',
       tone: 'info',
       title: 'Zwei Berufe, ein Buzzword',
-      text: 'AI Engineers trainieren keine Modelle. Sie nehmen fertige (Claude, GPT, ein Embedding-Modell von der Stange) und bauen drumherum das, was aus einer Demo ein System macht: Retrieval, Tools, Evals, Guardrails. Das Modell selbst trainieren, Trainingsdaten kuratieren, an der Loss-Funktion drehen — das ist ML Engineering. Anderer Job, anderes Werkzeug.',
+      text: 'AI Engineers trainieren keine Modelle. Sie nehmen fertige (Claude, GPT, ein Embedding-Modell von der Stange) und bauen drumherum das, was aus einer Demo ein System macht: Retrieval, Tools, Evals, Guardrails. Das Modell selbst trainieren, Trainingsdaten kuratieren, an der Loss-Funktion drehen: Das ist ML Engineering. Anderer Job, anderes Werkzeug.',
     },
     {
       kind: 'exercise',
       exercise: {
         id: 'aie-vs-mle',
         format: 'categorize',
-        stem: 'Sprint-Planning bei einem Startup, das einen Support-Assistenten baut. Sechs Tickets liegen auf dem Board. Welche gehören zu dir (AI Engineering), welche ans ML-Team?',
+        stem: 'Sprint-Planning bei einem Startup, das einen Support-Assistenten baut. Sechs Tickets liegen auf dem Board. Welche davon sind AI Engineering, welche gehören ans ML-Team?',
         buckets: [
-          { id: 'aie', label: 'Dein Board' },
+          { id: 'aie', label: 'AI Engineering' },
           { id: 'mle', label: 'ML-Team' },
         ],
         items: [
@@ -41,7 +41,7 @@ export const whatAiEngineeringBuilds: Lesson = {
           { id: 'w-eval', text: '„Messen, wie oft der Bot ein Ticket wirklich löst"', bucketId: 'aie', why: 'Task-Erfolg messen ist Systemarbeit. Kommt in ARC-07 ausführlich dran.' },
           { id: 'w-data', text: '„100 000 alte Support-Chats für Pretraining labeln"', bucketId: 'mle', why: 'Trainingsdaten herstellen. Modell-Seite.' },
         ],
-        takeaway: 'Faustregel fürs Board: Braucht das Ticket Trainingsdaten oder GPU-Stunden, ist es ML. Braucht es Contracts, Belege oder Messung, ist es deins.',
+        takeaway: 'Faustregel: Braucht das Ticket Trainingsdaten oder GPU-Stunden, ist es ML. Braucht es Contracts, Belege oder Messung, ist es AI Engineering.',
       },
     },
     {
@@ -49,13 +49,13 @@ export const whatAiEngineeringBuilds: Lesson = {
       exercise: {
         id: 'aie-core',
         format: 'pick',
-        stem: 'Der CTO fragt trocken: „Wenn ihr die Modelle nicht selbst baut — was baut ihr dann eigentlich?" Welche Antwort trifft es?',
+        stem: 'Der CTO fragt trocken: „Wenn ihr die Modelle nicht selbst baut, was baut ihr dann eigentlich?" Welche Antwort trifft es?',
         options: [
           {
             id: 'compose',
             text: 'Das System um das Modell: die Versorgung mit den richtigen Belegen, die Tool-Anbindung, die Messung, die Absicherung. Das Modell ist ein Bauteil davon.',
             correct: true,
-            why: 'Und zwar das austauschbare Bauteil. Kommt nächstes Jahr ein besseres Modell, bleibt deine Arbeit stehen und füttert ab dann ein stärkeres Modell.',
+            why: 'Und zwar das austauschbare Bauteil. Kommt nächstes Jahr ein besseres Modell, bleibt die Systemarbeit stehen und füttert ab dann ein stärkeres Modell.',
           },
           {
             id: 'train',
@@ -67,7 +67,7 @@ export const whatAiEngineeringBuilds: Lesson = {
             id: 'prompt',
             text: '„Wir schreiben sehr gute Prompts."',
             correct: false,
-            why: 'Prompts sind ein kleiner Teil und veralten mit jedem Modellwechsel. Wenn dein Berufsbild in einen Prompt passt, hat der CTO eine Folgefrage, die dir nicht gefällt.',
+            why: 'Prompts sind ein kleiner Teil und veralten mit jedem Modellwechsel. Ein Berufsbild, das in einen Prompt passt, provoziert beim CTO eine unangenehme Folgefrage.',
           },
           {
             id: 'api',
@@ -76,7 +76,7 @@ export const whatAiEngineeringBuilds: Lesson = {
             why: 'So sieht der Prototyp aus. Zwischen dem API-Call und einem System, dem eine Firma ihre Kunden anvertraut, liegt der Rest dieser Roadmap.',
           },
         ],
-        takeaway: 'Die CTO-Antwort ist nebenbei auch die Antwort auf „ersetzt AI nicht bald euren Job?": Modelle werden besser. Das System drumherum baut trotzdem jemand.',
+        takeaway: 'Die CTO-Antwort beantwortet nebenbei auch „ersetzt AI nicht bald diesen Job?": Modelle werden besser. Das System drumherum baut trotzdem jemand.',
       },
     },
   ],

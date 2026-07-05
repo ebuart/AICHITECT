@@ -34,7 +34,7 @@ export const simplicityBeforeAgency: Lesson = {
           { id: 'a-workflow', text: 'Ein Workflow mit Tools (Routing, Parallelisierung)' },
           { id: 'a-agent', text: 'Ein autonomer Agent mit Tools' },
         ],
-        takeaway: 'Merk dir die Leiter — ab jetzt ist bei jeder Architekturfrage die erste Überlegung: Welche Stufe reicht?',
+        takeaway: 'Die Leiter ist bei jeder Architekturfrage die erste Überlegung: Welche Stufe reicht?',
       },
     },
     {
@@ -46,7 +46,7 @@ export const simplicityBeforeAgency: Lesson = {
         options: [
           {
             id: 'forced',
-            text: 'Wenn eine konkrete, gemessene Anforderung auf der aktuellen Stufe nachweislich scheitert — und sich zeigen lässt, dass die nächste Stufe genau das löst.',
+            text: 'Wenn eine konkrete, gemessene Anforderung auf der aktuellen Stufe nachweislich scheitert und sich zeigen lässt, dass die nächste Stufe genau das löst.',
             correct: true,
             why: 'Komplexität kauft man gegen ein belegtes Defizit, nicht gegen ein Gefühl. Solange die Kette ihre Zahlen liefert, gibt es hier nichts zu lösen.',
           },
@@ -60,13 +60,13 @@ export const simplicityBeforeAgency: Lesson = {
             id: 'impressive',
             text: 'Wenn Stakeholder Agenten sehen wollen.',
             correct: false,
-            why: 'Kommt vor, ist aber kein Architekturkriterium. Zeig ihnen lieber die Fehlerquote der Kette: 0,4 %. Dann die Frage, was der Agent daran verbessern soll.',
+            why: 'Kommt vor, ist aber kein Architekturkriterium. Besser: die Fehlerquote der Kette zeigen (0,4 %) und fragen, was ein Agent daran verbessern soll.',
           },
           {
             id: 'default-agent',
             text: 'Man hätte gleich als Agent starten sollen, dann stellt sich die Frage nicht.',
             correct: false,
-            why: 'Dann hättest du seit Monat eins die Agenten-Betriebskosten für eine Aufgabe mit vier festen Schritten. Und zurückgebaut wird in der Praxis fast nie.',
+            why: 'Dann liefen seit Monat eins Agenten-Betriebskosten auf, für eine Aufgabe mit vier festen Schritten. Und zurückgebaut wird in der Praxis fast nie.',
           },
         ],
         takeaway: 'Auf „dann sind wir flexibler" ist die Standard-Rückfrage: Flexibel wofür genau? Kommt keine messbare Antwort, bleibt die Stufe.',

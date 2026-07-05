@@ -77,7 +77,7 @@ const de = {
   localeAria: 'Switch app language to English',
   homeWelcome: 'Willkommen',
   homeTagline:
-    'Hier lernst du, AI-Systeme so zu bauen, wie Seniors sie bauen: Retrieval, Tools, Evals, Security, und wie man einen Schwarm von Agenten dirigiert. Nicht durch Zuschauen. In jeder Lektion machst du etwas kaputt, reparierst es oder entscheidest — und siehst, was dann passiert.',
+    'AI-Systeme bauen, wie Seniors sie bauen: Retrieval, Tools, Evals, Security — und einen Schwarm von Agenten dirigieren. Nicht durch Zuschauen: In jeder Lektion geht etwas kaputt, wird repariert oder entschieden. Die Folgen sind sichtbar.',
   homeProgress: (done: number, total: number) => `${done} von ${total} Nodes abgeschlossen`,
   homeNext: (title: string) => `Als Nächstes: ${title}`,
   homeAllDone: 'Alle Nodes abgeschlossen 🎉',

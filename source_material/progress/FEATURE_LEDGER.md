@@ -2493,3 +2493,18 @@ repair-layer categorize (use #2: apply, references what the learner just SAW) �
 loose-contract transfer pick (use #3). 00-01/00-02/01-01/01-02 re-authored (not paraphrased) per
 VX: sprint-board scene, Friday-demo/Monday-production scene, CTO question, architecture-review
 scene; EN pilot files rewritten to match; Home tagline (DE+EN) rewritten. 238 tests green.
+
+### FL-0076 — Impersonal register (VX-B1 update) + dossier case-file block (user feedback 2026-07-05)
+
+User verdict on the pilot: direction right, but (a) conversational du in stems reads like
+generative-AI chat ("reparierst du" → the site must not talk to the learner; confirms FL-0051
+impersonal rule) and (b) scenarios still feel abstract — where does the information COME from?
+Fixes: VX-B1 rewritten (impersonal scenes; functional infinitive-imperatives only; EN keeps a
+professional "you"); full du-sweep across everything authored in the overhaul (01-03, ARC-00/01,
+explorer strings, Home DE); NEW ratchet metric duForms=109 pinned, and em-dash ceiling dropped
+729→711 after the ratchet CAUGHT the new content adding one (it works). NEW `dossier` block kind
+(lessonModel + DossierView): clickable case files with read-marks — desktop sidebar, mobile chips.
+NODE-01-03 now opens with 4 artifacts (pricing/rabatte.md with the changed §3, the stale
+sales/faq.md, tools/update_crm.json contract, the #pricing-updates Slack thread explaining WHY
+the FAQ is stale) that the explorer stations then quote. Screenshot-verified desktop+mobile,
+file-clicking automated (scripts/shoot-dossier.mjs). 239 tests green.

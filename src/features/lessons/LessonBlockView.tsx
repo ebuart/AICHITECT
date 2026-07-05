@@ -5,6 +5,7 @@ import type { LessonBlock, LessonDecision } from './lessonModel'
 import { LessonVisualRenderer } from './LessonVisualRenderer'
 import { LessonChallenge } from './LessonChallenge'
 import { ExerciseView } from './ExerciseView'
+import { DossierView } from './DossierView'
 import { EXPLORERS } from '@/features/explorers/registry'
 import { BuildCampaign } from '@/features/campaign/BuildCampaign'
 import { FeedbackCard } from './FeedbackCard'
@@ -110,6 +111,9 @@ export function LessonBlockView({
       const Explorer = EXPLORERS[block.explorerId]
       return Explorer ? <Explorer /> : null
     }
+
+    case 'dossier':
+      return <DossierView intro={block.intro} files={block.files} />
 
     case 'campaign':
       return <BuildCampaign def={block.campaign} onComplete={() => onChallengeComplete?.()} />

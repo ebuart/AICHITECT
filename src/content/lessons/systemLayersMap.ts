@@ -1,16 +1,16 @@
 import type { Lesson } from '@/features/lessons/lessonModel'
 
-// NODE-01-03 · PILOT of the experience overhaul (control/10, DEC-0017). New node anatomy
-// (IX-8): short input → USE #1 feel it (RequestFlowExplorer: send a request, switch layers
-// off, read the payloads) → USE #2 apply it (assign incidents to their repair layer) →
-// USE #3 transfer it (a symptom from a different layer family). Voice per VX rules.
+// NODE-01-03 · PILOT of the experience overhaul (control/10, DEC-0017). Anatomy (IX-8):
+// dossier (the case's real files) → short input → USE #1 feel it (RequestFlowExplorer) →
+// USE #2 apply it (incidents → repair layer) → USE #3 transfer. Impersonal register per
+// VX-B1 (user 2026-07-05): the site does not talk to the learner.
 export const systemLayersMap: Lesson = {
   id: 'LESSON-01-03',
   roadmapNodeId: 'NODE-01-03',
   conceptIds: ['CONCEPT-AIE-003'],
   prerequisites: ['NODE-01-02'],
   title: 'System Layers Map',
-  estimatedMinutes: 9,
+  estimatedMinutes: 10,
   lessonMode: 'multiple-viewpoints',
   learningGoal: 'Fehler auf der Ebene reparieren, auf der sie entstehen.',
   interactionType: 'layer-stack-builder',
@@ -19,10 +19,68 @@ export const systemLayersMap: Lesson = {
   reviewHooks: ['CONCEPT-AIE-003'],
   blocks: [
     {
+      kind: 'dossier',
+      intro:
+        'Der Fall spielt bei einem Software-Händler mit internem AI-Assistenten. Das sind die relevanten Dateien aus dem Firmen-Repo. Die Stationen weiter unten zitieren genau diese Quellen.',
+      files: [
+        {
+          name: 'pricing/rabatte.md',
+          meta: 'geändert vor 6 Tagen',
+          body: `## §3 Staffelrabatt (Bestandskunden)
+
+Ab 01.07.2026 gilt:
+  · 8 %  ab  50 Stück
+  · 12 % ab 250 Stück
+
+Änderung 28.06.2026 (Pricing-Team):
+Schwellen gesenkt, Sätze erhöht.
+Vorher: 5 % ab 100 Stück.`,
+        },
+        {
+          name: 'sales/faq.md',
+          meta: 'Stand: März (veraltet)',
+          body: `# Sales-FAQ (interner Schnellüberblick)
+
+F: Welchen Staffelrabatt bekommen Bestandskunden?
+A: 5 % ab 100 Stück. Gilt nicht für Neukunden.
+
+F: Wer genehmigt Sonderkonditionen?
+A: Teamlead Sales, ab 15 % der Vertrieb-Chef.
+
+(Zuletzt gepflegt: 12.03.2026)`,
+        },
+        {
+          name: 'tools/update_crm.json',
+          meta: 'Tool-Contract des Assistenten',
+          body: `{
+  "name": "update_crm",
+  "description": "Schreibt Konditionen in Kundendatensätze.",
+  "parameters": {
+    "segment":     { "type": "string" },
+    "rabattstufe": { "type": "string" }
+  },
+  "scope": "write:crm/*"        // schreibt echte Daten
+}`,
+        },
+        {
+          name: '#pricing-updates (Slack)',
+          meta: 'letzte Woche',
+          body: `[28.06. 14:02] Lena (Pricing):
+Heads-up: Staffelrabatt-Änderung ist ab 1.7. live.
+rabatte.md ist aktualisiert. Die Sales-FAQ bitte
+noch jemand anfassen, die hat noch die alten Zahlen.
+
+[28.06. 14:09] Jonas: 👍 mach ich die Tage
+
+(Stand heute: nicht passiert.)`,
+        },
+      ],
+    },
+    {
       kind: 'note',
       tone: 'info',
       title: 'Eine Anfrage, sieben Stationen',
-      text: 'Unten steht ein komplettes AI-System. Eine Mitarbeiterin fragt nach dem neuen Staffelrabatt — die Zahl hat sich vor einer Woche geändert, im Trainingswissen des Modells steht noch die alte. Schick die Anfrage ab und schau dir an jeder Station an, was dort wirklich vorliegt. Danach der interessante Teil: Schalt Ebenen ab. Jede fehlende Ebene produziert einen anderen, typischen Vorfall.',
+      text: 'Eine Mitarbeiterin fragt den Assistenten nach dem Staffelrabatt. Die Ausgangslage steckt in den Dateien oben: Die Zahl hat sich vor sechs Tagen geändert, die FAQ ist veraltet, und das Modell kennt aus dem Training höchstens den alten Stand. Unten läuft diese Anfrage durch das komplette System. Anfrage abschicken, jede Station antippen und nachlesen, was dort wirklich vorliegt. Dann der interessante Teil: Ebenen abschalten. Jede fehlende Ebene produziert einen anderen, typischen Vorfall.',
     },
     {
       kind: 'explorer',
@@ -33,19 +91,19 @@ export const systemLayersMap: Lesson = {
       exercise: {
         id: 'layer-roles',
         format: 'categorize',
-        stem: 'Vier Vorfälle aus echten Systemen. Auf welcher Ebene reparierst du jeden — also dort, wo er entstanden ist?',
+        stem: 'Vier Vorfälle aus echten Systemen. Wo ist jeder entstanden und muss folglich auch repariert werden?',
         buckets: [
           { id: 'context', label: 'Context / Retrieval' },
           { id: 'tool', label: 'Tool-Ebene' },
           { id: 'eval', label: 'Eval / Observability' },
         ],
         items: [
-          { id: 'inc-stale', text: 'Der Bot nennt Preise von letztem Jahr. Klingt dabei völlig sicher.', bucketId: 'context', why: 'Das ist der Lauf ohne Retrieval, den du gerade gesehen hast. Das Modell kann nur wiedergeben, was man ihm hinlegt — die Reparatur ist die Versorgung, nicht das Modell.' },
-          { id: 'inc-delete', text: 'Beim Aufräumen alter Tickets hat der Agent auch drei offene gelöscht. Rückgängig geht nicht.', bucketId: 'tool', why: 'Ein irreversibler Schreibzugriff ohne Gate. Dieselbe Geschichte wie der CRM-Eintrag im Explorer: die Fähigkeit war ungeschützt, nicht der Auftrag falsch.' },
-          { id: 'inc-silent', text: 'Seit drei Wochen werden die Antworten schlechter. Aufgefallen ist es, als ein Kunde sich beschwert hat.', bucketId: 'eval', why: 'Kein Eval, keine Messung — Regressionen laufen unbemerkt auf, bis ein Mensch zufällig hinsieht. Repariert wird die Messbarkeit, nicht die eine Antwort.' },
+          { id: 'inc-stale', text: 'Der Bot nennt Preise von letztem Jahr. Klingt dabei völlig sicher.', bucketId: 'context', why: 'Der Lauf ohne Retrieval aus dem Explorer. Ein Modell kann nur wiedergeben, was ihm vorliegt. Repariert wird die Versorgung, nicht das Modell.' },
+          { id: 'inc-delete', text: 'Beim Aufräumen alter Tickets hat der Agent auch drei offene gelöscht. Rückgängig geht nicht.', bucketId: 'tool', why: 'Ein irreversibler Schreibzugriff ohne Gate, dieselbe Geschichte wie der CRM-Eintrag im Explorer. Die Fähigkeit war ungeschützt, nicht der Auftrag falsch.' },
+          { id: 'inc-silent', text: 'Seit drei Wochen werden die Antworten schlechter. Aufgefallen ist es, als ein Kunde sich beschwert hat.', bucketId: 'eval', why: 'Ohne Messung laufen Regressionen unbemerkt auf, bis zufällig ein Mensch hinsieht. Repariert wird die Messbarkeit, nicht die eine Antwort.' },
           { id: 'inc-noise', text: 'Die richtige Doku ist im Prompt enthalten. Zitiert wird trotzdem regelmäßig eine alte FAQ.', bucketId: 'context', why: 'Der Lauf ohne Kuration: 14 Dokumente im Fenster, der richtige Absatz auf Position 9. Zu viel Material ist ein Context-Problem, auch wenn nichts überläuft.' },
         ],
-        takeaway: 'Frag bei jedem Vorfall zuerst: Auf welcher Station wäre er im Explorer sichtbar geworden? Da wird repariert.',
+        takeaway: 'Bei jedem Vorfall zuerst die Frage: An welcher Station wäre er im Explorer sichtbar geworden? Dort wird repariert.',
       },
     },
     {
@@ -59,7 +117,7 @@ export const systemLayersMap: Lesson = {
             id: 'contract',
             text: 'Am Tool-Contract: das Datums-Feld bekommt ein festes Format im Schema (type + pattern), statt freien Text zu erlauben.',
             correct: true,
-            why: 'Dass es „vorher ging", war Glück — das alte Modell hat zufällig brav formatiert. Ein Feld, das jedes Format annimmt, bricht bei jedem Modellwechsel anders. Das Schema macht aus der Konvention eine Regel.',
+            why: 'Dass es „vorher ging", war Glück: Das alte Modell hat zufällig brav formatiert. Ein Feld, das jedes Format annimmt, bricht bei jedem Modellwechsel anders. Das Schema macht aus der Konvention eine Regel.',
           },
           {
             id: 'rollback',
@@ -71,16 +129,16 @@ export const systemLayersMap: Lesson = {
             id: 'prompt',
             text: 'In den System-Prompt schreiben: „Datumsangaben bitte immer als ISO 8601."',
             correct: false,
-            why: 'Eine Bitte, keine Grenze. Hilft im Schnitt, garantiert nichts — und du misst nie, wann sie ignoriert wird. Die Ebene, die Formate erzwingen kann, ist das Schema.',
+            why: 'Eine Bitte, keine Grenze. Hilft im Schnitt, garantiert nichts, und niemand misst, wann sie ignoriert wird. Die Ebene, die Formate erzwingen kann, ist das Schema.',
           },
           {
             id: 'catch',
             text: 'Im Backend einen Parser bauen, der „nächsten Dienstag" errät.',
             correct: false,
-            why: 'Jetzt gibt es zwei Systeme, die raten. Die Reparatur wandert eine Ebene zu tief und macht das eigentliche Interface noch undefinierter.',
+            why: 'Dann raten zwei Systeme. Die Reparatur wandert eine Ebene zu tief und macht das eigentliche Interface noch undefinierter.',
           },
         ],
-        takeaway: 'Wenn ein Modellwechsel etwas kaputt macht, das „immer ging": Erst prüfen, ob es je garantiert war. Meistens fehlt die Grenze, nicht das alte Modell.',
+        takeaway: 'Wenn ein Modellwechsel etwas kaputt macht, das „immer ging": erst prüfen, ob es je garantiert war. Meistens fehlt die Grenze, nicht das alte Modell.',
       },
     },
   ],

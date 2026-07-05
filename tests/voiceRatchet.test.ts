@@ -5,15 +5,17 @@ import { globSync, readFileSync } from 'node:fs'
 // content. The ceilings are the CURRENT counts: new content cannot raise them, and every
 // arc rewrite lowers them. Numbers only ever go down — update the ceiling when you rewrite.
 //
-// Baseline 2026-07-05 (after the ARC-00/01 voice pass):
-//   em-dash " — "            729
-//   "Genau …" why-openers     16
-//   maxim-shaped takeaways    67
+// Baseline 2026-07-05 (after the ARC-00/01 voice pass + impersonal-register sweep):
+//   em-dash " — "                          711
+//   "Genau …" why-openers                   16
+//   maxim-shaped takeaways                  66
+//   conversational du-forms (VX-B1)        109
 
 const CEILINGS = {
-  emDash: 729,
+  emDash: 711,
   genauOpeners: 16,
-  maximTakeaways: 67,
+  maximTakeaways: 66,
+  duForms: 109,
 }
 
 function contentBody(): string {
@@ -48,5 +50,12 @@ describe('voice ratchet — machine-tell counts may only go down (VX-E1)', () =>
   it(`maxim-shaped takeaways (aphorism with em-dash) stay at or below ${CEILINGS.maximTakeaways}`, () => {
     const count = (body.match(/takeaway: '[^']* — [^']*'/g) ?? []).length
     expect(count).toBeLessThanOrEqual(CEILINGS.maximTakeaways)
+  })
+
+  it(`conversational du-forms in learner strings stay at or below ${CEILINGS.duForms} (VX-B1)`, () => {
+    const strings = body.match(/(?:stem|takeaway|why|text|title|intro|note):\s*'(?:[^'\\]|\\.)*'/g) ?? []
+    const du = /\b(du|dir|dich|dein|deine|deinem|deinen|deiner|deins)\b/gi
+    const count = strings.reduce((n, s) => n + (s.match(du)?.length ?? 0), 0)
+    expect(count).toBeLessThanOrEqual(CEILINGS.duForms)
   })
 })
