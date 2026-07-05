@@ -43,7 +43,7 @@ export const nodes: RoadmapNode[] = [
     purpose: 'Fehler nach System-Layer klassifizieren.',
     outcome: 'classify failures by system layer.',
     conceptIds: ['LAYER-01', 'LAYER-02', 'LAYER-03', 'LAYER-04', 'LAYER-05', 'LAYER-06', 'LAYER-07', 'LAYER-08', 'LAYER-09'],
-    prerequisites: ['NODE-01-02'], unlocks: ['NODE-02-01'],
+    prerequisites: ['NODE-01-02'], unlocks: ['NODE-02-01', 'NODE-14-01'],
     labIds: [LAB.layerStackBuilder], lessonModes: ['multiple-viewpoints'],
   },
   {
@@ -457,5 +457,15 @@ export const nodes: RoadmapNode[] = [
     outcome: 'direct an entire product build as a strategy game; decisions carry state to a launch scorecard.',
     conceptIds: ['all_core'], prerequisites: ['NODE-13-03'], unlocks: [],
     labIds: [], lessonModes: ['scenario-first'],
+  },
+  // ── ARC-14 SYSTEM PHYSICS (OQ-0017): the timeless mechanics under every system, taught on
+  // AI infrastructure. First node: what happens under load.
+  {
+    id: 'NODE-14-01', arcId: 'ARC-14', order: 56,
+    title: 'Under Load: Queues & Backpressure',
+    purpose: 'Warteschlangen, Kapazität und Backpressure am lebenden System.',
+    outcome: 'reason about queues, capacity, retry storms and load shedding; apply Little\'s Law.',
+    conceptIds: ['CONCEPT-SYS-001'], prerequisites: ['NODE-01-03'], unlocks: [],
+    labIds: [], lessonModes: ['worked-trace-first'],
   },
 ]

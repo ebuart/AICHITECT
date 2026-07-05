@@ -17,4 +17,5 @@ export const arcs: RoadmapArc[] = [
   { id: 'ARC-11', order: 11, title: "The Director's Seat", goal: 'Vom Bauen zum Dirigieren: Agenten-Schwärme ausrichten — Context, Struktur, Aufsicht (DIRECTION track).' },
   { id: 'ARC-12', order: 12, title: 'Targeting the Swarm', goal: 'Den Schwarm ausrichten: der Brief als Engpass, Abhängigkeiten sequenzieren, Drift triagieren (DIRECTION track, research-backed).' },
   { id: 'ARC-13', order: 13, title: 'Delivery & Acceptance', goal: 'Die PM-Hälfte: Kapazität nach Wert/Risiko priorisieren und streichen, Agent-Output gegen den Brief abnehmen (DIRECTION track).' },
+  { id: 'ARC-14', order: 14, title: 'System Physics', goal: 'Die zeitlose Mechanik unter jedem System: Warteschlangen, Backpressure, Kapazität (ARCHITECTURE-PHYSICS track, OQ-0017).' },
 ]

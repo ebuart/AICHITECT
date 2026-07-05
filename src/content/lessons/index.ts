@@ -55,6 +55,7 @@ import { dirPrioritizeAndCut } from './dirPrioritizeAndCut'
 import { dirAcceptOrSendBack } from './dirAcceptOrSendBack'
 import { dirDirectTheBuild } from './dirDirectTheBuild'
 import { buildCampaign } from './buildCampaign'
+import { underLoad } from './underLoad'
 
 // Curriculum lessons (PHASE_5). Contiguous unlockable chain ARC-00..ARC-09 (38 nodes),
 // wired to the 5 core labs: Foundations (00-01..01-03) + Context (02-*) + Tool Boundaries
@@ -123,6 +124,8 @@ export const lessons: Lesson[] = [
   // The PRODUCTION CAPSTONE — the Build Campaign strategy game (NODE-13-04). Direct a whole
   // product end-to-end; decisions carry state to a launch scorecard.
   buildCampaign,
+  // ── ARC-14 SYSTEM PHYSICS (OQ-0017) — timeless architecture mechanics on AI infrastructure.
+  underLoad,
 ]
 
 export const lessonById: Record<LessonId, Lesson> = Object.fromEntries(

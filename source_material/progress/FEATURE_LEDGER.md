@@ -2583,3 +2583,19 @@ links with arrowheads + marching-dash animation on the traversed segment (index.
 disabled stations render broken always — hatched, dashed border, struck label, hollow dot
 (structure ≠ spoiler; verdict colors still wait for the solve). Rules codified as IX-19/IX-20.
 Browser-replayed with the new targets; hole + flow verified in shots. 245 tests green.
+
+### FL-0082 — ARC-14 System Physics opened: NODE-14-01 "Under Load" + LoadSim explorer (OQ-0017)
+
+The senior-gap answer, first node. NEW ARC-14 + NODE-14-01 (prereq NODE-01-03, unlocks-edge added,
+count test 55→56). Lesson in full protocol grammar: Akte (gateway architecture note · Dienstag-
+morning monitoring log · Slack thread with Jonas' timeout+retry idea · provider rate-limit doc) →
+LOADSIM (EXP-LOAD): deterministic queue simulation precomputed as frames (2 slots ≙ 2 Kassen,
+pattern-based arrivals incl. bursts, optional cap/timeout/retry) played as an animated ROAD
+(neu → Warteschlange as dots → Slots → fertig) with 7 tappable metric tiles, per-tile history
+bars, and a LIVE Little's-Law strip (L ≈ λ·W computes from the run). Five runs = five laws:
+stable in=out · over-capacity queues grow unbounded · retries amplify load (Zugänge > Neu visible)
+· bounded queue + 429 bounds latency honestly · bursts queue even under average capacity. Then
+Little's-Law compute exercise + Black-Friday transfer (retry-storm and timeout-raise as tempting
+wrongs). Tests pin all five laws + protocol guards (watch/chips never name the target; every
+target carries signal); one guard caught a watch-line spoiler during authoring. VIS rules
+(Skilljar bar, user request) added to control/10 + treatment-map row. 254 tests green.

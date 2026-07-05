@@ -141,6 +141,20 @@ rooms and good official courses, and (c) making concepts SEEN and FELT before th
         only VERDICTS wait for the solve (IX-14). Prompts never re-describe what the outcome
         line or the trace already shows.
 
+## PART 2b — VISUAL BAR (VIS rules; reference = Anthropic Academy / Skilljar course diagrams,
+## user 2026-07-05: "simple visuals for hard topics — deliver even harder knowledge the same way")
+
+[VIS-1] ONE IDEA PER DIAGRAM. If a visual needs a paragraph to explain, it is two diagrams.
+[VIS-2] LABELED BOXES, DIRECTED FLOW: rectangles with short labels, arrows left→right, the data
+        visible as it moves (dots, chips, counts). No decoration, no gradients, no icon noise.
+[VIS-3] BUILD-UP OVER TIME: complex pictures assemble step by step — in our case the RUN is the
+        build-up (the queue fills, the law emerges). Never show the finished complexity first.
+[VIS-4] ONE ACCENT AT A TIME: a single element carries emphasis per moment (the current station,
+        the overflow count). Everything else stays quiet.
+[VIS-5] THE NUMBERS ARE THE PICTURE: live values in the diagram beat a separate chart. A formula
+        that computes itself from the running system (L ≈ λ·W strip) is the strongest visual we
+        have — prefer emergent math over asserted math.
+
 ## PART 3 — TREATMENT MAP (what each arc's flagship interaction IS)
 
 Each arc gets ONE native flagship + rewritten text. Legacy boards stay until their replacement lands.
@@ -159,6 +173,7 @@ Each arc gets ONE native flagship + rewritten text. Legacy boards stay until the
 | 09 Repo | a codebase | REPO EXPLORER: a simulated ~20-file VS-Code-style project; tasks like "find what the agent needs" in a legible vs illegible variant of the same repo |
 | 10 Capstone | integration | existing capstone sim, upgraded to drive the explorer pipeline |
 | 11–13 Direction | orchestration | SWARM BOARD (specced in control/09) + existing Build Campaign |
+| 14 System Physics (OQ-0017) | load & time | LOADSIM (built, EXP-LOAD): queue road + metric tiles + live Little's-Law strip; future nodes: caching, latency budgets, retries/idempotency, blast radius |
 | Werft | the world | stays — it IS the bird's-eye sim; gets voice pass |
 
 ROLLOUT ORDER: 01 (explorer, this doc's proof) → 02 (window) → 05 (bench) → 08 (attack replay,

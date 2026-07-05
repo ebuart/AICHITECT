@@ -356,3 +356,27 @@ OPEN (ordered by value):
   profiles). Nearest cheap equivalent: a shareable capstone/mastery summary (static export). Optional.
 - (e) SOURCES SURFACE (carried from OQ-0015d): research notes exist in /source_material/research but
   the app cites nothing. A per-lesson "sources" line = credibility + follow-up reading. Cheap, high value.
+
+### OQ-0017 — ARCHITECTURE-PHYSICS track (user 2026-07-05: "we don't really teach senior level architectural knowledge")
+
+PRIORITY: HIGH (the user is right — audited)
+PHASE: curriculum expansion, runs with the experience overhaul
+STATUS: open — ARC-14 created, first node shipped (NODE-14-01), rest needs authoring
+CONTEXT (honest gap assessment):
+- What exists teaches AI-LAYER judgment (context/retrieval/evals/security) and DIRECTION. What was
+  missing is the timeless mechanics seniors are actually hired for: behavior under load, failure
+  containment, state, cost. These are provider-independent, model-independent — maximum SPINE
+  durability — and the most life-pattern-visual topics in the whole field.
+PLANNED NODES (each: Akte → protocol-grammar interactive → compute + transfer; life-pattern first):
+- (a) ✅ NODE-14-01 Under Load: queues, capacity, retry storms, load shedding, Little's Law
+  (supermarket checkout; EXP-LOAD). SHIPPED 2026-07-05.
+- (b) Caching & Staleness: pantry vs. store run; hit rate, TTL vs. invalidation, thundering herd.
+- (c) Latency Budgets: a pizza-delivery promise decomposed; p50 vs p99, budget per hop, timeouts
+  as contracts (fits the request-flow explorer with a stopwatch overlay).
+- (d) Retries & Idempotency: the double-charged credit card; retry-safe vs. not, dedup keys.
+- (e) Blast Radius & Bulkheads: ship compartments; isolation pools, circuit breakers (reuses
+  LoadSim with two pools).
+- (f) State & Consistency: two cash registers, one inventory; read-after-write surprises.
+- (g) Cost Physics: tokens×requests×margin; the unit-economics dashboard.
+ORDER: (c) next (composes with EXP-REQUEST-FLOW), then (b)/(d). Each node = one everyday pattern,
+one interactive, laws pinned in tests like tests/loadSim.test.ts.

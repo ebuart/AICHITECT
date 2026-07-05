@@ -47,7 +47,7 @@ describe('roadmap unlock logic (RD-001)', () => {
   it('computes a status for every node in the graph', () => {
     const statuses = computeNodeStatuses(roadmapGraph, EMPTY_PROGRESS_STATE)
     expect(Object.keys(statuses)).toHaveLength(roadmapGraph.nodes.length)
-    expect(roadmapGraph.nodes).toHaveLength(55) // 43 core + ARC-11 (4) + ARC-12 (3) + ARC-13 (4, incl. round-trip + Build Campaign)
+    expect(roadmapGraph.nodes).toHaveLength(56) // 43 core + ARC-11 (4) + ARC-12 (3) + ARC-13 (4, incl. round-trip + Build Campaign)
   })
 })
 
