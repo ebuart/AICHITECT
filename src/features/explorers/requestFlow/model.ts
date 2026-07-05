@@ -268,3 +268,87 @@ export function traceRequest(active: Set<string>): TraceResult {
 }
 
 export const ALL_ON: ReadonlySet<string> = new Set(FLOW_TOGGLES.map((t) => t.id))
+
+// ── Guided protocol (user feedback 2026-07-05: a free sandbox gets skimmed; the runs are
+// the lesson, so they are REQUIRED). Five prescribed runs; after each, the learner must tap
+// the station that answers the diagnostic question before the next run unlocks. Every solved
+// run adds a row to the findings board — at the end the layer→incident map is visible.
+export interface Experiment {
+  id: string
+  /** Card title, e.g. "Lauf 2 · ohne Retrieval". */
+  title: string
+  /** Which layer(s) this run removes — shown in the findings board. */
+  missing: string
+  /** Toggle ids that stay ON for this run. */
+  active: string[]
+  /** Diagnostic question after the run — answered by tapping a station. */
+  prompt: string
+  /** The station that answers the prompt. */
+  target: StationId
+  /** Shown after the correct tap. */
+  solvedNote: string
+  /** Findings-board row: what this run produced. */
+  finding: string
+  verdict: 'good' | 'bad' | 'blocked'
+}
+
+const ids = FLOW_TOGGLES.map((t) => t.id)
+const except = (...off: string[]) => ids.filter((id) => !off.includes(id))
+
+export const EXPERIMENTS: Experiment[] = [
+  {
+    id: 'baseline',
+    title: 'Lauf 1 · alle Ebenen an',
+    missing: '—',
+    active: [...ids],
+    prompt: 'Sauberer Lauf. Eine Station hat trotzdem eingegriffen und eine riskante Aktion angehalten. Welche? Antippen.',
+    target: 'toolgate',
+    solvedNote: 'Das Tool-Gate. Der CRM-Schreibzugriff bleibt ein Vorschlag, bis ein Mensch freigibt. In den nächsten Läufen fällt je eine Ebene weg.',
+    finding: 'Belegte Antwort. Riskante Aktion angehalten.',
+    verdict: 'good',
+  },
+  {
+    id: 'no-retrieval',
+    title: 'Lauf 2 · ohne Retrieval',
+    missing: 'Retrieval',
+    active: except('retrieval'),
+    prompt: 'Der Nutzer bekommt keine Antwort. Welche Station hat die Notbremse gezogen? Antippen.',
+    target: 'check',
+    solvedNote: 'Der Check. Ohne Belege war die Zahl des Modells ungestützt, also hält er sie zurück. Unbefriedigend, aber kein Schaden.',
+    finding: 'Keine Antwort. Check zieht die Notbremse.',
+    verdict: 'blocked',
+  },
+  {
+    id: 'no-curation',
+    title: 'Lauf 3 · ohne Context-Kuration',
+    missing: 'Kuration',
+    active: except('curation'),
+    prompt: 'Falsche Zahl, mit echter Quellenangabe. An welcher Station ist der Schaden entstanden? Antippen.',
+    target: 'context',
+    solvedNote: 'Im Context. 14 Dokumente im Fenster, der richtige Absatz auf Position 9, das alte FAQ gewinnt. Der Check lässt es durch, denn „gedeckt" heißt nicht „richtig".',
+    finding: 'Falsche Zahl, mit Quellenangabe.',
+    verdict: 'bad',
+  },
+  {
+    id: 'no-gate',
+    title: 'Lauf 4 · ohne Tool-Gate',
+    missing: 'Tool-Gate',
+    active: except('toolgate'),
+    prompt: 'Die Antwort stimmt. Trotzdem ist heute ein Vorfall passiert. An welcher Station? Antippen.',
+    target: 'toolgate',
+    solvedNote: 'Am fehlenden Gate: update_crm lief ungefragt durch, 214 Datensätze geändert. Eine richtige Antwort und ein Schaden schließen sich nicht aus.',
+    finding: '214 CRM-Einträge ungefragt geändert.',
+    verdict: 'bad',
+  },
+  {
+    id: 'no-net',
+    title: 'Lauf 5 · ohne Retrieval und ohne Check',
+    missing: 'Retrieval + Check',
+    active: except('retrieval', 'check'),
+    prompt: 'Die erfundene Zahl erreicht den Nutzer. Welche Station hätte sie als letzte noch stoppen können? Antippen.',
+    target: 'check',
+    solvedNote: 'Der Check, wie in Lauf 2. Der Unterschied zwischen „keine Antwort" und „falsche Antwort beim Kunden" war genau eine Ebene. Das ist Defense in Depth.',
+    finding: 'Erfundene Zahl erreicht den Nutzer.',
+    verdict: 'bad',
+  },
+]

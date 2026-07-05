@@ -109,7 +109,7 @@ export function LessonBlockView({
 
     case 'explorer': {
       const Explorer = EXPLORERS[block.explorerId]
-      return Explorer ? <Explorer /> : null
+      return Explorer ? <Explorer onComplete={() => onChallengeComplete?.()} /> : null
     }
 
     case 'dossier':

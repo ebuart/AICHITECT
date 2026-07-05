@@ -46,18 +46,19 @@ export function LessonView({ lesson, onComplete }: LessonViewProps) {
     exercises.every((e) => doneExercises.has(e.id))
   const mode = lessonModeInfo(lesson.lessonMode)
 
-  // Challenges AND campaigns auto-complete the lesson (the mechanic/sim drives completion).
+  // Challenges, campaigns AND explorer protocols are required work: the lesson completes
+  // only when all of them are finished — and, where exercises exist, those too (IX-8).
   const challengeIndices = lesson.blocks.flatMap((b, i) =>
-    b.kind === 'challenge' || b.kind === 'campaign' ? [i] : [],
+    b.kind === 'challenge' || b.kind === 'campaign' || b.kind === 'explorer' ? [i] : [],
   )
   const hasChallenge = challengeIndices.length > 0
 
   // Sequential reveal: show blocks up to and including the first not-yet-finished
-  // challenge; hide everything after it until that challenge is done.
+  // challenge/explorer; hide everything after it until that block is done.
   let shownThrough = lesson.blocks.length
   for (let i = 0; i < lesson.blocks.length; i++) {
     const k = lesson.blocks[i].kind
-    if ((k === 'challenge' || k === 'campaign') && !doneChallenges.has(i)) {
+    if ((k === 'challenge' || k === 'campaign' || k === 'explorer') && !doneChallenges.has(i)) {
       shownThrough = i + 1
       break
     }
@@ -66,18 +67,20 @@ export function LessonView({ lesson, onComplete }: LessonViewProps) {
   const markChallengeDone = (i: number) =>
     setDoneChallenges((prev) => (prev.has(i) ? prev : new Set(prev).add(i)))
 
-  // Fire completion exactly once, when every embedded challenge is finished.
+  // Fire completion exactly once, when every required block is finished — all
+  // challenges/explorers worked through AND (where present) every exercise answered.
   const firedRef = useRef(false)
   useEffect(() => {
     if (
       !firedRef.current &&
       hasChallenge &&
-      challengeIndices.every((i) => doneChallenges.has(i))
+      challengeIndices.every((i) => doneChallenges.has(i)) &&
+      allAnswered
     ) {
       firedRef.current = true
       onComplete()
     }
-  }, [doneChallenges, hasChallenge, challengeIndices, onComplete])
+  }, [doneChallenges, hasChallenge, challengeIndices, allAnswered, onComplete])
 
   return (
     <div className="flex flex-col gap-4 pb-2">

@@ -80,7 +80,7 @@ noch jemand anfassen, die hat noch die alten Zahlen.
       kind: 'note',
       tone: 'info',
       title: 'Eine Anfrage, sieben Stationen',
-      text: 'Eine Mitarbeiterin fragt den Assistenten nach dem Staffelrabatt. Die Ausgangslage steckt in den Dateien oben: Die Zahl hat sich vor sechs Tagen geändert, die FAQ ist veraltet, und das Modell kennt aus dem Training höchstens den alten Stand. Unten läuft diese Anfrage durch das komplette System. Anfrage abschicken, jede Station antippen und nachlesen, was dort wirklich vorliegt. Dann der interessante Teil: Ebenen abschalten. Jede fehlende Ebene produziert einen anderen, typischen Vorfall.',
+      text: 'Eine Mitarbeiterin fragt den Assistenten nach dem Staffelrabatt. Die Ausgangslage steckt in den Dateien oben: Die Zahl hat sich vor sechs Tagen geändert, die FAQ ist veraltet, und das Modell kennt aus dem Training höchstens den alten Stand. Unten läuft dieselbe Anfrage fünfmal durch das System, und in jedem Lauf fehlt eine andere Ebene. Nach jedem Lauf eine Frage, beantwortet durch Antippen der richtigen Station; die Payloads dort verraten es. Jeder Befund landet im Protokoll. Am Ende steht die komplette Karte: welche fehlende Ebene welchen Vorfall produziert.',
     },
     {
       kind: 'explorer',

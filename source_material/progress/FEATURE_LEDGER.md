@@ -2508,3 +2508,19 @@ NODE-01-03 now opens with 4 artifacts (pricing/rabatte.md with the changed §3, 
 sales/faq.md, tools/update_crm.json contract, the #pricing-updates Slack thread explaining WHY
 the FAQ is stale) that the explorer stations then quote. Screenshot-verified desktop+mobile,
 file-clicking automated (scripts/shoot-dossier.mjs). 239 tests green.
+
+### FL-0077 — Explorer becomes a REQUIRED guided protocol (user feedback 2026-07-05)
+
+Feedback: the sandbox explorer demanded nothing; one or two taps and done, the layer→incident
+mapping stayed invisible. Rework: five prescribed runs (Referenz · ohne Retrieval · ohne Kuration ·
+ohne Tool-Gate · ohne Retrieval+Check), each ending in a diagnostic question answered by TAPPING
+the right station (wrong tap opens that station's payload + hint, reading is the loop; run 5's
+answer is deliberately a switched-off station: the absence is the answer). Every solved run fills
+a row of the FINDINGS BOARD (ohne X → Vorfall), which at 5/5 IS the visible break-map; then the
+toggles unlock for free play. Runs 2+ animate faster (340ms/step). GATING: `explorer` blocks now
+count as required work in LessonView (sequential reveal hides the exercises until the protocol is
+done) and lesson completion additionally requires all exercises where present (no mixed legacy
+lessons exist, verified). Protocol consistency pinned in tests (targets exist, verdicts match
+findings, no-net exception documented). Played end-to-end via browser automation incl. a
+deliberate wrong tap (scripts/shoot-protocol.mjs); the driver itself had a bug the screenshots
+caught (case-sensitive text match clicked nothing) — fixed, replayed, verified. 242 tests green.

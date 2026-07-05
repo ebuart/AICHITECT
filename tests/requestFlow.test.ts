@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { ALL_ON, FLOW_TOGGLES, traceRequest } from '@/features/explorers/requestFlow/model'
+import { ALL_ON, EXPERIMENTS, FLOW_TOGGLES, traceRequest } from '@/features/explorers/requestFlow/model'
 
 const on = (...off: string[]) => {
   const s = new Set(ALL_ON)
@@ -50,5 +50,38 @@ describe('RequestFlowExplorer trace model', () => {
     const answers = FLOW_TOGGLES.map((tg) => traceRequest(on(tg.id)).answer)
     const keys = answers.map((a) => `${a.verdict}|${a.text}`)
     expect(new Set(keys).size).toBe(keys.length)
+  })
+})
+
+// The guided protocol must be internally consistent: each run's diagnostic target exists in
+// its trace, and the trace's outcome matches the finding the board will show.
+describe('guided experiment protocol', () => {
+  it('has five runs, starting with the full-system baseline', () => {
+    expect(EXPERIMENTS).toHaveLength(5)
+    expect(new Set(EXPERIMENTS[0].active)).toEqual(new Set(ALL_ON))
+  })
+
+  it('every experiment target station exists and its verdict matches the trace', () => {
+    for (const e of EXPERIMENTS) {
+      const t = traceRequest(new Set(e.active))
+      expect(t.steps.some((s) => s.station === e.target), `${e.id} target`).toBe(true)
+      expect(t.answer.verdict, `${e.id} verdict`).toBe(e.verdict)
+    }
+  })
+
+  it('diagnostic targets are live stations — except no-net, where the absence IS the answer', () => {
+    for (const e of EXPERIMENTS) {
+      const t = traceRequest(new Set(e.active))
+      const target = t.steps.find((s) => s.station === e.target)!
+      if (e.id === 'no-net') {
+        // Run 5 asks which station could have stopped the fabricated number LAST — the
+        // learner must tap the switched-off check. Two off stations exist in that run, so
+        // it is not a giveaway.
+        expect(target.status).toBe('off')
+        expect(t.steps.filter((s) => s.status === 'off').length).toBeGreaterThan(1)
+      } else {
+        expect(target.status, `${e.id} target status`).not.toBe('off')
+      }
+    }
   })
 })
