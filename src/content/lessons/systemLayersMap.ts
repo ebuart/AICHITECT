@@ -21,7 +21,7 @@ export const systemLayersMap: Lesson = {
     {
       kind: 'dossier',
       intro:
-        'Der Fall spielt bei einem Software-Händler mit internem AI-Assistenten. Das sind die relevanten Dateien aus dem Firmen-Repo. Die Traces weiter unten zeigen nur rohe Werte; was aktuell ist und was nicht, steht ausschließlich hier. Alle vier Dateien öffnen, dann geht es weiter.',
+        'Ein Software-Händler mit internem AI-Assistenten. Die relevanten Dateien aus dem Firmen-Repo; die Traces unten zeigen nur rohe Werte, was davon aktuell ist, steht allein hier.',
       files: [
         {
           name: 'pricing/rabatte.md',
@@ -80,7 +80,7 @@ noch jemand anfassen, die hat noch die alten Zahlen.
       kind: 'note',
       tone: 'info',
       title: 'Eine Anfrage, sieben Stationen',
-      text: 'Eine Mitarbeiterin fragt den Assistenten nach dem Staffelrabatt. Die Ausgangslage steckt in den Dateien oben: Die Zahl hat sich vor sechs Tagen geändert, die FAQ ist veraltet, und das Modell kennt aus dem Training höchstens den alten Stand. Unten läuft dieselbe Anfrage fünfmal durch das System, und in jedem Lauf fehlt eine andere Ebene. Nach jedem Lauf eine Frage, beantwortet durch Antippen der richtigen Station; die Payloads dort verraten es. Jeder Befund landet im Protokoll. Am Ende steht die komplette Karte: welche fehlende Ebene welchen Vorfall produziert.',
+      text: 'Eine Mitarbeiterin fragt den Assistenten nach dem neuen Staffelrabatt. Unten läuft dieselbe Anfrage fünfmal durch das System, in jedem Lauf fehlt eine andere Ebene.',
     },
     {
       kind: 'explorer',

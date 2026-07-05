@@ -2553,3 +2553,17 @@ DossierView fires onComplete when every file was opened („Akte x/4 gelesen" he
 joined the required-block kinds, and sequential reveal hides note+explorer until the Akte is
 fully read. Single-file dossiers auto-complete. Browser-replayed: gate verified (first render
 shows only the Akte), raw Modell payload verified, annotation unlock verified. 244 tests green.
+
+### FL-0080 — De-narration pass + the protocol grammar codified (user feedback 2026-07-05)
+
+Feedback: redundant guidance everywhere — „Alle vier Dateien öffnen…" next to the 1/4-gelesen
+counter, the note block pre-summarizing what the Akte exists to reveal (Zahl geändert / FAQ
+veraltet / Training alt), and mechanics narration repeated every run ("Netflix narration").
+Fixes: dossier intro trimmed to premise+relationship; note block cut to two sentences (premise
++ structure, zero Akte spoilers); mechanics hint and empty-state hint show on run 1 only;
+free-play footer de-duplicated. NEW RULES so this class of mistake is documented, not remembered:
+VX-T10 (Netflix narration = named tell) and IX-10..IX-18 in control/10 — the complete protocol
+grammar earned on the pilot (required-not-optional, dossier-first force-read, raw artifacts,
+reading-free/answering-explicit, reveal-on-solve, one task panel, prime-don't-spoil, findings-as-
+artifact, no narration). Each rule cites why it exists; every future explorer inherits them.
+244 tests green.

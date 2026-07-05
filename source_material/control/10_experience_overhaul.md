@@ -31,6 +31,12 @@ rooms and good official courses, and (c) making concepts SEEN and FELT before th
         das mal…", no rough edges. Textbook-Hochdeutsch with English scaffolding.
 [VX-T9] RIDDLE-STEMS: "Warum ist X besser als Y?" — quiz-show framing instead of a situation you
         are IN.
+[VX-T10] NETFLIX NARRATION (user 2026-07-05): saying what the UI, the artifacts, or the previous
+        sentence already show. "Alle Dateien öffnen, dann geht es weiter" next to a 1/4-gelesen
+        counter; a note that summarizes what the Akte exists to reveal; explaining an interaction
+        whose buttons are on screen. The learner is not watching on a second monitor. Framing
+        text carries ONLY what is visible nowhere else: premise and stakes. Mechanics hints are
+        UI affordances, shown once, then never again.
 
 ### The bar (how TryHackMe / good official courses actually read)
 
@@ -94,6 +100,36 @@ rooms and good official courses, and (c) making concepts SEEN and FELT before th
 [IX-9] NOTHING IS SACRED: the current node/lesson structure (incl. the roadmap's quick-lesson
        shape) is legacy scaffolding, not the product. Where the doing-anatomy needs different
        node cuts, recut the nodes.
+
+### The protocol grammar (earned on the NODE-01-03 pilot, user-tested 2026-07-05 — BINDING for
+### every future explorer/interactive; each rule exists because its absence failed a real test)
+
+[IX-10] REQUIRED, NOT OPTIONAL: a sandbox gets skimmed. Interactives run as guided protocols
+        (prescribed runs) that gate the lesson; free play unlocks AFTER, as the reward.
+[IX-11] DOSSIER FIRST, FORCE-READ: cases open with their artifacts (Akte). All files must be
+        opened before anything below reveals. Traces may only reference values whose meaning
+        lives in the Akte — author the Akte before the trace.
+[IX-12] RAW ARTIFACTS: payloads/traces/configs show facts only (names, dates, values, statuses).
+        NEVER interpretation ("alt", "ist der alte Wert" = pre-chewed food). Diagnosis must
+        require cross-referencing the Akte. Guard-test the banned editorializing words across
+        ALL states.
+[IX-13] READING IS FREE, ANSWERING IS EXPLICIT: inspecting must never be interpreted as an
+        answer. Committing is its own button, placed WHERE THE EVIDENCE IS (in the payload
+        panel, so only an inspected station can be reported). Wrong answers point back to
+        reading, never advance.
+[IX-14] REVEAL ON SOLVE: status colors, verdict marks and explanation notes are CONFIRMATION,
+        not input — hidden until the learner answered correctly (SPOILER_RULE at every level:
+        evidence → own diagnosis → confirmation + annotation).
+[IX-15] ONE TASK PANEL: exactly one labeled place (AUFGABE) says what to do right now —
+        briefing → watch → question (with the user-visible outcome inline) → solved note.
+        Everything else is evidence (PAYLOAD) or record (PROTOKOLL). No competing boxes.
+[IX-16] PRIME ATTENTION, DON'T SPOIL: every run carries a "Worauf achten"-line shown before and
+        during the animation. It directs where to look, never names the target (test this).
+[IX-17] FINDINGS ARE AN ARTIFACT: each solved run writes one row to a visible board; the
+        completed board IS the concept map the node teaches. No board, no protocol.
+[IX-18] NO NETFLIX NARRATION (= VX-T10, interaction side): never explain what a visible control
+        does, never restate a counter in prose, mechanics hints appear exactly once (first run)
+        and never again. Framing text carries only premise and stakes.
 
 ## PART 3 — TREATMENT MAP (what each arc's flagship interaction IS)
 

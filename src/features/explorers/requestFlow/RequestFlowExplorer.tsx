@@ -200,9 +200,12 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
                 Beim Nutzer kommt an: <span className="text-white">{trace.answer.text}</span>
               </p>
               <p className="text-[13px] font-medium leading-snug text-white">{exp.prompt}</p>
-              <p className="font-typer text-[10px] uppercase tracking-wide text-deck-muted">
-                Stationen antippen und Payloads lesen · melden im Payload-Fenster
-              </p>
+              {/* Mechanics are a one-time affordance (VX-T10), not a recurring narration. */}
+              {solvedCount === 0 && (
+                <p className="font-typer text-[10px] uppercase tracking-wide text-deck-muted">
+                  Stationen antippen und Payloads lesen · melden im Payload-Fenster
+                </p>
+              )}
             </>
           )}
           {phase === 'solved' && (
@@ -304,7 +307,7 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
           )}
         </div>
       )}
-      {phase === 'diagnose' && !shown && (
+      {phase === 'diagnose' && !shown && solvedCount === 0 && (
         <p className="text-[12px] leading-snug text-deck-muted">
           Eine Station antippen, um ihren Payload zu lesen.
         </p>
@@ -339,7 +342,7 @@ export function RequestFlowExplorer({ onComplete }: { onComplete?: () => void })
           </div>
           {phase === 'free' && (
             <p className="text-[11px] leading-snug text-deck-muted">
-              Protokoll abgeschlossen. Die Ebenen oben sind jetzt frei schaltbar, auch in Kombinationen, die im Protokoll nicht vorkamen.
+              Die Ebenen sind jetzt frei schaltbar, auch in Kombinationen, die im Protokoll nicht vorkamen.
             </p>
           )}
         </div>
