@@ -2599,3 +2599,16 @@ Little's-Law compute exercise + Black-Friday transfer (retry-storm and timeout-r
 wrongs). Tests pin all five laws + protocol guards (watch/chips never name the target; every
 target carries signal); one guard caught a watch-line spoiler during authoring. VIS rules
 (Skilljar bar, user request) added to control/10 + treatment-map row. 254 tests green.
+
+### FL-0083 — LoadSim polish + extension (user 2026-07-05: "love the idea, execution lacking, visually flat")
+
+VISUAL: always-on „Schlange über Zeit" mountain (fixed scale 72 for honest cross-run comparison)
+with the PREVIOUS run as gray ghost silhouette — run 3's explosion stands behind run 4's capped
+plateau in one image. Bounded queue renders as exactly `cap` outlined cells + „| Wand" marker;
+rejects flash the lane red with a ✕ 429 badge; ↻ Retry / ↓ Timeout badges blink as they happen;
+queue dots pop in; done-counter ticks; slots/arrows enlarged. ENTRY SOFTENED: one-time legend in
+run-1 briefing (□ wartend · ◎ Slot arbeitet · Gebirge = Verlauf). EXTENDED: run 6 „das Budget-
+Gespräch" (4 Slots — scaling as the third lever: shed / shape / scale, law pinned in tests) and
+free play is now a real experiment kit: cycling knobs for Ankunftsrate (4 Presets) × gleichmäßig/
+Schübe × 1–4 Slots × Queue ∞/10/25 × Timeout × Retry, all deterministic pattern presets.
+255 tests green; six-run browser replay verified (wall shot, ghost comparison, scale-up calm).

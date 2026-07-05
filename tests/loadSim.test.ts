@@ -52,6 +52,15 @@ describe('LoadSim — the five laws hold in the simulation', () => {
     expect(end.queued).toBeLessThanOrEqual(2) // drains between bursts — not a spiral
   })
 
+  it('scale: four slots lift the ceiling — the same spike drains', () => {
+    const { frames, end } = last('scale')
+    expect(end.queued).toBeLessThanOrEqual(2)
+    const late = frames.slice(20)
+    const avgDone = late.reduce((a, f) => a + f.donePerSec, 0) / late.length
+    expect(avgDone).toBeGreaterThan(3)
+    expect(end.timeoutsTotal + end.rejectedTotal).toBe(0)
+  })
+
   it("Little's Law: L ≈ λ·W in the steady part of the overloaded run", () => {
     const { frames } = last('spike')
     const f = frames[40]
@@ -65,7 +74,7 @@ describe('LoadSim — the five laws hold in the simulation', () => {
 
 describe('LoadSim — protocol consistency (control/10 guards)', () => {
   it('five runs; every target tile exists; watch never names the target (IX-16)', () => {
-    expect(LOAD_EXPERIMENTS).toHaveLength(5)
+    expect(LOAD_EXPERIMENTS).toHaveLength(6)
     for (const e of LOAD_EXPERIMENTS) {
       const tile = TILES.find((t) => t.id === e.target)
       expect(tile, `${e.id} target`).toBeTruthy()

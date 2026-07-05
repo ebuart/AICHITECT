@@ -237,4 +237,27 @@ export const LOAD_EXPERIMENTS: LoadExperiment[] = [
     finding: 'Auch unter Kapazität stauen Bursts. Der Durchschnitt lügt.',
     verdict: 'blocked',
   },
+  {
+    id: 'scale',
+    title: 'Lauf 6 · das Budget-Gespräch',
+    config: { ...BASE, pattern: [3, 4, 3, 4], slots: 4 },
+    chips: ['Neu Ø 3,5/s', '4 Slots · 1 s/Antwort', 'Queue ∞', 'Timeout –', 'Retry aus'],
+    watch: 'Gleicher Ansturm wie im Launch-Lauf. Das Provider-Tier wurde auf vier parallele Slots erhöht.',
+    prompt: 'Im Launch-Lauf war eine Kachel bei 2 festgenagelt, egal wie groß der Andrang. Jetzt nicht mehr. Welche?',
+    target: 'durchsatz',
+    solvedNote: 'Fertig/s folgt wieder der Ankunft; die Decke liegt jetzt bei 4 statt 2. Skalieren ist der dritte Hebel neben Absagen und Streichen. Der bequemste, und der einzige, der jeden Monat auf der Rechnung steht.',
+    finding: 'Mehr Slots heben die Decke. Gegen Geld.',
+    verdict: 'good',
+  },
 ]
+
+// ── Free-play presets (deterministic patterns; the sandbox after the protocol) ────────────
+export const RATE_PRESETS: { label: string; even: number[]; burst: number[] }[] = [
+  { label: '1,2/s', even: [1, 1, 2, 1], burst: [4, 0, 1, 0] },
+  { label: '2,4/s', even: [2, 3, 2, 3, 2], burst: [8, 0, 2, 0, 2] },
+  { label: '3,5/s', even: [3, 4, 3, 4], burst: [10, 0, 4, 0] },
+  { label: '5,0/s', even: [5], burst: [14, 2, 2, 2] },
+]
+export const SLOT_PRESETS = [1, 2, 3, 4]
+export const CAP_PRESETS: (number | null)[] = [null, 10, 25]
+export const TIMEOUT_PRESETS: (number | null)[] = [null, 8]
