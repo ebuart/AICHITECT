@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { cn } from '@/lib/utils/cn'
 import {
   CAP_PRESETS,
+  CARD_SPECS,
   LOAD_EXPERIMENTS,
   RATE_PRESETS,
   SLOT_PRESETS,
@@ -10,7 +11,9 @@ import {
   TIMEOUT_PRESETS,
   runSim,
   tileValue,
+  type CardTone,
   type Frame,
+  type LoadExperiment,
   type SimConfig,
   type TileId,
 } from './model'
@@ -123,6 +126,11 @@ export function LoadSimExplorer({ onComplete }: { onComplete?: () => void }) {
   }
 
   const findings = LOAD_EXPERIMENTS.slice(0, solvedCount)
+  // Once anything ran, the road stays on screen — frozen at the last frame between runs.
+  const everRan = solvedCount > 0 || phase !== 'briefing' || frameIdx > 0
+  // All six runs precomputed once for the dashboard cards (deterministic, cheap).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const runsCache = useMemo(() => Object.fromEntries(LOAD_EXPERIMENTS.map((e) => [e.id, runSim(e.config)])), [])
 
   // Road rendering values
   const cap = (inProtocol ? exp.config.queueCap : CAP_PRESETS[capIdx]) ?? null
@@ -222,7 +230,7 @@ export function LoadSimExplorer({ onComplete }: { onComplete?: () => void }) {
       )}
 
       {/* THE ROAD (VIS-2): arrivals ▸ queue ▸ slots ▸ done, data visible as it moves */}
-      {(phase !== 'briefing' || !inProtocol) && (
+      {everRan && (
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2 overflow-x-auto py-1">
             <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center gap-0.5 border border-deck-border-dim bg-deck-bg">
@@ -407,22 +415,99 @@ export function LoadSimExplorer({ onComplete }: { onComplete?: () => void }) {
         </div>
       )}
 
-      {/* PROTOKOLL */}
+      {/* PROTOKOLL as dashboard (user 2026-07-05): one CARD per solved run — the law as a
+          mini-diagram from the run's own frames. Grows 2-wide toward the full 3×2 grid. */}
       {findings.length > 0 && phase !== 'diagnose' && (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1.5">
           <span className="font-typer text-[10px] uppercase tracking-widest text-deck-muted">
             Protokoll {findings.length}/{LOAD_EXPERIMENTS.length}
           </span>
-          <div className="flex flex-col">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
             {findings.map((x) => (
-              <div key={x.id} className={cn('flex items-baseline gap-2 border-l-2 bg-deck-bg px-2 py-1', verdictBorder[x.verdict])}>
-                <span className="w-24 shrink-0 font-typer text-[10px] uppercase tracking-wide text-deck-muted">{x.title.split('·')[0].trim()}</span>
-                <span className="text-[12px] leading-snug text-white">{x.finding}</span>
-              </div>
+              <FindingCard key={x.id} exp={x} frames={runsCache[x.id]} />
             ))}
           </div>
         </div>
       )}
+    </div>
+  )
+}
+
+const toneBg: Record<CardTone, string> = {
+  white: 'bg-white',
+  success: 'bg-deck-success',
+  warning: 'bg-deck-warning',
+  danger: 'bg-deck-danger',
+  dim: 'bg-deck-border-dim',
+}
+const toneBorder: Record<CardTone, string> = {
+  white: 'border-white',
+  success: 'border-deck-success',
+  warning: 'border-deck-warning',
+  danger: 'border-deck-danger',
+  dim: 'border-deck-border-dim',
+}
+
+function FindingCard({ exp, frames }: { exp: LoadExperiment; frames: Frame[] }) {
+  const spec = CARD_SPECS[exp.id]
+  if (!spec) return null
+  return (
+    <div className={cn('flex flex-col gap-1.5 border-l-2 bg-deck-bg p-2', verdictBorder[exp.verdict])}>
+      <span className="font-typer text-[10px] uppercase tracking-wide text-white">{exp.title}</span>
+      <MiniChart frames={frames} spec={spec} config={exp.config} />
+      <span className="font-typer text-[10px] tabular-nums text-deck-muted">{spec.stat(frames)}</span>
+      <span className="text-[12px] leading-snug text-white">{exp.finding}</span>
+      <span className="font-typer text-[8px] uppercase tracking-wide text-deck-muted">{spec.legend}</span>
+    </div>
+  )
+}
+
+function MiniChart({
+  frames,
+  spec,
+  config,
+}: {
+  frames: Frame[]
+  spec: (typeof CARD_SPECS)[string]
+  config: SimConfig
+}) {
+  const barVals = frames.map(spec.bars)
+  const edgeVals = spec.edge ? frames.map(spec.edge) : null
+  const refVals = (spec.refs ?? []).map((r) => r.value(frames, config))
+  const max = Math.max(1, ...barVals, ...(edgeVals ?? []), ...refVals) * 1.1
+  const h = (v: number) => `${Math.max(v > 0 ? 3 : 0, Math.min(100, (v / max) * 100))}%`
+  return (
+    <div className="relative h-20 border border-deck-border-dim bg-deck-surface">
+      {/* bars */}
+      <div className="absolute inset-x-1 bottom-0 top-1 flex items-end gap-px">
+        {barVals.map((v, i) => (
+          <span key={i} className={cn('min-w-0 flex-1', toneBg[spec.barTone])} style={{ height: h(v) }} />
+        ))}
+      </div>
+      {/* edge markers: a second series drawn as top edges */}
+      {edgeVals && (
+        <div className="pointer-events-none absolute inset-x-1 bottom-0 top-1">
+          {edgeVals.map((v, i) => (
+            <span
+              key={i}
+              className={cn('absolute h-[2px]', toneBg[spec.edgeTone ?? 'white'])}
+              style={{
+                bottom: h(v),
+                left: `${(i / edgeVals.length) * 100}%`,
+                width: `${100 / edgeVals.length}%`,
+              }}
+            />
+          ))}
+        </div>
+      )}
+      {/* reference lines */}
+      {(spec.refs ?? []).map((r, i) => (
+        <span
+          key={i}
+          className={cn('pointer-events-none absolute inset-x-0 border-t', toneBorder[r.tone], r.dashed && 'border-dashed')}
+          style={{ bottom: h(r.value(frames, config)) }}
+        />
+      ))}
     </div>
   )
 }

@@ -2612,3 +2612,18 @@ Gespräch" (4 Slots — scaling as the third lever: shed / shape / scale, law pi
 free play is now a real experiment kit: cycling knobs for Ankunftsrate (4 Presets) × gleichmäßig/
 Schübe × 1–4 Slots × Queue ∞/10/25 × Timeout × Retry, all deterministic pattern presets.
 255 tests green; six-run browser replay verified (wall shot, ghost comparison, scale-up calm).
+
+### FL-0084 — Persistent road + Protokoll as visual dashboard (user 2026-07-06)
+
+Feedback: (a) everything collapsed between runs; (b) the Protokoll was text rows — "add visuals
+for each below, like a dashboard that becomes bigger" — and maxims like the 70–80%-headroom rule
+belong in diagrams. Fixes: the road/mountain/tiles stay on screen once anything ran (frozen at
+the last frame during briefings). PROTOKOLL is now a growing 2-wide CARD GRID (3×2 at 6/6): each
+card renders its law as a mini-diagram from THAT run's actual frames (all six runs precomputed
+once) — Lauf 1: Neu-bars with Fertig-markers riding the tops (in=out congruent) · Lauf 2: the red
+unbounded staircase · Lauf 3: Zugänge-bars vs lower Neu-markers (the self-made load gap) · Lauf 4:
+queue plateau kissing the red limit line · Lauf 5: spikes piercing the red capacity line over a
+gray dashed average ("Der Durchschnitt lügt" as geometry) · Lauf 6: green Fertig-bars above the
+old dashed ceiling. Cards carry computed stats (never asserted), finding, and a five-word legend.
+CARD_SPECS live in the pure model; MiniChart is div-bars + edge-markers + reference lines
+(VIS-2/5). 255 tests green; full six-run browser replay + element-level grid capture verified.

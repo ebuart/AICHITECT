@@ -252,6 +252,75 @@ export const LOAD_EXPERIMENTS: LoadExperiment[] = [
 ]
 
 // ── Free-play presets (deterministic patterns; the sandbox after the protocol) ────────────
+// ── Dashboard cards (one per solved run): each law as a mini-diagram computed from the
+// run's own frames. bars/edge pick series; refs draw horizontal reference lines.
+export type CardTone = 'white' | 'success' | 'warning' | 'danger' | 'dim'
+export interface CardSpec {
+  bars: (f: Frame) => number
+  barTone: CardTone
+  edge?: (f: Frame) => number
+  edgeTone?: CardTone
+  refs?: { value: (frames: Frame[], cfg: SimConfig) => number; tone: CardTone; dashed?: boolean }[]
+  /** Headline numbers under the chart — computed, not asserted. */
+  stat: (frames: Frame[]) => string
+  /** What the axes mean, five words max. */
+  legend: string
+}
+
+const fmt1 = (n: number) => (Math.round(n * 10) / 10).toString().replace('.', ',')
+
+export const CARD_SPECS: Record<string, CardSpec> = {
+  steady: {
+    bars: (f) => f.newExternal,
+    barTone: 'dim',
+    edge: (f) => f.donePerSec,
+    edgeTone: 'success',
+    stat: (fr) => `0 Fehler · Ø Wartezeit ${fmt1(fr[fr.length - 1].avgWait)} s`,
+    legend: 'Balken: Neu/s · Marker: Fertig/s',
+  },
+  spike: {
+    bars: (f) => f.queued,
+    barTone: 'danger',
+    stat: (fr) => `Schlange am Ende: ${fr[fr.length - 1].queued} · Wartezeit ${fmt1(fr[fr.length - 1].avgWait)} s`,
+    legend: 'Balken: Warteschlange über Zeit',
+  },
+  retry: {
+    bars: (f) => f.entered,
+    barTone: 'warning',
+    edge: (f) => f.newExternal,
+    edgeTone: 'white',
+    stat: (fr) => `Zugänge bis ${Math.max(...fr.map((f) => f.entered))}/s bei Neu 3–4/s · Timeouts: ${fr[fr.length - 1].timeoutsTotal}`,
+    legend: 'Balken: Zugänge/s · Marker: Neu/s',
+  },
+  shed: {
+    bars: (f) => f.queued,
+    barTone: 'white',
+    refs: [{ value: (_, c) => c.queueCap ?? 0, tone: 'danger' }],
+    stat: (fr) => `max Wartezeit ${fmt1(Math.max(...fr.map((f) => f.avgWait)))} s · 429: ${fr[fr.length - 1].rejectedTotal}`,
+    legend: 'Balken: Warteschlange · Linie: Limit',
+  },
+  bursty: {
+    bars: (f) => f.newExternal,
+    barTone: 'white',
+    refs: [
+      { value: (_, c) => c.slots, tone: 'danger' },
+      { value: (fr) => fr.reduce((a, f) => a + f.newExternal, 0) / fr.length, tone: 'dim', dashed: true },
+    ],
+    stat: (fr) => {
+      const avg = fr.reduce((a, f) => a + f.newExternal, 0) / fr.length
+      return `Ø ${fmt1(avg)}/s unter Kapazität 2/s · Spitzen bis ${Math.max(...fr.map((f) => f.newExternal))}/s`
+    },
+    legend: 'Balken: Neu/s · rot: Kapazität · grau: Ø',
+  },
+  scale: {
+    bars: (f) => f.donePerSec,
+    barTone: 'success',
+    refs: [{ value: () => 2, tone: 'dim', dashed: true }],
+    stat: (fr) => `Decke 2 → 4 · Schlange am Ende: ${fr[fr.length - 1].queued}`,
+    legend: 'Balken: Fertig/s · grau: alte Decke',
+  },
+}
+
 export const RATE_PRESETS: { label: string; even: number[]; burst: number[] }[] = [
   { label: '1,2/s', even: [1, 1, 2, 1], burst: [4, 0, 1, 0] },
   { label: '2,4/s', even: [2, 3, 2, 3, 2], burst: [8, 0, 2, 0, 2] },
