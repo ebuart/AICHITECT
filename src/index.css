@@ -174,3 +174,14 @@ samp {
 @media (prefers-reduced-motion: reduce) {
   .deck-pop, .deck-flash-danger { animation: none; }
 }
+
+/* LoadSim pass-through: when the queue is empty, arrivals glide across the lane into the
+   slots — the steady run shows flow, the overloaded run shows it stopping. */
+@keyframes deck-glide {
+  from { left: 2%; opacity: 0.9; }
+  to { left: 92%; opacity: 1; }
+}
+.deck-glide { position: absolute; animation-name: deck-glide; animation-timing-function: linear; animation-fill-mode: forwards; }
+@media (prefers-reduced-motion: reduce) {
+  .deck-glide { animation: none; left: 50%; }
+}

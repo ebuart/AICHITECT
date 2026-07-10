@@ -2627,3 +2627,12 @@ gray dashed average ("Der Durchschnitt lügt" as geometry) · Lauf 6: green Fert
 old dashed ceiling. Cards carry computed stats (never asserted), finding, and a five-word legend.
 CARD_SPECS live in the pure model; MiniChart is div-bars + edge-markers + reference lines
 (VIS-2/5). 255 tests green; full six-run browser replay + element-level grid capture verified.
+
+### FL-0085 — Run 1 shows flow: pass-through gliders (user 2026-07-09: "no animation, only fertig goes up")
+
+The steady run's lesson is "nothing accumulates", which rendered as "nothing happens". Fix: when
+the queue ends a second empty, that second's arrivals render as GLIDING dots crossing the lane
+into the slots (duration synced to playback speed, reduced-motion safe). Run 1 now shows traffic
+flowing; run 2's pile-up reads as flow STOPPING — the contrast is the lesson. Static "leer" label
+yields to the gliders while running; run-1 legend updated (gleitend = zieht direkt durch).
+Verified via staggered mid-flight captures. 255 tests green.

@@ -78,9 +78,11 @@ export function LoadSimExplorer({ onComplete }: { onComplete?: () => void }) {
     setPhase('running')
   }
 
+  const frameMs = solvedCount === 0 ? 300 : 160
+
   useEffect(() => {
     if (!running) return
-    const ms = solvedCount === 0 ? 300 : 160
+    const ms = frameMs
     timer.current = setInterval(() => {
       setFrameIdx((i) => {
         if (i + 1 >= frames.length) {
@@ -135,6 +137,7 @@ export function LoadSimExplorer({ onComplete }: { onComplete?: () => void }) {
   // Road rendering values
   const cap = (inProtocol ? exp.config.queueCap : CAP_PRESETS[capIdx]) ?? null
   const slots = inProtocol ? exp.config.slots : SLOT_PRESETS[slotIdx]
+  const gliders = running && f.queued === 0 ? Math.min(f.entered, 3) : 0
   const rejectedNow = f.rejectedTotal - prev.rejectedTotal > 0
   const timeoutsNow = f.timeoutsTotal - prev.timeoutsTotal
   const retriesNow = Math.max(0, f.entered - f.newExternal)
@@ -191,7 +194,7 @@ export function LoadSimExplorer({ onComplete }: { onComplete?: () => void }) {
               <p className="text-[12px] leading-snug text-deck-muted">{exp.watch}</p>
               {solvedCount === 0 && (
                 <p className="font-typer text-[10px] uppercase tracking-wide text-deck-muted">
-                  Lesehilfe, einmalig: □ = wartende Anfrage · ◎ = Slot arbeitet · Gebirge unten = Schlange über Zeit
+                  Lesehilfe, einmalig: gleitendes □ = Anfrage zieht direkt durch · stehendes □ = wartet · ◎ = Slot arbeitet · Gebirge unten = Schlange über Zeit
                 </p>
               )}
               <button
@@ -245,10 +248,18 @@ export function LoadSimExplorer({ onComplete }: { onComplete?: () => void }) {
             <div className="flex min-w-0 flex-1 flex-col gap-1">
               <div
                 className={cn(
-                  'flex h-16 items-center gap-1 border border-deck-border-dim bg-deck-bg px-2',
+                  'relative flex h-16 items-center gap-1 overflow-hidden border border-deck-border-dim bg-deck-bg px-2',
                   rejectedNow && 'deck-flash-danger',
                 )}
               >
+                {/* pass-through traffic: visible flow even when nothing queues */}
+                {Array.from({ length: gliders }, (_, i) => (
+                  <span
+                    key={`g${f.t}-${i}`}
+                    className="deck-glide h-3.5 w-3.5 bg-white"
+                    style={{ top: `${26 + i * 22}%`, animationDuration: `${Math.round(frameMs * 0.85)}ms` }}
+                  />
+                ))}
                 {cap != null ? (
                   <>
                     {Array.from({ length: cap }, (_, i) => (
@@ -264,7 +275,9 @@ export function LoadSimExplorer({ onComplete }: { onComplete?: () => void }) {
                   </>
                 ) : (
                   <>
-                    {f.queued === 0 && <span className="font-typer text-[10px] uppercase text-deck-muted">leer</span>}
+                    {f.queued === 0 && gliders === 0 && (
+                      <span className="font-typer text-[10px] uppercase text-deck-muted">{running ? '' : 'leer'}</span>
+                    )}
                     {Array.from({ length: Math.min(f.queued, 26) }, (_, i) => (
                       <span
                         key={i}
